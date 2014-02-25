@@ -15,8 +15,8 @@ Enables the 3V3 pin on the header—used to supply backpacks with power.
 ## power.disablevcc()
 Disables the 3V3 pin on the header—used to supply backpacks with power.
 
-## power.sleep(milliseconds)
-Puts the Scout to sleep for *milliseconds*
+## power.sleep(ms)
+Puts the Scout to sleep for *ms* milliseconds
 
 ## power.report()
 Prints a JSON response of the power status of the Scout.
@@ -137,41 +137,41 @@ Enable all verbose output if *enabled* is set to 1
 
 # led
 
-## led.blink(red, green, blue, milliseconds=500)
+## led.blink(red, green, blue, ms=500)
 Blink the LED with the values of *red*, *green*, and *blue*.  Possible color values are between 0 and 255.  Pass the optional fourth argument to change the blink duration, with a default of half a second.
 
 ## led.off()
 Turn off the LED.
 
-## led.red(milliseconds=0, continuous=0)
-Make the LED red.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.red(ms=0, continuous=0)
+Make the LED red.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.green(milliseconds=0, continuous=0)
-Make the LED green.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.green(ms=0, continuous=0)
+Make the LED green.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.blue(milliseconds=0, continuous=0)
-Make the LED blue.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.blue(ms=0, continuous=0)
+Make the LED blue.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.cyan(milliseconds=0, continuous=0)
-Make the LED cyan.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.cyan(ms=0, continuous=0)
+Make the LED cyan.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.purple(milliseconds=0, continuous=0)
-Make the LED purple.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.purple(ms=0, continuous=0)
+Make the LED purple.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.magenta(milliseconds=0, continuous=0)
-Make the LED magenta.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.magenta(ms=0, continuous=0)
+Make the LED magenta.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.yellow(milliseconds=0, continuous=0)
-Make the LED yellow.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.yellow(ms=0, continuous=0)
+Make the LED yellow.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.orange(milliseconds=0, continuous=0)
-Make the LED orange.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.orange(ms=0, continuous=0)
+Make the LED orange.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.white(milliseconds=0, continuous=0)
-Make the LED white. Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.white(ms=0, continuous=0)
+Make the LED white. Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
-## led.torch(milliseconds=0, continuous=0)
-Make the LED the Scout’s torch color.  Set *milliseconds* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.torch(ms=0, continuous=0)
+Make the LED the Scout’s torch color.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
 
 ## led.sethex(hexValue)
 Set the LED to the *hexValue* given. Similar to HTML, “RRGGBB”, but no hash at the beginning.
@@ -245,8 +245,8 @@ Write the HQ token for this Scout given by *token*.
 ## scout.gethqtoken()
 Print the HQ token currently assigned to this Scout.
 
-## scout.delay(milliseconds)
-Delay the Scout for *milliseconds*.  Radio, shell, and other systems will continue to run, so it’s non-blocking.
+## scout.delay(ms)
+Delay the Scout for *ms* milliseconds.  Radio, shell, and other systems will continue to run, so it’s non-blocking.
 
 ## scout.daisy()
 This will wipe a Scout and make it factory-fresh.  Running it once will ask you to run it again to confirm.  When run a second time, it will reset all settings in a Wi-Fi backpack, if attached, and will reset the mesh radio settings, HQ token, and mesh key.
