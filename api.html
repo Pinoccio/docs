@@ -18,7 +18,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width">
 
-  <title>Pinoccio Scout Commands</title>
+  <title>Pinoccio API Commands</title>
 
   <!-- Flatdoc -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -31,20 +31,24 @@
 
   <!-- Meta -->
   <meta content="Pinoccio API Reference" property="og:title">
-  <meta content="Your Project description goes here." name="description">
+  <meta content="" name="description">
 
   <!-- Initializer -->
   <script>
     Flatdoc.run({
       fetcher: Flatdoc.github('Pinoccio/docs', 'carlo.md')
+      //fetcher: Flatdoc.file('carlo.md')
     });
   </script>
+
+  <script src="https://api.pinocc.io/2/pinoccio-api.js"></script>
+  <script src="/api-the-docs.js"></script>
 </head>
 <body role='flatdoc'>
 
   <div class='header'>
     <div class='left'>
-      <h1>Your Project</h1>
+      <h1>Pinoccio API</h1>
       <ul>
         <li><a href='https://github.com/Pinoccio/docs'>View on GitHub</a></li>
         <li><a href='https://github.com/Pinoccio/docs/issues'>Issues</a></li>

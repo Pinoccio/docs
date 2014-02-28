@@ -1,7 +1,9 @@
 
+# account
 
-<a name="login"><a>
-### login,  POST /v1/login
+## login
+
+POST /v1/login
 
 login to pinocc.io
 
@@ -16,8 +18,9 @@ login to pinocc.io
 
 ```
 
-<a name="register"><a>
-### register, POST /v1/register
+## register
+
+POST /v1/register
 
 register for pinocc.io
 
@@ -27,9 +30,12 @@ register for pinocc.io
 
 ```js
 {"data":{"token":"7fc11b7554f0cd303bad94eb0eb36e2d","account":19}}
+
 ```
-<a name="account"></a>
-###account, GET /v1/account
+
+## Account info
+
+GET /v1/account
 
 get your account data
 
@@ -51,8 +57,12 @@ curl 'https://api.pinocc.io/v1/account?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 }
 
 ```
-<a name="new-troop"></a>
-###make a troop, POST /v1/troop
+
+# Troops
+
+## Make a troop
+
+POST /v1/troop
 
 create a new troop and assign it a token.
 
@@ -68,8 +78,9 @@ curl -X POST 'https://api.pinocc.io/v1/troop?token=980146260e87f0dfc02f10e733ca5
 
 ```
 
-<a name="troops"></a>
-###get your troops, GET /v1/troops
+## Get all your troops 
+
+GET /v1/troops
 
 get all of your accounts troops.
 
@@ -85,8 +96,9 @@ curl 'https://api.pinocc.io/v1/troops?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
-<a name="troop-get"></a>
-###get a troop, GET /v1/{troop id}
+## Get a troop
+
+GET /v1/{troop id}
 
 get the data for your first troop
 
@@ -102,8 +114,9 @@ curl 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
-<a name="troop-patch"></a>
-###update a troop, PATCH /v1/{troop id}
+## Update a troop
+
+PATCH /v1/{troop id}
 
 update data associated with your troop
 
@@ -114,16 +127,19 @@ curl -X PATCH --data "name=old sport" 'https://api.pinocc.io/v1/1?token=7fc11b75
 
 ```
 
-<a name="troop-del"></a>
-###delete a troop, DELETE /v1/{troop id}
+## Delete a troop
+DELETE /v1/{troop id}
 
 ```sh
 curl -X DELETE 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
-<a name="new-scout"></a>
-### create a scout, POST /v1/{troop id}/scout
+# Scouts
+
+## Create a scout
+
+POST /v1/{troop id}/scout
 
 add a new scout to your troop
 
@@ -138,8 +154,10 @@ curl -X POST 'https://api.pinocc.io/v1/1/scout?token=7fc11b7554f0cd303bad94eb0eb
 {"data":{"id":1,"time":1388185122294}}
 
 ```
-<a name="scouts"></a>
-###get scouts in a troop, GET /v1/{troop id}/scouts
+
+## Get scouts in a troop
+
+GET /v1/{troop id}/scouts
 
 get all of the scouts in your troop. returns an object keyed off of scout id or false if no scouts are associated.
 
@@ -154,8 +172,9 @@ curl  'https://api.pinocc.io/v1/1/scouts?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 {"data":{"1":{"id":1,"time":1388185122294,"updated":1388186085191,"name":"old yeller"}}}
 
 ```
-<a name="scout-get"></a>
-###get a scout, GET /v1/{troop id}/{scout id}
+## Get a scout
+
+GET /v1/{troop id}/{scout id}
 
 get the data for your a scout.
 
@@ -170,8 +189,9 @@ curl  'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
-<a name="scout-patch"></a>
-###update a scout, PATCH /v1/{troop id}/{scout id}
+## Update a scout
+
+PATCH /v1/{troop id}/{scout id}
 
 update data in your scout
 
@@ -189,8 +209,9 @@ curl -X PATCH --data "name=old yeller" 'https://api.pinocc.io/v1/1/1?token=7fc11
 
 ```
 
-<a name="scout-del"></a>
-###delete a scout, DELETE /v1/{troop id}/{scout id}
+## Delete a scout
+
+DELETE /v1/{troop id}/{scout id}
 
 ```sh
 curl -X DELETE 'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -198,12 +219,15 @@ curl -X DELETE 'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36
 ```
 
 
-<a name="command"><a>
-### run a bitlash command, GET /v1/{troop id}/{scout id}/command/:command
+## Run a bitlash command
+
+GET /v1/{troop id}/{scout id}/command/:command
 
 GET  /v1/{troop id}/{scout id}/command?command=command
 
 POST /v1/{troop id}/{scout id}/command  data: command=command
+
+POST /v1/{troop id}/{scout id}/command  data: '{"command":"command"}'
 
 command may be passed as a querystring key or a post data key named "command"
 
@@ -227,8 +251,11 @@ curl  'https://api.pinocc.io/v1/1/1/command/led.report?token=7fc11b7554f0cd303ba
 {"error":{"code":500,"message":"command timed out. troop:7fc11b7554f0cd303bad94eb0eb36e2d, scout:1, command:led.report"},"data":{"reply":""}}
 ```
 
-<a name="sync"></a>
-###realtime stream of changes. GET /v1/sync
+# Streams 
+
+## Realtime stream of changes.
+
+GET /v1/sync
 
 get the state of all of your troops and scouts and realtime events as the state changes. this stream never stops unless the connection is interrupted. 
 
@@ -246,8 +273,9 @@ data is newline delimited json.
 
 ```
 
-<a name="stats"></a>
-###GET /v1/stats
+## Historical and Realtime Stats Stream
+
+GET /v1/stats
 
 get a stream of time series data from start time to end time for any report. 
 - if no end time is provided or the end time is in the future events will continue as they happen in real time.
