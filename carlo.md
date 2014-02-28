@@ -1,25 +1,10 @@
-* <a href="#login">login</a>
-* <a href="#register">register</a>
-* <a href="#account">account details</a>
-* <a href="#new-troop">make a troop</a>
-* <a href="#troops">get all troops</a>
-* <a href="#troop-get">get a troop</a>
-* <a href="#troop-patch">update a troop</a>
-* <a href="#troop-del">delete a troop</a>
-* <a href="#new-scout">add a new scout</a>
-* <a href="#scouts">get a troops scouts</a>
-* <a href="#scout-get">get a scout</a>
-* <a href="#scout-patch">update a scout</a>
-* <a href="#scout-del">delete a scout</a>
-* <a href="#commands">list bitlash commands</a>
-* <a href="#command">run bitlash commands</a>
-* <a href="#lightshow">run a lightshow on a scout</a>
 
 
 <a name="login"><a>
-###POST /v1/login
+### login,  POST /v1/login
 
 login to pinocc.io
+
 
 ```sh
  curl -X POST -v --data 'email=youremail&password=tacos' https://api.pinocc.io/v1/login
@@ -31,8 +16,8 @@ login to pinocc.io
 
 ```
 
-<a name="regsiter"><a>
-###POST /v1/register
+<a name="register"><a>
+### register, POST /v1/register
 
 register for pinocc.io
 
@@ -44,9 +29,10 @@ register for pinocc.io
 {"data":{"token":"7fc11b7554f0cd303bad94eb0eb36e2d","account":19}}
 ```
 <a name="account"></a>
-###GET /v1/account
+###account, GET /v1/account
 
 get your account data
+
 
 ```sh
 curl 'https://api.pinocc.io/v1/account?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -66,7 +52,7 @@ curl 'https://api.pinocc.io/v1/account?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 <a name="new-troop"></a>
-###POST /v1/troop
+###make a troop, POST /v1/troop
 
 create a new troop and assign it a token.
 
@@ -83,7 +69,7 @@ curl -X POST 'https://api.pinocc.io/v1/troop?token=980146260e87f0dfc02f10e733ca5
 ```
 
 <a name="troops"></a>
-###GET /v1/troops
+###get your troops, GET /v1/troops
 
 get all of your accounts troops.
 
@@ -100,7 +86,7 @@ curl 'https://api.pinocc.io/v1/troops?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 ```
 
 <a name="troop-get"></a>
-###GET /v1/1
+###get a troop, GET /v1/{troop id}
 
 get the data for your first troop
 
@@ -117,7 +103,7 @@ curl 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 ```
 
 <a name="troop-patch"></a>
-###PATCH /v1/1
+###update a troop, PATCH /v1/{troop id}
 
 update data associated with your troop
 
@@ -129,7 +115,7 @@ curl -X PATCH --data "name=old sport" 'https://api.pinocc.io/v1/1?token=7fc11b75
 ```
 
 <a name="troop-del"></a>
-###DELETE /v1/1
+###delete a troop, DELETE /v1/{troop id}
 
 ```sh
 curl -X DELETE 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -137,7 +123,7 @@ curl -X DELETE 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2
 ```
 
 <a name="new-scout"></a>
-###POST /v1/1/scout
+### create a scout, POST /v1/{troop id}/scout
 
 add a new scout to your troop
 
@@ -153,7 +139,7 @@ curl -X POST 'https://api.pinocc.io/v1/1/scout?token=7fc11b7554f0cd303bad94eb0eb
 
 ```
 <a name="scouts"></a>
-###GET /v1/1/scouts
+###get scouts in a troop, GET /v1/{troop id}/scouts
 
 get all of the scouts in your troop. returns an object keyed off of scout id or false if no scouts are associated.
 
@@ -169,7 +155,7 @@ curl  'https://api.pinocc.io/v1/1/scouts?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 <a name="scout-get"></a>
-###GET /v1/1/1
+###get a scout, GET /v1/{troop id}/{scout id}
 
 get the data for your a scout.
 
@@ -185,7 +171,7 @@ curl  'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 ```
 
 <a name="scout-patch"></a>
-###PATCH /v1/1/1
+###update a scout, PATCH /v1/{troop id}/{scout id}
 
 update data in your scout
 
@@ -204,43 +190,24 @@ curl -X PATCH --data "name=old yeller" 'https://api.pinocc.io/v1/1/1?token=7fc11
 ```
 
 <a name="scout-del"></a>
-###DELETE /v1/1/1
+###delete a scout, DELETE /v1/{troop id}/{scout id}
 
 ```sh
 curl -X DELETE 'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
-<a name="commands"></a>
-###GET /v1/1/1/commands
-
-print a list of available bitlash commands
-
-if the scout is offline you will get an error after a timeout. TODO accept timeout as an argument. its 10 seconds now.
-
-```sh
-curl  'https://api.pinocc.io/v1/1/1/commands?token=7fc11b7554f0cd303bad94eb0eb36e2d'
-```
-```js
-// success
-
-{"data":["backpack.report","hq.connect","hq.disconnect","led.blue","led.bluevalue","led.cyan","led.green","led.greenvalue","led.hexvalue","led.magenta","led.off","led.orange","led.purple","led.red","led.redvalue","led.report","led.savetorch","led.setrgb","led.settorch","led.white","led.yellow","mesh.broadcastrun","mesh.config","mesh.ingroup","mesh.joingroup","mesh.key","mesh.leavegroup","mesh.ping","mesh.pinggroup","mesh.publish","mesh.remoterun","mesh.report","mesh.resetkey","mesh.setpower","mesh.subscribe","pin.makeinput","pin.makeoutput","pin.off","pin.on","pin.read","pin.report","pin.write","power.disablevcc","power.enablevcc","power.ischarging","power.percent","power.report","power.sleep","power.voltage","randomnumber","scout.gethqtoken","scout.isleadscout","scout.otaboot","scout.report","scout.sethqtoken","temperature","wifi.command","wifi.config","wifi.connect","wifi.list","wifi.report"]}
-
-// timeout error
-
-{"error":{"code":500,"message":"command timed out. troop:7fc11b7554f0cd303bad94eb0eb36e2d, scout:1, command:help"}
-
-```
 
 <a name="command"><a>
-###GET  /v1/1/1/command/:command
+### run a bitlash command, GET /v1/{troop id}/{scout id}/command/:command
 
-GET  /v1/1/1/command?command=command
+GET  /v1/{troop id}/{scout id}/command?command=command
 
-POST /v1/1/1/command  data: command=command
-
+POST /v1/{troop id}/{scout id}/command  data: command=command
 
 command may be passed as a querystring key or a post data key named "command"
+
+post data may be query string formatted or json
 
 
 ```sh
@@ -258,5 +225,48 @@ curl  'https://api.pinocc.io/v1/1/1/command/led.report?token=7fc11b7554f0cd303ba
 // timeout
 
 {"error":{"code":500,"message":"command timed out. troop:7fc11b7554f0cd303bad94eb0eb36e2d, scout:1, command:led.report"},"data":{"reply":""}}
+```
+
+<a name="sync"></a>
+###realtime stream of changes. GET /v1/sync
+
+get the state of all of your troops and scouts and realtime events as the state changes. this stream never stops unless the connection is interrupted. 
+
+```sh
+ 
+curl https://api.pinocc.io/v1/sync?token=7fc11b7554f0cd303bad94eb0eb36e2d
 
 ```
+
+data is newline delimited json.
+
+```sh
+
+{"data":{}}
+
+```
+
+<a name="stats"></a>
+###GET /v1/stats
+
+get a stream of time series data from start time to end time for any report. 
+- if no end time is provided or the end time is in the future events will continue as they happen in real time.
+- if no start time is provided you will ony get events starting from now as they happen in real time.
+
+
+TODO: document the options!
+
+```sh
+ 
+curl https://api.pinocc.io/v1/stats?token=7fc11b7554f0cd303bad94eb0eb36e2d&report=temp&scout=1&troop=1
+
+```
+
+data is newline delimited json.
+
+```sh
+
+{"data":{}}
+
+```
+
