@@ -5,6 +5,7 @@
 
 login to pinocc.io
 
+
 ```sh
  curl -X POST -v --data 'email=youremail&password=tacos' https://api.pinocc.io/v1/login
 
@@ -31,6 +32,7 @@ register for pinocc.io
 ###account, GET /v1/account
 
 get your account data
+
 
 ```sh
 curl 'https://api.pinocc.io/v1/account?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -223,5 +225,48 @@ curl  'https://api.pinocc.io/v1/1/1/command/led.report?token=7fc11b7554f0cd303ba
 // timeout
 
 {"error":{"code":500,"message":"command timed out. troop:7fc11b7554f0cd303bad94eb0eb36e2d, scout:1, command:led.report"},"data":{"reply":""}}
+```
+
+<a name="sync"></a>
+###realtime stream of changes. GET /v1/sync
+
+get the state of all of your troops and scouts and realtime events as the state changes. this stream never stops unless the connection is interrupted. 
+
+```sh
+ 
+curl https://api.pinocc.io/v1/sync?token=7fc11b7554f0cd303bad94eb0eb36e2d
 
 ```
+
+data is newline delimited json.
+
+```sh
+
+{"data":{}}
+
+```
+
+<a name="stats"></a>
+###GET /v1/stats
+
+get a stream of time series data from start time to end time for any report. 
+- if no end time is provided or the end time is in the future events will continue as they happen in real time.
+- if no start time is provided you will ony get events starting from now as they happen in real time.
+
+
+TODO: document the options!
+
+```sh
+ 
+curl https://api.pinocc.io/v1/stats?token=7fc11b7554f0cd303bad94eb0eb36e2d&report=temp&scout=1&troop=1
+
+```
+
+data is newline delimited json.
+
+```sh
+
+{"data":{}}
+
+```
+
