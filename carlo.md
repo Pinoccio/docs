@@ -1,3 +1,6 @@
+
+### index
+
 * <a href="#login">login</a>
 * <a href="#register">register</a>
 * <a href="#account">account details</a>
@@ -100,7 +103,7 @@ curl 'https://api.pinocc.io/v1/troops?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 ```
 
 <a name="troop-get"></a>
-###GET /v1/1
+###GET /v1/{troop id}
 
 get the data for your first troop
 
@@ -117,7 +120,7 @@ curl 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 ```
 
 <a name="troop-patch"></a>
-###PATCH /v1/1
+###PATCH /v1/{troop id}
 
 update data associated with your troop
 
@@ -129,7 +132,7 @@ curl -X PATCH --data "name=old sport" 'https://api.pinocc.io/v1/1?token=7fc11b75
 ```
 
 <a name="troop-del"></a>
-###DELETE /v1/1
+###DELETE /v1/{troop id}
 
 ```sh
 curl -X DELETE 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -137,7 +140,7 @@ curl -X DELETE 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2
 ```
 
 <a name="new-scout"></a>
-###POST /v1/1/scout
+###POST /v1/{troop id}/scout
 
 add a new scout to your troop
 
@@ -153,7 +156,7 @@ curl -X POST 'https://api.pinocc.io/v1/1/scout?token=7fc11b7554f0cd303bad94eb0eb
 
 ```
 <a name="scouts"></a>
-###GET /v1/1/scouts
+###GET /v1/{troop id}/scouts
 
 get all of the scouts in your troop. returns an object keyed off of scout id or false if no scouts are associated.
 
@@ -169,7 +172,7 @@ curl  'https://api.pinocc.io/v1/1/scouts?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 <a name="scout-get"></a>
-###GET /v1/1/1
+###GET /v1/{troop id}/{scout id}
 
 get the data for your a scout.
 
@@ -185,7 +188,7 @@ curl  'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 ```
 
 <a name="scout-patch"></a>
-###PATCH /v1/1/1
+###PATCH /v1/{troop id}/{scout id}
 
 update data in your scout
 
@@ -204,7 +207,7 @@ curl -X PATCH --data "name=old yeller" 'https://api.pinocc.io/v1/1/1?token=7fc11
 ```
 
 <a name="scout-del"></a>
-###DELETE /v1/1/1
+###DELETE /v1/{troop id}/{scout id}
 
 ```sh
 curl -X DELETE 'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -212,7 +215,7 @@ curl -X DELETE 'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36
 ```
 
 <a name="commands"></a>
-###GET /v1/1/1/commands
+###GET /v1/{troop id}/{scout id}/commands
 
 print a list of available bitlash commands
 
@@ -233,14 +236,15 @@ curl  'https://api.pinocc.io/v1/1/1/commands?token=7fc11b7554f0cd303bad94eb0eb36
 ```
 
 <a name="command"><a>
-###GET  /v1/1/1/command/:command
+###GET  /v1/{troop id}/{scout id}/command/:command
 
-GET  /v1/1/1/command?command=command
+GET  /v1/{troop id}/{scout id}/command?command=command
 
-POST /v1/1/1/command  data: command=command
-
+POST /v1/{troop id}/{scout id}/command  data: command=command
 
 command may be passed as a querystring key or a post data key named "command"
+
+post data may be query string formatted or json
 
 
 ```sh
