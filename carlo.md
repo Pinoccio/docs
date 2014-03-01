@@ -273,7 +273,7 @@ data is newline delimited json.
 
 ```
 
-## Historical and Realtime Stats Stream
+## Historical and Live Stats Stream
 
 GET /v1/stats
 

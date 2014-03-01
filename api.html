@@ -29,6 +29,9 @@
   <link  href='/flatdoc/v/0.8.0/theme-white/style.css' rel='stylesheet'>
   <script src='/flatdoc/v/0.8.0/theme-white/script.js'></script>
 
+  <!-- override css --!>
+  <link  href='/the.css' rel='stylesheet'>
+
   <!-- Meta -->
   <meta content="Pinoccio API Reference" property="og:title">
   <meta content="" name="description">
@@ -36,23 +39,23 @@
   <!-- Initializer -->
   <script>
     Flatdoc.run({
-      //fetcher: Flatdoc.github('Pinoccio/docs', 'carlo.md')
-      fetcher: Flatdoc.file('carlo.md')
+      fetcher: Flatdoc.github('Pinoccio/docs', 'carlo.md')
+      //fetcher: Flatdoc.file('carlo.md')
     });
   </script>
 
-  <!-- script src="https://api.pinocc.io/2/pinoccio-api.js"></script -->
-  <script src="https://local-api.pinocc.io:8003/2/pinoccio-api.js"></script>
+  <script src="https://api.pinocc.io/2/pinoccio-api.js"></script>
+  <!-- script src="https://local-api.pinocc.io:8003/2/pinoccio-api.js"></script -->
   <script src="/api-the-docs.js"></script>
 </head>
 <body role='flatdoc'>
 
   <div class='header'>
     <div class='left'>
-      <h1>Pinoccio API</h1>
+      <h1>API</h1>
       <ul>
-        <li><a href='https://github.com/Pinoccio/docs'>View on GitHub</a></li>
-        <li><a href='https://github.com/Pinoccio/docs/issues'>Issues</a></li>
+        <li><a href='https://github.com/Pinoccio/node-pinoccio'>View on GitHub</a></li>
+        <li><a href='https://github.com/Pinoccio/node-pinoccio/issues'>Issues</a></li>
       </ul>
     </div>
     <div class='right'>

@@ -1,0 +1,12 @@
+
+
+body{
+  border-top:9px solid #71accd;
+  padding-top:4px;
+}
+
+.header {
+  background: url(http://pinocc.io/images/pinoccio-logo-mini.png)  no-repeat top left;
+  padding-left:178px;
+}
+
