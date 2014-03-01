@@ -13,7 +13,11 @@ var api = pinoccioAPI();
 
   var o = {
     init:function(){
+      api.rest({url:'v1/account'},function(err,data){
 
+        console.log('logged in?',data);
+
+      })
     },
     onLogin:function(){
       var sync = api.sync();

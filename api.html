@@ -21,13 +21,13 @@
   <title>Pinoccio API Commands</title>
 
   <!-- Flatdoc -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src='http://rstacruz.github.io/flatdoc/v/0.8.0/legacy.js'></script>
-  <script src='http://rstacruz.github.io/flatdoc/v/0.8.0/flatdoc.js'></script>
+  <script src="/flatdoc/jquery.min.js"></script>
+  <script src='/flatdoc/v/0.8.0/legacy.js'></script>
+  <script src='/flatdoc/v/0.8.0/flatdoc.js'></script>
 
   <!-- Flatdoc theme -->
-  <link  href='http://rstacruz.github.io/flatdoc/v/0.8.0/theme-white/style.css' rel='stylesheet'>
-  <script src='http://rstacruz.github.io/flatdoc/v/0.8.0/theme-white/script.js'></script>
+  <link  href='/flatdoc/v/0.8.0/theme-white/style.css' rel='stylesheet'>
+  <script src='/flatdoc/v/0.8.0/theme-white/script.js'></script>
 
   <!-- Meta -->
   <meta content="Pinoccio API Reference" property="og:title">
@@ -36,12 +36,13 @@
   <!-- Initializer -->
   <script>
     Flatdoc.run({
-      fetcher: Flatdoc.github('Pinoccio/docs', 'carlo.md')
-      //fetcher: Flatdoc.file('carlo.md')
+      //fetcher: Flatdoc.github('Pinoccio/docs', 'carlo.md')
+      fetcher: Flatdoc.file('carlo.md')
     });
   </script>
 
-  <script src="https://api.pinocc.io/2/pinoccio-api.js"></script>
+  <!-- script src="https://api.pinocc.io/2/pinoccio-api.js"></script -->
+  <script src="https://local-api.pinocc.io:8003/2/pinoccio-api.js"></script>
   <script src="/api-the-docs.js"></script>
 </head>
 <body role='flatdoc'>
