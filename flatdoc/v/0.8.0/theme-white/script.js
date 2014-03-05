@@ -7,7 +7,10 @@
   */
 
  $document.on('flatdoc:ready', function() {
-    $("h2, h3").scrollagent(function(cid, pid, currentElement, previousElement) {
+    $("h1, h2, h3").scrollagent({
+      offset: 250
+    },
+    function(cid, pid, currentElement, previousElement) {
       if (pid) {
        $("[href='#"+pid+"']").removeClass('active');
       }
@@ -109,6 +112,7 @@
       var offset = $(this).attr('data-anchor-offset') ?
         parseInt($(this).attr('data-anchor-offset'), 10) :
         (options.offset || 0);
+      console.log('OFFSET', offset);
 
       offsets.push({
         top: $(this).offset().top + offset,
@@ -252,7 +256,7 @@
 // This binds a listener on window resizing to automatically scale down the
 // child (`> img` in this example) just so that enough of it will be visible in
 // the viewport of the container.
-// 
+//
 // This assumes that the container has `position: relative` (or any 'position',
 // really), and `overflow: hidden`.
 
