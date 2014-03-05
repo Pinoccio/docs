@@ -8,7 +8,7 @@
 
  $document.on('flatdoc:ready', function() {
     $("h1, h2, h3").scrollagent({
-      offset: 250
+      // offset: 300
     },
     function(cid, pid, currentElement, previousElement) {
       if (pid) {
@@ -112,15 +112,16 @@
       var offset = $(this).attr('data-anchor-offset') ?
         parseInt($(this).attr('data-anchor-offset'), 10) :
         (options.offset || 0);
-      console.log('OFFSET', offset);
 
       offsets.push({
-        top: $(this).offset().top + offset,
+        top: $(this)[0].offsetTop + offset,
         id: $(this).attr('id'),
         index: i,
         el: this
       });
     });
+
+    console.log(offsets);
 
     // State
     var current = null;
@@ -137,7 +138,7 @@
     // Find the current active section every scroll tick.
     $parent.on('scroll', function() {
       var y = $parent.scrollTop();
-      y += height * (0.3 + 0.7 * Math.pow(y/range, 2));
+      // y += height * (0.3 + 0.7 * Math.pow(y/range, 2));
 
       var latest = null;
 
@@ -188,7 +189,7 @@
 (function($) {
   var defaults = {
     'speed': 500,
-    'offset': 0,
+    'offset': 50,
     'for': null,
     'parent': null
   };
