@@ -28,6 +28,10 @@
    $('.menu a').anchorjump();
  });
 
+ $document.on('flatdoc:ready', function(){
+   $document.scrollTop($('#'+window.location.hash.substring(1))[0].offsetTop+80);
+ })
+
  /*
   * Title card.
   */
