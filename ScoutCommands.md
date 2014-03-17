@@ -1,22 +1,124 @@
 # power
 
-## power.ischarging()
-Returns true/false if Scout is charging its battery via USB.
+## power.ischarging
 
-## power.percent()
-Returns fuel gauge percentage of remaining battery life
+#### Description
+`int power.ischarging()`
 
-## power.voltage()
-Returns the current voltage of the battery (x100)
+Determines if the Scout is charging its battery via USB. This will also mirror the orange charging LED next to the USB port, which also shines when charging, and turns off when either fully-charged, or the Scout is not plugged in.
 
-## power.enablevcc()
-Enables the 3V3 pin on the header—used to supply backpacks with power.
+```
+> print power.ischarging
+> 1
+```
 
-## power.disablevcc()
-Disables the 3V3 pin on the header—used to supply backpacks with power.
+#### Parameters
+None
+
+#### Return Values
+Returns `0` if the Scout is not charging, and `1` if it is charging. 
+
+#### Warning
+The results of this command are undefined if you don't have a battery plugged into the Scout, and only powering it via USB.  This is due to the Lipo battery charger constantly trying to charge the non-existent battery.
+
+
+## power.percent
+
+#### Description
+`int power.percent()`
+
+All Scouts have an on-board fuel gauge that tells you the status of the battery. This returns the percentage of battery life left on the Scout.
+
+```
+> print power.percent
+> 85
+```
+
+#### Parameters
+None
+
+#### Return Values
+Returns a value of 0 to 100 based on the percentage of charge the battery contains.
+
+#### Warning
+The results of this command are undefined if you don't have a battery plugged into the Scout, and only powering it via USB.  This is due to the fuel gauge being unable to determine how much battery charge is available, when there is no battery.
+
+
+## power.voltage
+
+#### Description
+`int power.voltage()`
+
+All Scouts have an on-board fuel gauge that tells you the status of the battery. This returns the current voltage of the battery, multiplied by 100.  Divide the result by 100 to get the actual battery voltage: e.g. `414` is really 4.14 volts.
+
+```
+> print power.voltage
+> 414
+```
+
+#### Parameters
+None
+
+#### Return Values
+Returns a value of ~3.4 volts to ~4.2 volts, based on the current voltage of the battery.
+
+#### Warning
+The results of this command are undefined if you don't have a battery plugged into the Scout, and only powering it via USB.  This is due to the fuel gauge being unable to determine how much battery voltage is available, when there is no battery.
+
+
+## power.enablevcc
+
+#### Description
+`void power.enablevcc()`
+
+This provides 3.3 volts to the *3V3* header pin.  Turn this on if you want to power any external devices connected to the *3V3* header pin.
+
+```
+> power.enablevcc
+>
+```
+
+#### Parameters
+None
+
+#### Return Values
+None, but after running this command, the *3V3* header will be at 3.3 volts.
+
+
+## power.disablevcc
+
+#### Description
+`void power.disablevcc()`
+
+This turns off power to the *3V3* header pin.  You would turn this off if you want to remove power from any external devices connected to the *3V3* pin, perhaps to save battery life.
+
+```
+> power.disablevcc
+>
+```
+
+#### Parameters
+None
+
+#### Return Values
+None, but after running this command, the *3V3* header will be at 0 volts.
+
 
 ## power.sleep(ms)
-Puts the Scout to sleep for *ms* milliseconds
+This puts the Scout to sleep for *ms* milliseconds.  Upon waking up, it will continue to run the commands it was running prior to sleeping.
+
+```
+// command sent
+> power.sleep(1000)
+```
+
+```
+// result
+> Going to sleep for 1000ms
+
+//  Scout is now asleep, and will wake up after 1 second, or 1000 milliseconds
+```
+
 
 ## power.report()
 Prints a JSON response of the power status of the Scout.

@@ -21,7 +21,7 @@
   <title>Pinoccio Scout Commands</title>
 
   <!-- Flatdoc -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src='flatdoc/v/0.8.0/legacy.js'></script>
   <script src='flatdoc/v/0.8.0/flatdoc.js'></script>
 
@@ -37,11 +37,16 @@
   <script>
     Flatdoc.run({
       fetcher: Flatdoc.github('Pinoccio/docs', 'ScoutCommands.md')
+      //fetcher: Flatdoc.file('ScoutCommands.md')
     });
   </script>
   <style>
   .content h1, .content h2 {
     text-transform: none;
+  }
+  #warning {
+    background-color: mistyrose;
+  }
   </style>
 
 </head>
@@ -51,13 +56,13 @@
     <div class='left'>
       <h1>Your Project</h1>
       <ul>
-        <li><a href='https://github.com/Pinoccio/docs'>View on GitHub</a></li>
-        <li><a href='https://github.com/Pinoccio/docs/issues'>Issues</a></li>
+        <li><a href='//github.com/Pinoccio/docs'>View on GitHub</a></li>
+        <li><a href='//github.com/Pinoccio/docs/issues'>Issues</a></li>
       </ul>
     </div>
     <div class='right'>
       <!-- GitHub buttons: see http://ghbtns.com -->
-      <iframe src="http://ghbtns.com/github-btn.html?user=Pinoccio&amp;repo=docs&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+      <iframe src="//ghbtns.com/github-btn.html?user=Pinoccio&amp;repo=docs&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
     </div>
   </div>
 
