@@ -119,7 +119,7 @@ The Scout can be woken up by an external pin change event on pin D4, D5, D7, or 
 
 
 #### Parameters
-*ms* - The number of milliseconds to sleep.  One second equals 1000 milliseconds.  The maximum time a Scout can sleep is ~49 days.
+- *ms* - The number of milliseconds to sleep.  One second equals 1000 milliseconds.  The maximum time a Scout can sleep is ~49 days.
 
 #### Return Values
 None, but after running this command, the Scout will be asleep.
@@ -172,7 +172,7 @@ Set the mesh radio settings for this scout. You can set the unique ID of the sco
 
 #### Parameters
 - *scoutId* - The unique ID of this scout on the mesh network. Valid range is 0 to 65535.
-- *troopId* - The ID of the troop this scout is associated with, also known as a PAN ID. Valid range is 0 to 65535.  
+- *troopId* - The ID of the troop this scout is associated with, also known as a PAN ID. Valid range is 0 to 65535.
 - *channel* - The 802.15.4 channel for this troop.  Valid range is 11 to 26. All scouts in a troop must be on the same channel. Default is *20*.
 
 #### Return Values
@@ -214,42 +214,162 @@ Set the mesh radio power settings for this scout.  The higher the power, general
 None
 
 
-## mesh.setdatarate(rate)
-Set the mesh radio data rate, from 250kbit/sec up to 2Mbit/sec using the following map:
+## mesh.setdatarate
+#### Description
+`mesh.setdatarate(dataRate)`
 
- * 0:    250 kb/s  | -100 dBm
- * 1:    500 kb/s  |  -96 dBm
- * 2:   1000 kb/s |  -94 dBm
- * 3:   2000 kb/s |  -86 dBm
+Set the mesh radio data rate, from 250kbit/sec up to 2Mbit/sec for this scout.  The higher the speed chosen, the less signal sensitivity the radio has--which usually translates to less radio range in the real world.
 
-The higher the speed chosen, the less signal sensitivity the radio has--which usually translates to less radio range in the real world.
 
-## mesh.key(key)
-Set the mesh radio security key, enabling the AES128 hardware encryption.  All Scouts in a troop should use the same key in order to communicate.  The key given should be 0-16 characters.
+```js
+> mesh.setpower(0)
+>
+```
 
-## mesh.resetkey()
+#### Parameters
+- *dataRate* - The data rate to set, using the following map
+
+  * *0*:   250 kb/s  | -100 dBm
+  * *1*:   500 kb/s  |  -96 dBm
+  * *2*:   1000 kb/s |  -94 dBm
+  * *3*:   2000 kb/s |  -86 dBm
+
+#### Return Values
+None
+
+
+## mesh.key
+#### Description
+`mesh.key(key)`
+
+Set the mesh radio security key, enabling the AES128 hardware encryption.  All Scouts in a troop should use the same key in order to communicate.
+
+```js
+> mesh.key("TestSecurityKey1")
+>
+```
+
+#### Parameters
+- *key* - The security key to use.  The key given should be 0-16 characters.
+
+#### Return Values
+None
+
+
+## mesh.resetkey
+
+#### Description
+`mesh.resetkey()`
+
 Resets the mesh radio security key.
 
-## mesh.joingroup(groupId)
-Join this Scout to a mesh group
+```js
+> mesh.resetkey()
+>
+```
 
-## mesh.leavegroup(groupId)
-Remove this Scout from a mesh group
+#### Parameters
+None
 
-## mesh.ingroup(groupId)
-Returns true/false if this Scout is in the group given
+#### Return Values
+None
 
-## mesh.ping(scoutId)
-Ping another Scout in the mesh network.
 
-## mesh.pinggroup(groupId)
-Ping Scouts in an group. If available, at least one Scout will return a response.
+## mesh.joingroup
 
-## mesh.send(scoutId, message)
-Send *message* to another Scout with ID of *scoutId*
+#### Description
+`mesh.joingroup(groupId)`
 
-## mesh.verbose(enabled)
-Turn on/off verbose mesh radio debugging output
+Add this Scout to a mesh group. All scouts in a group will receive messages sent to that group.  All Scouts are assigned to groups 1-9 by default.
+
+```js
+> mesh.joingroup(8)
+>
+```
+
+#### Parameters
+- *groupId* - The group to join.  Valid group IDs are 1-65535.  
+
+#### Return Values
+None
+
+
+## mesh.leavegroup
+
+#### Description
+`mesh.leavegroup(groupId)`
+
+Remove this Scout from a mesh group.  All Scouts are assigned to groups 1-9 by default.
+
+```js
+> mesh.leavegroup(8)
+>
+```
+
+#### Parameters
+- *groupId* - The group to leave.  Valid group IDs are 1-65535.  
+
+#### Return Values
+None
+
+
+## mesh.ingroup
+
+#### Description
+`mesh.ingroup(groupId)`
+
+Determine if this Scout is in the given group.
+
+```js
+> mesh.ingroup(6)
+>
+```
+
+#### Parameters
+- *groupId* - The group ID to check to determine if the Scout is a member.  Valid group IDs are 1-65535.  
+
+#### Return Values
+None
+
+
+## mesh.send
+#### Description
+`mesh.send(scoutId, message)`
+
+Send a message from this Scout to another Scout.
+
+```js
+> mesh.send(3, "hello")
+>
+```
+
+#### Parameters
+- *scoutId* - The scout ID to which the message is sent.
+- *message* - The message to send to the Scout. This is a text string, surrounded in quotes, and should be no longer than 100 characters.
+
+#### Return Values
+None
+
+
+## mesh.verbose
+#### Description
+`mesh.verbose(enabled)`
+
+Turn on/off verbose mesh radio debugging output.  This outputs detailed information of the mesh network, including messages sent, messages received, and fragmentation.
+
+```js
+> mesh.verbose(1)
+> mesh.send(2, "hello")
+Sent message to Scout 2: [1,"hello"]
+> -  Message successfully sent to Scout 2 (Confirmed with control byte: 51)
+```
+
+#### Parameters
+- *enabled* - Set to **1** to enable mesh verbose output, **0** to disable verbose output.
+
+#### Return Values
+None
+
 
 ## mesh.report()
 Prints a JSON response of the mesh radio status of the Scout.
