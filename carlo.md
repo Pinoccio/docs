@@ -123,7 +123,7 @@ or an error
 
 #### POST /v1/troop
 
-create a new troop and assign it a token.
+create a new troop.
 
 ```sh
 
@@ -309,7 +309,7 @@ In provisioning it must be passed to mesh.config({scout id},{troop id})
 
 #### GET /v1/{troop id}/scouts
 
-get all of the scouts in your troop. returns an object keyed off of scout id or false if no scouts are associated.
+get all of the scouts in your troop. 
 
 ```sh
 
@@ -525,7 +525,7 @@ required
 optional
 
 - start
-  - the unix timestamp to start bstreaming data from.
+  - the unix timestamp to in ms start streaming data from.
 - end
   - the unix timestamp in ms to stop streaming data from.
 - tail
