@@ -3,7 +3,88 @@
 
 Pinoccio provides an http API, a command line tool, a nodejs api client, and a client side library to build web interfaces to interact with your troops.
 
+the api endpoint is https://api.pinocc.io
 
+
+## curl
+
+make api calls from your terminal for much win!
+
+```
+ curl https://api.pinoccio/v1/hi
+
+```
+
+## cli
+
+the command line tool is the node module ```pinoccio```
+
+#### install
+
+npm install the module globally to get the pinoccio command. you may need to sudo.
+
+```sh
+sudo npm install -g pinoccio
+```
+
+#### use
+
+The pinoccio command should now be avaiable in your terminal. Running ```pinoccio``` in the terminal will print a list of avaiable commands.
+
+
+```sh
+pinoccio login
+pinoccio rest get v1/troops
+
+```
+
+see the repo on github <a href="https://github.com/pinoccio/client-node-pinoccio">https://github.com/pinoccio/client-node-pinoccio</a> for more info!.
+
+## Browser
+
+you may load the client side api js directly from https://api.pinocc.io/pinoccio.js 
+or you may include it in your projects via browserify by depending on ```pinoccio``` node module
+
+same repo <a href="https://github.com/pinoccio/client-node-pinoccio">https://github.com/pinoccio/client-node-pinoccio</a>.
+
+#### install
+
+install the module and save the version in your package.json!
+
+```
+npm install --save pinoccio
+```
+
+#### Use
+
+include the script tag in your page.
+
+```js
+
+<script src="https://api.pinocc.io/pinoccio.js"></script>
+```
+
+this exposes a global ```pinoccioAPI``` which you may use like
+
+```
+<script> 
+var api = pinoccioAPI()
+api.rest({url:"/v1/account"},function(err,data){
+  console.log('muchg win? ',error,data)
+})
+</script>
+
+```
+
+Or require in your browserified client side code (<a href="https://www.npmjs.org/package/browserify">https://www.npmjs.org/package/browserify</a>)
+
+```js
+var pinoccio = require('pinoccio');
+var api = pinoccio();
+
+console.log('much win!')
+
+```
 
 # account
 
