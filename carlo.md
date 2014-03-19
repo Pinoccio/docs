@@ -1,41 +1,87 @@
 
+# making calls.
+
+Pinoccio provides an http API, a command line tool, a nodejs api client, and a client side library to build web interfaces to interact with your troops.
+
+
 # account
 
 ## login
 
-POST /v1/login
+#### POST /v1/login
 
-login to pinocc.io
-
+Creates a new token for making calls against the api.
 
 ```sh
- curl -X POST -v --data 'email=youremail&password=tacos' https://api.pinocc.io/v1/login
+
+ curl -X POST -v --data '{"email":"youremail","password":"boats"}' https://api.pinocc.io/v1/login
+ # or you may use query string format 
+ curl -X POST -v --data 'email=youremail&password=boats' https://api.pinocc.io/v1/login
 
 ```
+
+#### Parameters
+
+- email
+- password
+
+#### Return Values
+Returns a JSON object with a token and account key in the data property if successful. You will need this session token for all calls that require authentication with the api.
 
 ```js
 {"data":{"token":"7fc11b7554f0cd303bad94eb0eb36e2d","account":19}}
 
 ```
 
+or an error 
+
+```js
+{"error":{"code":403,"message":"Error: incorrect password"}}
+
+```
+
+
 ## register
 
-POST /v1/register
+#### POST /v1/register
 
 register for pinocc.io
 
 ```sh
- curl -X POST -v --data 'email=youremail&password=tacos' https://api.pinocc.io/v1/register
+ curl -X POST -v --data 'email=youremail&password=boats' https://api.pinocc.io/v1/register
 ```
+
+#### Parameters
+
+required.
+
+- email
+- password
+- hasAgreedToTerms
+
+optional.
+
+- firstname
+- lastname
+
+#### Return values
+
+Returns a JSON object with a token and account key in the data property if successful. You will need this session token for all calls that require authentication with the api.
 
 ```js
 {"data":{"token":"7fc11b7554f0cd303bad94eb0eb36e2d","account":19}}
 
 ```
 
+or an error 
+
+```js
+{"error":{"code":500,"message":"this email is already registered"}}
+```
+
 ## Account info
 
-GET /v1/account
+#### GET /v1/account
 
 get your account data
 
@@ -45,6 +91,13 @@ curl 'https://api.pinocc.io/v1/account?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
+#### Parameters
+None.
+
+#### Return values.
+
+a JSON object of the accout properties.
+
 ```js
 {
   "data":{
@@ -52,17 +105,23 @@ curl 'https://api.pinocc.io/v1/account?token=7fc11b7554f0cd303bad94eb0eb36e2d'
     "firstname":"",
     "lastname":"",
     "id":19,
-    "gravatar":"https://www.gravatar.com/avatar/132e4d83bbcc3b9e53b76d241025481-?d=https%3A%2F%2Fpinocc.io%2Fmodules%2Fcontent%2Ftpl%2Fimages%2Fdefault-avatar.png"
+    "gravatar":"https://www.gravatar.com/avatar/132e4d83bbcc3b9e53b76d241025481-?d=https%3A%2F%2Fpinocc.io%2Fmodules%2Fcontent%2Ftpl%2Fimages%2Fdefault-avatar.png",
+    "hasAgreedToTerms":true
   }
 }
+```
 
+or an error 
+
+```js
+{"error":{"code":403,"message":"Error: not logged in"}}
 ```
 
 # Troops
 
 ## Make a troop
 
-POST /v1/troop
+#### POST /v1/troop
 
 create a new troop and assign it a token.
 
@@ -72,15 +131,36 @@ curl -X POST 'https://api.pinocc.io/v1/troop?token=980146260e87f0dfc02f10e733ca5
 
 ```
 
-```js
+#### Parameters
 
+optional
+
+- name
+
+#### Return values
+
+an object with the troops data. 
+
+
+```js
 {"data":{"id":"1","token":"af49e76320781a7b9722a137039b7f99","account":19}}
 
 ```
 
+or an error 
+
+```js
+{"error":{"code":403,"message":"Error: not logged in"}}
+```
+
+The token here is a unique troop identifier used in provisioning. scout.sethqtoken({troop token})
+
+This troop will NOT appear in GET /v1/troops result until a lead scout with the matching {troop token} connects to base. when this happens it will also create the first scout object for your troop.
+
+
 ## Get all your troops 
 
-GET /v1/troops
+#### GET /v1/troops
 
 get all of your accounts troops.
 
@@ -90,64 +170,131 @@ curl 'https://api.pinocc.io/v1/troops?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
+#### Parameters
+
+None.
+
+#### Return values
+
+data is an array of troop objects.
+
 ```js
 
 {"data":[{"id":"1","account":19,"token":"af49e76320781a7b9722a137039b7f99","online":false}]}
 
 ```
 
+or an error 
+
+```js
+{"error":{"code":403,"message":"Error: not logged in"}}
+```
+
+
 ## Get a troop
 
-GET /v1/{troop id}
+#### GET /v1/{troop id} 
 
-get the data for your first troop
+get the data for your a troop by troop id
 
 ```sh
 
-curl 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
+curl 'https://api.pinocc.io/v1/{troop id}?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
+
+#### Parameters
+
+required
+
+- v1/{troop id} 
+
+#### Return Values.
+
+returns a troop object by id. also contains "online" which represents is a lead scout in the troop has an open socket to base
 
 ```js
 
 {"data":{"account":19,"id":"1","token":"af49e76320781a7b9722a137039b7f99","online":false}}
+```
+ or an error
 
+```js
+{"error":"could not find token for troop 1000"}
 ```
 
 ## Update a troop
 
-PATCH /v1/{troop id}
+#### PATCH /v1/{troop id}
 
 update data associated with your troop
 
-right now ```name``` is the only supported key.
-
 ```sh
-curl -X PATCH --data "name=old sport" 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
+curl -X PATCH --data '{"name":"old sport"}' 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
+#### Parameters
+
+right now ```name``` is the only supported key.
+
+#### Return values.
+returns the updated troop object
+
+```js
+{"data":{"account":"19","token":"af49e76320781a7b9722a137039b7f99","name":"old sport","updated":"1395214271078"}}
+```
+
+
 ## Delete a troop
-DELETE /v1/{troop id}
+
+#### DELETE /v1/{troop id}
+
+delete a troop by troop id. if you have a lead scout provisioned with this troop it will need to be added to a new troop before oyu can send it commands again.
 
 ```sh
-curl -X DELETE 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
+curl -X DELETE 'https://api.pinocc.io/v1/{troop id}?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
+```
+
+#### Parameters
+
+- v1/{troop id}
+
+#### Return values.
+
+returns true
+
+```js
+{"data":true}
+```
+or an error
+
+```js
+{"error":"could not find token for troop 1000"}
 ```
 
 # Scouts
 
 ## Create a scout
 
-POST /v1/{troop id}/scout
+#### POST /v1/{troop id}/scout
 
 add a new scout to your troop
 
 ```sh
 
-curl -X POST 'https://api.pinocc.io/v1/1/scout?token=7fc11b7554f0cd303bad94eb0eb36e2d'
+curl -X POST 'https://api.pinocc.io/v1/{troop id}/scout?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
+
+#### Parameters.
+
+- v1/{troop id}
+
+#### Return values.
+
+the id in this result is the scout id. 
 
 ```js
 
@@ -155,9 +302,12 @@ curl -X POST 'https://api.pinocc.io/v1/1/scout?token=7fc11b7554f0cd303bad94eb0eb
 
 ```
 
+In provisioning it must be passed to mesh.config({scout id},{troop id})
+
+
 ## Get scouts in a troop
 
-GET /v1/{troop id}/scouts
+#### GET /v1/{troop id}/scouts
 
 get all of the scouts in your troop. returns an object keyed off of scout id or false if no scouts are associated.
 
@@ -167,21 +317,38 @@ curl  'https://api.pinocc.io/v1/1/scouts?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
+#### Parameters.
+
+- {troop id}
+
+#### Return values.
+
+Returns an array of all of the scouts in the troop
+
 ```js
 
-{"data":{"1":{"id":1,"time":1388185122294,"updated":1388186085191,"name":"old yeller"}}}
+{"data":[{"id":1,"time":1388185122294,"updated":1388186085191,"name":"old yeller"}]}
 
 ```
+
+
 ## Get a scout
 
-GET /v1/{troop id}/{scout id}
+#### GET /v1/{troop id}/{scout id}
 
-get the data for your a scout.
+get the data for a scout by id.
 
 ```js
-curl  'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
+curl  'https://api.pinocc.io/v1/{troop id}/{scout id}?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
+
+#### Parameters.
+
+- {troop id}
+- {scout id}
+
+#### Return values.
 
 ```js
 
@@ -189,19 +356,28 @@ curl  'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
+
 ## Update a scout
 
-PATCH /v1/{troop id}/{scout id}
+#### PATCH /v1/{troop id}/{scout id}
 
-update data in your scout
+update data for a scout
 
 right now ```name``` is the only supported key.
 
 ```sh
 
-curl -X PATCH --data "name=old yeller" 'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
+curl -X PATCH --data '{"name":"old yeller"}' 'https://api.pinocc.io/v1/{troop id}/{scout id}?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
+
+#### Parameters
+
+- {troop id}
+- {scout id}
+- {name}
+
+#### Return values.
 
 ```js
 
@@ -211,28 +387,35 @@ curl -X PATCH --data "name=old yeller" 'https://api.pinocc.io/v1/1/1?token=7fc11
 
 ## Delete a scout
 
-DELETE /v1/{troop id}/{scout id}
+#### DELETE /v1/{troop id}/{scout id}
+
+delete a scout by scout id.
 
 ```sh
-curl -X DELETE 'https://api.pinocc.io/v1/1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
+curl -X DELETE 'https://api.pinocc.io/v1/{troop id}/{scout id}?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
+
+#### Parameters.
+
+None.
+
+#### Return value.
+
+When you delete a scout. if connected. api will issue a ```scout.daisy;scout.daisy``` to reset the scout to factory.
 
 
 ## Run a bitlash command
 
-GET /v1/{troop id}/{scout id}/command/:command
+#### GET /v1/{troop id}/{scout id}/command/{command}
 
-GET  /v1/{troop id}/{scout id}/command?command=command
+GET  /v1/{troop id}/{scout id}/command?command={command}
 
-POST /v1/{troop id}/{scout id}/command  data: command=command
+POST /v1/{troop id}/{scout id}/command  data: command={command}
 
 POST /v1/{troop id}/{scout id}/command  data: '{"command":"command"}'
 
-command may be passed as a querystring key or a post data key named "command"
-
-post data may be query string formatted or json
-
+Execute bitlash commands on scouts. this includes passing new functions for event handing etc. Commands can be found in the <a href="/scoutcommands.html">Scout Commands Doc</a>
 
 ```sh
 
@@ -240,15 +423,41 @@ curl  'https://api.pinocc.io/v1/1/1/command/led.report?token=7fc11b7554f0cd303ba
 
 ```
 
+#### Parameters.
+
+- {troup id}
+- {scout id}
+- command
+  - the command may be specifid as a url chunk {command} if it contains vlad uri characters.
+  - as a query string parameter
+  - or in post data
+
+#### Return values.
+
+returns the command reply data.
+
+
 ```js
 
-//success
+{
+  data:{
+    "type":"reply",
+    "from":1,
+    "id":"sv90",
+    "end":true,
+    "reply":"{\"type\":\"led\",\"led\":[0,0,0],\"torch\":[0,255,0]}",
+    "account":"19",
+    "tid":"2",
+    "_t":1395217755680
+  }
+}
 
-{"data":{"c": {"r":0,"g":0,"b":0}, "t": {"r":255,"g":255,"b":255}}}
+```
 
-// timeout
+or on error 
 
-{"error":{"code":500,"message":"command timed out. troop:7fc11b7554f0cd303bad94eb0eb36e2d, scout:1, command:led.report"},"data":{"reply":""}}
+```js
+{"error":"scout error: no response true"}
 ```
 
 # Streams 
