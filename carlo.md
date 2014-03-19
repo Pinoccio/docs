@@ -485,30 +485,15 @@ data is newline delimited json.
 
 ```sh
 {"data":{"account":"19","troop":"2","type":"connection","value":{"status":"online","ip":"192.168.43.157"},"time":1395217621149}}
-{"data":{"account":"19","troop":"2","scout":"2","type":"name","value":"two"}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"analog","value":{"type":"analog","mode":[-1,-1,-1,-1,-1,-1,-1,-1],"state":[-1,-1,-1,-1,-1,-1,-1,-1],"_t":1395217621339.001},"time":1395217621339.001}}
-{"data":{"account":"19","troop":"2","scout":"2","type":"analog","value":{"type":"analog","mode":[-1,-1,-1,-1,-1,-1,-1,-1],"state":[-1,-1,-1,-1,-1,-1,-1,-1],"_t":1395217621641},"time":1395217621641}}
-{"data":{"account":"19","troop":"2","scout":"3","type":"analog","value":{"type":"analog","mode":[-1,-1,-1,-1,-1,-1,-1,-1],"state":[-1,-1,-1,-1,-1,-1,-1,-1],"_t":1395217621643},"time":1395217621643}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"available","value":{"scout":1,"available":1,"_t":1395219255686.001,"type":"available"},"time":1395219255686.001}}
-{"data":{"account":"19","troop":"2","scout":"2","type":"available","value":{"scout":2,"available":1,"_t":1395219255690.002,"type":"available"},"time":1395219255690.002}}
-{"data":{"account":"19","troop":"2","scout":"3","type":"available","value":{"scout":3,"available":1,"_t":1395219255688.001,"type":"available"},"time":1395219255688.001}}
-{"data":{"account":"19","troop":"2","scout":"4","type":"available","value":{"scout":4,"available":1,"_t":1395219255357.001,"type":"available"},"time":1395219255357.001}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"backpacks","value":{"type":"backpacks","list":[],"_t":1395217621338.001},"time":1395217621338.001}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"digital","value":{"type":"digital","mode":[-1,-1,-1,-1,-1,-1,-1],"state":[-1,-1,-1,-1,-1,-1,-1],"_t":1395217621339},"time":1395217621339}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"led","value":{"type":"led","led":[0,0,0],"torch":[0,255,0],"_t":1395217754435},"time":1395217754435}}
-{"data":{"account":"19","troop":"2","scout":"3","type":"led","value":{"type":"led","led":[0,0,0],"torch":[255,255,255],"_t":1395217621643.001},"time":1395217621643.001}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"mesh","value":{"type":"mesh","scoutid":1,"troopid":2,"routes":3,"channel":20,"rate":"250 kb/s","power":"3.5 dBm","_t":1395217621340},"time":1395217621340}}
-{"data":{"account":"19","troop":"2","scout":"2","type":"mesh","value":{"type":"mesh","scoutid":2,"troopid":2,"routes":1,"channel":20,"rate":"250 kb/s","power":"3.5 dBm","_t":1395217621640},"time":1395217621640}}
-{"data":{"account":"19","troop":"2","scout":"3","type":"mesh","value":{"type":"mesh","scoutid":3,"troopid":2,"routes":1,"channel":20,"rate":"250 kb/s","power":"3.5 dBm","_t":1395217621642.003},"time":1395217621642.003}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":415,"charging":false,"vcc":true,"_t":1395217621338},"time":1395217621338}}
-{"data":{"account":"19","troop":"2","scout":"2","type":"power","value":{"type":"power","battery":42,"voltage":378,"charging":false,"vcc":true,"_t":1395219255690.001},"time":1395219255690.001}}
-{"data":{"account":"19","troop":"2","scout":"3","type":"power","value":{"type":"power","battery":69,"voltage":391,"charging":false,"vcc":true,"_t":1395219351227},"time":1395219351227}}
-{"data":{"account":"19","troop":"2","scout":"4","type":"power","value":{"type":"power","battery":37,"voltage":376,"charging":false,"vcc":true,"_t":1395218438748},"time":1395218438748}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"scout","value":{"type":"scout","lead":true,"version":1,"hardware":1,"family":1000,"serial":2000193,"build":2014031102,"_t":1395217621255},"time":1395217621255}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"temp","value":{"type":"temp","current":41,"high":41,"low":34,"_t":1395219407355},"time":1395219407355}}
-{"data":{"account":"19","troop":"2","scout":"2","type":"temp","value":{"type":"temp","current":30,"high":34,"low":26,"_t":1395219446102},"time":1395219446102}}
-{"data":{"account":"19","troop":"2","scout":"3","type":"temp","value":{"type":"temp","current":25,"high":32,"low":22,"_t":1395217851050},"time":1395217851050}}
-{"data":{"account":"19","troop":"2","scout":"4","type":"temp","value":{"type":"temp","current":30,"high":30,"low":24,"_t":1395219458729},"time":1395219458729}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"uptime","value":{"type":"uptime","millis":33083780,"free":18521,"random":15089,"reset":"External","_t":1395217621337},"time":1395217621337}}
 
 ```
@@ -540,19 +525,34 @@ required
 optional
 
 - start
-  - the time to start bstreaming data from.
+  - the unix timestamp to start bstreaming data from.
 - end
-  - the time to stop streaming data from.
+  - the unix timestamp in ms to stop streaming data from.
 - tail
   - if i have no more old data should i wait for new data to arrive?
 
 #### Return values.
 
-data is newline delimited json. 
+data is newline delimited json. sorted by time. these are power reports.
 
 ```sh
-
-{"data":{TODO}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":96,"voltage":415,"charging":false,"vcc":true,"_t":1395176893461.001},"time":1395176893461.001}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":96,"voltage":413,"charging":false,"vcc":true,"_t":1395176943720},"time":1395176943720}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":96,"voltage":410,"charging":false,"vcc":true,"_t":1395177123715},"time":1395177123715}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":96,"voltage":418,"charging":false,"vcc":true,"_t":1395177183714},"time":1395177183714}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":96,"voltage":418,"charging":true,"vcc":true,"_t":1395177183863},"time":1395177183863}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":97,"voltage":418,"charging":true,"vcc":true,"_t":1395177363708},"time":1395177363708}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":415,"charging":false,"vcc":true,"_t":1395178209292},"time":1395178209292}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":415,"charging":false,"vcc":true,"_t":1395178940937.001},"time":1395178940937.001}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":412,"charging":false,"vcc":true,"_t":1395185082971},"time":1395185082971}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":413,"charging":false,"vcc":true,"_t":1395185083581},"time":1395185083581}}
+{"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":413,"charging":true,"vcc":true,"_t":1395185083683},"time":1395185083683}}
+{"data":{"account":"19","troop":"","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":418,"charging":true,"vcc":true,"_t":1395185143574},"time":1395185143574}}
+{"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":418,"charging":true,"vcc":true,"_t":1395185383644},"time":1395185383644}}
+{"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":416,"charging":true,"vcc":true,"_t":1395185503642},"time":1395185503642}}
+{"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":416,"charging":false,"vcc":true,"_t":1395185503726},"time":1395185503726}}
+{"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":415,"charging":false,"vcc":true,"_t":1395185563641},"time":1395185563641}}
+{"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":415,"charging":false,"vcc":true,"_t":1395217621338},"time":1395217621338}}
 
 ```
 
