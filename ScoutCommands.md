@@ -288,7 +288,7 @@ Add this Scout to a mesh group. All scouts in a group will receive messages sent
 ```
 
 #### Parameters
-- *groupId* - The group to join.  Valid group IDs are 1-65535.  
+- *groupId* - The group to join.  Valid group IDs are 1-65535.
 
 #### Return Values
 None
@@ -307,7 +307,7 @@ Remove this Scout from a mesh group.  All Scouts are assigned to groups 1-9 by d
 ```
 
 #### Parameters
-- *groupId* - The group to leave.  Valid group IDs are 1-65535.  
+- *groupId* - The group to leave.  Valid group IDs are 1-65535.
 
 #### Return Values
 None
@@ -326,7 +326,7 @@ Determine if this Scout is in the given group.
 ```
 
 #### Parameters
-- *groupId* - The group ID to check to determine if the Scout is a member.  Valid group IDs are 1-65535.  
+- *groupId* - The group ID to check to determine if the Scout is a member.  Valid group IDs are 1-65535.
 
 #### Return Values
 None
@@ -359,7 +359,7 @@ Prints a JSON response of the mesh radio status of the Scout.
 
 ```js
 > mesh.report()
-> 
+>
 {
   "type":"mesh",
   "scoutid":6,
@@ -381,7 +381,7 @@ A JSON representation of the current state of mesh networking for the Scout.
 - *scoutid* - The unique ID of this particular Scout. Range is between 0 and 65535
 - *troopid* - The ID specific to this particular Troop. Range is between 0 and 65535. Also known as a PAN ID.
 - *routes* - The number of Scouts this Scout is routing packets for.
-- *channel* - The 802.15.4 channel this Scout is listening on. Valid range is 11 to 26. 
+- *channel* - The 802.15.4 channel this Scout is listening on. Valid range is 11 to 26.
 - *rate* - The data rate the radio on this Scout is currently set to.
 - *power* - The radio power setting this Scout is currently set to.
 
@@ -394,7 +394,7 @@ Prints an output of the current mesh routing table for this Scout, in a human-re
 
 ```js
 > mesh.routing()
-> 
+>
 > mesh.routing
 |    Fixed    |  Multicast  |    Score    |    DstAdd   | NextHopAddr |    Rank     |     LQI     |
 |      0      |      0      |      3      |      2      |      2      |     130     |     254     |
@@ -417,11 +417,11 @@ Send a message to an entire group of Scouts at once.
 
 ```js
 > mesh.announce(2, "hi")
-> 
+>
 ```
 
 #### Parameters
-- *groupId* - The group to send the message to.  Valid group IDs are 1-65535.  
+- *groupId* - The group to send the message to.  Valid group IDs are 1-65535.
 - *message* - The message to send to the Scout. This is a text string, surrounded in quotes, and should be no longer than 100 characters.
 
 #### Return Values
@@ -496,26 +496,25 @@ Print the number of milliseconds the Scout has been running since the last reset
 None
 
 #### Return Values
-The number of milliseconds since the last reset. 
+The number of milliseconds since the last reset.
 
 # led
-
 ## led.blink
 #### Description
 `led.blink(red, green, blue, ms=500)`
 
-Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds. 
+Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds.
 
 ```js
 > led.blink(0, 255, 255)
-> 
+>
 ```
 
 #### Parameters
 - *red* - The value of the red color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
 - *green* - The value of the green color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
 - *blue* - The value of the blue color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
-- *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to 500 milliseconds. 
+- *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to 500 milliseconds.
 
 #### Return Values
 None
@@ -528,7 +527,7 @@ Turn off the LED.  This turns off the LED if it's currently on, as well as disab
 
 ```js
 > led.off()
-> 
+>
 ```
 
 #### Parameters
@@ -545,7 +544,7 @@ Turn the LED red.  If the optional first argument is passed in, the LED will bli
 
 ```js
 > led.red()
-> 
+>
 ```
 
 #### Parameters
@@ -563,7 +562,7 @@ Turn the LED green.  If the optional first argument is passed in, the LED will b
 
 ```js
 > led.green()
-> 
+>
 ```
 
 #### Parameters
@@ -581,7 +580,7 @@ Turn the LED blue.  If the optional first argument is passed in, the LED will bl
 
 ```js
 > led.blue()
-> 
+>
 ```
 
 #### Parameters
@@ -600,7 +599,7 @@ Turn the LED cyan.  If the optional first argument is passed in, the LED will bl
 
 ```js
 > led.cyan()
-> 
+>
 ```
 
 #### Parameters
@@ -618,7 +617,7 @@ Turn the LED purple.  If the optional first argument is passed in, the LED will 
 
 ```js
 > led.purple()
-> 
+>
 ```
 
 #### Parameters
@@ -636,7 +635,7 @@ Turn the LED magenta.  If the optional first argument is passed in, the LED will
 
 ```js
 > led.magenta()
-> 
+>
 ```
 
 #### Parameters
@@ -654,7 +653,7 @@ Turn the LED yellow.  If the optional first argument is passed in, the LED will 
 
 ```js
 > led.yellow()
-> 
+>
 ```
 
 #### Parameters
@@ -672,7 +671,7 @@ Turn the LED orange.  If the optional first argument is passed in, the LED will 
 
 ```js
 > led.orange()
-> 
+>
 ```
 
 #### Parameters
@@ -691,7 +690,7 @@ Turn the LED white.  If the optional first argument is passed in, the LED will b
 
 ```js
 > led.white()
-> 
+>
 ```
 
 #### Parameters
@@ -709,7 +708,7 @@ Turn the LED the Scout's torch color.  If the optional first argument is passed 
 
 ```js
 > led.torch()
-> 
+>
 ```
 
 #### Parameters
@@ -727,7 +726,7 @@ Set the LED to the *hexValue* given. Similar to HTML, “RRGGBB”, but no hash 
 
 ```js
 > led.hexvalue("FF0000")
-> 
+>
 ```
 
 #### Parameters
@@ -741,11 +740,11 @@ None
 #### Description
 `led.setrgb(red, green, blue)`
 
-Set the LED to the red, green, and blue values given. 
+Set the LED to the red, green, and blue values given.
 
 ```js
 > led.setrgb(255, 0, 0)
-> 
+>
 ```
 
 #### Parameters
@@ -756,15 +755,15 @@ Set the LED to the red, green, and blue values given.
 #### Return Values
 None
 
-## led.savetorch(red, green, blue)
+## led.savetorch
 #### Description
-`led.setrgb(red, green, blue)`
+`led.savetorch(red, green, blue)`
 
-Set the LED to the red, green, and blue values given. 
+Save the torch color to values given by red, green, and blue.
 
 ```js
-> led.setrgb(255, 0, 0)
-> 
+> led.savetorch(255, 0, 0)
+>
 ```
 
 #### Parameters
@@ -776,29 +775,210 @@ Set the LED to the red, green, and blue values given.
 None
 
 
-Save the torch color to values given by *red*, *green*, and *blue*.
+## led.report
+#### Description
+`led.report()`
 
-## led.report()
-Print JSON of the current LED red, green, and blue values, and the torch color’s values.
-```
+```js
+> led.report()
+>
 {
- "type":"led",
- "led":[0,0,255],
- "torch":[0,255,0]
+  "type":"led",
+  "led":[0,0,0],
+  "torch":[255,0,0]
 }
 ```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current state of the LED.
+
+- *type* - The type of report returned.  In this case it will be the string **led**
+- *led* - The current state of the LED with the values of red, green, and blue.
+- *torch* - The torch color saved to this Scout with the values of red, green, and blue.
+
 # pins
-TODO
-pin.on
-pin.off
-pin.makeinput
-pin.makeinputup
-pin.makeoutput
-pin.setmode
-pin.read
-pin.write
-pin.report.digital
-pin.report.analog
+## pin.makeinput
+#### Description
+`pin.makeinput(pinName)`
+
+Make the given pin an input.
+
+```js
+> pin.makeinput("d2")
+>
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to make an input. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+
+#### Return Values
+None
+
+## pin.makeinputup
+#### Description
+`pin.makeinputup(pinName)`
+
+Make the given pin an input with the internal pull-up resistor enabled.
+
+```js
+> pin.makeinputup("d2")
+>
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to make an input. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+
+#### Return Values
+None
+
+
+## pin.makeoutput
+#### Description
+`pin.makeoutput(pinName)`
+
+Make the given pin an output.  Once a pin is an output, you can set it high or low.
+
+```js
+> pin.makeoutput("d2")
+>
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to make an output. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+
+#### Return Values
+None
+
+## pin.disable
+#### Description
+`pin.disable(pinName)`
+
+Disable the given pin.  A disabled pin will not send any events to other Scouts or to HQ.
+
+```js
+> pin.disable("d2")
+>
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to disable. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+
+#### Return Values
+None
+
+
+## pin.setmode
+#### Description
+`pin.setmode(pinName, pinMode)`
+
+Set the pin mode for a given pin.
+
+```js
+> pin.setmode("d2", INPUT_PULLUP)
+>
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to set the mode. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+- *pinMode* - The mode to set the pin. Valid values are *INPUT*, *OUTPUT*, *INPUT_PULLUP*, and *DISABLED*.
+
+#### Return Values
+None
+
+
+## pin.read
+#### Description
+`pin.read(pinName)`
+
+Get the value for the given pin.
+
+```js
+> pin.read("d2")
+>
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to read. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+
+#### Return Values
+The current value of the pin.  For digital pins the value will be **0** or **1**.  For analog pins the value will be **0** to **1023**.
+
+
+## pin.write
+#### Description
+`pin.write(pinName, pinValue)`
+
+Set the value for the given pin.
+
+```js
+> pin.write("d2", HIGH)
+>
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to write. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+- *pinValue* - The value to set the pin to.  Possible values are **HIGH** or **LOW**.
+
+#### Return Values
+None
+
+
+## pin.report.digital
+#### Description
+`pin.report.digital()`
+
+Get a report of the pin values and pin modes of the digital pins, d2 through d8.
+
+```js
+> pin.report.digital
+> 
+{
+  "type":"digital",
+  "mode":[-1,-1,-1,-1,-1,-1,-1],
+  "state":[-1,-1,-1,-1,-1,-1,-1]
+}
+```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current state of the digital pins.
+
+- *type* - The type of report returned.  In this case it will be the string *digital*
+- *mode* - An array of pin modes for "d2" to "d8". -1 is *DISABLED*, 0, is *INPUT*, 1 is *OUTPUT*, and 2 is *INPUT_PULLUP*
+- *state* - An array of pin values for "d2" to "d8". -1 is *DISABLED*, 0, is *LOW*, and 1 is *HIGH*.
+
+## pin.report.analog
+#### Description
+`pin.report.analog()`
+
+Get a report of the pin values and pin modes of the analog pins, a0 through a7.
+
+```js
+> pin.report.analog
+> 
+{
+  "type":"analog",
+  "mode":[-1,-1,-1,-1,-1,-1,-1,-1],
+  "state":[-1,-1,-1,-1,-1,-1,-1,-1]
+}
+```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current state of the digital pins.
+
+- *type* - The type of report returned.  In this case it will be the string *analog*
+- *mode* - An array of pin modes for "a0" to "a7". -1 is *DISABLED*, 0, is *INPUT*, 1 is *OUTPUT*, and 2 is *INPUT_PULLUP*
+- *state* - An array of pin values for "a0" to "a7". -1 is *DISABLED*, ranges 0-1023 are possible for analog inputs.
+
+
 
 # backpack
 
