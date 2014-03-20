@@ -1,4 +1,5 @@
 body {
+  font-family: Helvetica, Arial, sans-serif;
   border-top: 9px solid #71accd;
   padding-top: 4px;
 }
@@ -11,3 +12,52 @@ body {
   padding-bottom: 26px;
 }
 
+ul#nav {
+  font-size: 16px;
+}
+
+ul#nav li a.active {
+  font-weight: bold;
+  color:  #000;
+}
+
+ul#nav li a:hover {
+  text-decoration: underline;
+  color: #000;
+}
+
+ul#nav li a.active:hover {
+  text-decoration: none;
+}
+
+div#landing {
+  margin-top: 30px;
+  margin-left: 24px;  
+}
+
+div#landing h2 {
+  font-size: 30px;
+  color: #000;
+  font-weight: normal;
+  margin-bottom: 20px;  
+}
+
+div#landing h3 {
+  font-size: 24px;
+  font-weight: normal;
+}
+
+div#landing h3 a {
+  text-decoration: underline;
+}
+
+div#landing h3 a:hover {
+  text-decoration: underline;
+  color: #000;
+}
+
+div#landing p {
+  font-size: 16px;
+  margin-bottom: 30px;
+  width: 600px;
+}

@@ -121,11 +121,12 @@ input {
   }
 }
 a {
-  color: #2badad;
+  color: #158ec2;
   text-decoration: none;
 }
 a:hover {
-  color: #228a8a;
+  color: #158ec2;
+  text-decoration: underline;
 }
 /* ----------------------------------------------------------------------------
  * Content styling
@@ -616,7 +617,7 @@ body.no-literate .content pre > code:hover::-webkit-scrollbar-thumb {
     margin-left: 15px;
   }
   .header li {
-    border-left: solid 1px rgba(255,255,255,0.5);
+/*    border-left: solid 1px rgba(255,255,255,0.5);*/
     border-right: solid 1px #dfe2e7;
   }
   .header li:last-child {
