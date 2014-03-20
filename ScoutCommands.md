@@ -371,35 +371,118 @@ Sent message to Scout 2: [1,"hello"]
 None
 
 
-## mesh.report()
+## mesh.report
+#### Description
+`mesh.report()`
+
 Prints a JSON response of the mesh radio status of the Scout.
-```
+
+```js
+> mesh.report()
+> 
 {
- "type":"mesh",
- "scoutid":2,
- "troopid":1234,
- "routes":0,
- "channel":20,
- "rate":"250 kb/s",
- "power":"3.5 dBm"
+  "type":"mesh",
+  "scoutid":6,
+  "troopid":1,
+  "routes":1,
+  "channel":20,
+  "rate":"250 kb/s",
+  "power":"3.5 dBm"
 }
 ```
-## mesh.routing()
-Prints a human-readable output of the current routing table for this Scout.
 
-## mesh.announce(groupId, message)
-Send *message* to an entire group at *groupId*
+#### Parameters
+None
 
-## mesh.signal()
+#### Return Values
+A JSON representation of the current state of mesh networking for the Scout.
+
+- *type* - The type of report returned.  In this case it will be the string *mesh*
+- *scoutid* - The unique ID of this particular Scout. Range is between 0 and 65535
+- *troopid* - The ID specific to this particular Troop. Range is between 0 and 65535. Also known as a PAN ID.
+- *routes* - The number of Scouts this Scout is routing packets for.
+- *channel* - The 802.15.4 channel this Scout is listening on. Valid range is 11 to 26. 
+- *rate* - The data rate the radio on this Scout is currently set to.
+- *power* - The radio power setting this Scout is currently set to.
+
+## mesh.routing
+
+#### Description
+`mesh.routing()`
+
+Prints an output of the current mesh routing table for this Scout, in a human-readable format.
+
+```js
+> mesh.routing()
+> 
+> mesh.routing
+|    Fixed    |  Multicast  |    Score    |    DstAdd   | NextHopAddr |    Rank     |     LQI     |
+|      0      |      0      |      3      |      2      |      2      |     130     |     254     |
+|      0      |      0      |      3      |      3      |      3      |     130     |     254     |
+|      0      |      0      |      3      |      4      |      4      |     129     |     254     |
+```
+
+#### Parameters
+None
+
+#### Return Values
+A human-readable representation of the current routing table.
+
+
+## mesh.announce
+#### Description
+`mesh.announce(groupId, message)`
+
+Send a message to an entire group of Scouts at once.
+
+```js
+> mesh.announce(2, "hi")
+> 
+```
+
+#### Parameters
+- *groupId* - The group to send the message to.  Valid group IDs are 1-65535.  
+- *message* - The message to send to the Scout. This is a text string, surrounded in quotes, and should be no longer than 100 characters.
+
+#### Return Values
+None
+
+## mesh.signal
+#### Description
+`mesh.signal()`
+
 Return the last received message’s signal strength (RSSI.)  Typical values returned will be somewhere between -30 and -95, with lower numbers being a lower signal.  Since they’re negative values, -95 is a weaker signal than -30.
 
-## mesh.loss()
-Return the last received message’s link quality indictator (LQI.)  Possible values are 0-255.  255 indicate no packet loss has occurred, and lower values indicate an increasing amount of packet loss is happening.
+```js
+> print mesh.signal()
+> -39
+```
+
+#### Parameters
+None
+
+#### Return Values
+The RSSI value of the last received message.
 
 # miscellaneous
 
-## temperature()
-Print the current on-chip temperature in Celsius.
+## temperature
+
+#### Description
+`temperature()`
+
+Print the value of the on-chip temperature sensor, in Celsius.
+
+```js
+> temperature
+> 21
+```
+
+#### Parameters
+None
+
+#### Return Values
+The value of the on-chip temperature in Celsius.
 
 ## randomnumber()
 Print a true hardware-based random number
