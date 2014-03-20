@@ -29,7 +29,10 @@
  });
 
  $document.on('flatdoc:ready', function(){
-   $document.scrollTop($('#'+window.location.hash.substring(1))[0].offsetTop+80);
+   if(window.location.hash && window.location.hash.length > 1) { 
+    var el = $('#'+window.location.hash.substring(1))[0];
+    if(el) $document.scrollTop(el.offsetTop+80);
+   }
  })
 
  /*

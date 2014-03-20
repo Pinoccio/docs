@@ -7,6 +7,7 @@ var api = pinoccioAPI();
 (function(){
 
   $(document).on('flatdoc:ready', function() {
+    console.log('RUNNING INIT')
     o.init();
   });
 
