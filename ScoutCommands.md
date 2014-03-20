@@ -484,63 +484,318 @@ None
 #### Return Values
 The value of the on-chip temperature in Celsius.
 
-## randomnumber()
-Print a true hardware-based random number
+## randomnumber
+#### Description
+`randomnumber()`
 
-## uptime()
-Print the number of milliseconds that have passed since the last Scout boot-up.
+Print a random number, seeded from random noise on the RF antenna. True hardware random number generator!
 
-## report()
-Print all of the Scout’s reports.
+```js
+> randomnumber
+> 21543
+```
 
-## verbose(enabled)
-Enable all verbose output if *enabled* is set to 1
+#### Parameters
+None
+
+#### Return Values
+The value of a random number.  The range is -32768 to 32767.
+
+## uptime
+#### Description
+`uptime()`
+
+Print the number of milliseconds the Scout has been running since the last reset. One second is equal to 1000 milliseconds.
+
+```js
+> uptime
+> 203403
+```
+
+#### Parameters
+None
+
+#### Return Values
+The number of milliseconds since the last reset. 
 
 # led
 
-## led.blink(red, green, blue, ms=500)
-Blink the LED with the values of *red*, *green*, and *blue*.  Possible color values are between 0 and 255.  Pass the optional fourth argument to change the blink duration, with a default of half a second.
+## led.blink
+#### Description
+`led.blink(red, green, blue, ms=500)`
 
-## led.off()
-Turn off the LED.
+Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds. 
 
-## led.red(ms=0, continuous=0)
-Make the LED red.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+```js
+> led.blink(0, 255, 255)
+> 
+```
 
-## led.green(ms=0, continuous=0)
-Make the LED green.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+#### Parameters
+- *red* - The value of the red color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *green* - The value of the green color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *blue* - The value of the blue color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to 500 milliseconds. 
 
-## led.blue(ms=0, continuous=0)
-Make the LED blue.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+#### Return Values
+None
 
-## led.cyan(ms=0, continuous=0)
-Make the LED cyan.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.off
+#### Description
+`led.off()`
 
-## led.purple(ms=0, continuous=0)
-Make the LED purple.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+Turn off the LED.  This turns off the LED if it's currently on, as well as disables any ongoing blinking that was set by a previous command.
 
-## led.magenta(ms=0, continuous=0)
-Make the LED magenta.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+```js
+> led.off()
+> 
+```
 
-## led.yellow(ms=0, continuous=0)
-Make the LED yellow.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+#### Parameters
+None
 
-## led.orange(ms=0, continuous=0)
-Make the LED orange.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+#### Return Values
+None
 
-## led.white(ms=0, continuous=0)
-Make the LED white. Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+## led.red
+#### Description
+`led.red(ms=0, continuous=0)`
 
-## led.torch(ms=0, continuous=0)
-Make the LED the Scout’s torch color.  Set *ms* to the number of milliseconds to be on if you want to blink the LED.  Set *continuous* to 1 to make the LED blink continuously until you call another led command or led.off.
+Turn the LED red.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-## led.sethex(hexValue)
+```js
+> led.red()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+## led.green
+#### Description
+`led.green(ms=0, continuous=0)`
+
+Turn the LED green.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.green()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+## led.blue
+#### Description
+`led.blue(ms=0, continuous=0)`
+
+Turn the LED blue.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.blue()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+
+## led.cyan
+#### Description
+`led.cyan(ms=0, continuous=0)`
+
+Turn the LED cyan.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.cyan()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+## led.purple
+#### Description
+`led.purple(ms=0, continuous=0)`
+
+Turn the LED purple.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.purple()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+## led.magenta
+#### Description
+`led.magenta(ms=0, continuous=0)`
+
+Turn the LED magenta.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.magenta()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+## led.yellow
+#### Description
+`led.yellow(ms=0, continuous=0)`
+
+Turn the LED yellow.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.yellow()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+## led.orange
+#### Description
+`led.orange(ms=0, continuous=0)`
+
+Turn the LED orange.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.orange()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+
+## led.white
+#### Description
+`led.white(ms=0, continuous=0)`
+
+Turn the LED white.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.white()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+## led.torch
+#### Description
+`led.torch(ms=0, continuous=0)`
+
+Turn the LED the Scout's torch color.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```js
+> led.torch()
+> 
+```
+
+#### Parameters
+- *ms* - **Optional** The duration in milliseconds the LED should be on.  If nothing's passed in, the LED will stay on indefinitely.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+## led.sethex
+#### Description
+`led.sethex(hexValue)`
+
 Set the LED to the *hexValue* given. Similar to HTML, “RRGGBB”, but no hash at the beginning.
 
-## led.setrgb(red, green, blue)
-Set the LED to values given by *red*, *green*, and *blue*.
+```js
+> led.hexvalue("FF0000")
+> 
+```
+
+#### Parameters
+- *hexValue* - A hex value string of the color to set the LED. “RRGGBB” is the format of the string.
+
+#### Return Values
+None
+
+
+## led.setrgb
+#### Description
+`led.setrgb(red, green, blue)`
+
+Set the LED to the red, green, and blue values given. 
+
+```js
+> led.setrgb(255, 0, 0)
+> 
+```
+
+#### Parameters
+- *red* - The value of the red color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *green* - The value of the green color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *blue* - The value of the blue color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+
+#### Return Values
+None
 
 ## led.savetorch(red, green, blue)
+#### Description
+`led.setrgb(red, green, blue)`
+
+Set the LED to the red, green, and blue values given. 
+
+```js
+> led.setrgb(255, 0, 0)
+> 
+```
+
+#### Parameters
+- *red* - The value of the red color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *green* - The value of the green color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *blue* - The value of the blue color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+
+#### Return Values
+None
+
+
 Save the torch color to values given by *red*, *green*, and *blue*.
 
 ## led.report()
