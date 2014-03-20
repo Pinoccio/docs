@@ -351,26 +351,6 @@ Send a message from this Scout to another Scout.
 None
 
 
-## mesh.verbose
-#### Description
-`mesh.verbose(enabled)`
-
-Turn on/off verbose mesh radio debugging output.  This outputs detailed information of the mesh network, including messages sent, messages received, and fragmentation.
-
-```js
-> mesh.verbose(1)
-> mesh.send(2, "hello")
-Sent message to Scout 2: [1,"hello"]
-> -  Message successfully sent to Scout 2 (Confirmed with control byte: 51)
-```
-
-#### Parameters
-- *enabled* - Set to **1** to enable mesh verbose output, **0** to disable verbose output.
-
-#### Return Values
-None
-
-
 ## mesh.report
 #### Description
 `mesh.report()`
@@ -878,9 +858,6 @@ Set the HQ token for this Scout.
 ## hq.gettoken()
 Print the HQ token for this Scout.
 
-## hq.verbose(enabled)
-Enable verbose HQ output when *enabled* = 1.
-
 # events
 
 ## events.start()
@@ -891,9 +868,6 @@ Stop all event handlers on a Scout.
 
 ## events.setfreqs(digitalMs=50, analogMs=60000, peripheralMs=60000)
 Set the frequency of the various event handlers. *digitalMs* will set how often the digital pin event handlers are called, and default to twenty times per second.  *analogMs* will set how often the analog pin event handlers are called, and default to once every 60 seconds.  *peripheralMs* will set how often the peripheral event handlers are called, and default to once every 60 seconds.  The peripherals include the battery percentage, voltage, charging flag, battery alarm, and temperature.
-
-## events.verbose(enabled)
-Turn on verbose output for event handlers when *enabled* = 1.
 
 # key/value
 TODO
@@ -975,12 +949,3 @@ Return the current time, as fetched from the Wi-Fi backpack via network time pro
 ```
 9/2/2014,21:48:43,1391982523746
 ```
-
-## wifi.sleep()
-TODO: Put the Wi-Fi backpack to sleep.  This does not put the entire Scout to sleep, just the Wi-Fi module itself.
-
-## wifi.wakeup()
-TODO: Wakes up the Wi-Fi module from a previous sleep state.
-
-## wifi.verbose(enabled)
-Turn on verbose Wi-Fi backpack output if *enabled* is set to 1.
