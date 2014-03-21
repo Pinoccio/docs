@@ -209,7 +209,7 @@ create a new troop.
 
 ```sh
 
-curl -X POST 'https://api.pinocc.io/v1/troop?token=980146260e87f0dfc02f10e733ca5d73'
+curl -X POST 'https://api.pinocc.io/v1/troop?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
@@ -629,7 +629,6 @@ data is newline delimited json. sorted by time. these are power reports.
 {"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":412,"charging":false,"vcc":true,"_t":1395185082971},"time":1395185082971}}
 {"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":413,"charging":false,"vcc":true,"_t":1395185083581},"time":1395185083581}}
 {"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":413,"charging":true,"vcc":true,"_t":1395185083683},"time":1395185083683}}
-{"data":{"account":"19","troop":"","scout":"1","type":"power","value":{"type":"power","battery":98,"voltage":418,"charging":true,"vcc":true,"_t":1395185143574},"time":1395185143574}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":418,"charging":true,"vcc":true,"_t":1395185383644},"time":1395185383644}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":416,"charging":true,"vcc":true,"_t":1395185503642},"time":1395185503642}}
 {"data":{"account":"19","troop":"2","scout":"1","type":"power","value":{"type":"power","battery":99,"voltage":416,"charging":false,"vcc":true,"_t":1395185503726},"time":1395185503726}}

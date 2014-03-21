@@ -61,3 +61,51 @@ div#landing p {
   margin-bottom: 30px;
   width: 600px;
 }
+
+
+.login-form-template{
+  width:230px;
+  background-color:#fff;
+  border:1px solid #d4d4d4;
+  border-radius:5px;
+}
+
+
+.login-form{
+  padding:10px;
+}
+
+.login-form input{
+  margin-bottom:5px;
+  width:200px;
+  border:1px solid #d4d4d4;
+}
+
+.login-form a{
+  float:right;
+  font-size:10px;
+}
+
+
+/* form helper stylz*/
+
+.error-bar{
+  background-color:#e74c3c;
+  font-weight:900;
+  color:#fff;
+  padding:3px;
+  margin-bottom:5px;
+}
+
+.loading{
+  display:none;
+}
+
+.submitting .loading{
+  display:inline-block;
+}
+
+.login-form input.error {
+  border:1px solid #e74c3c;
+}
+

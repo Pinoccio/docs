@@ -7,165 +7,181 @@ var api = pinoccioAPI();
 (function(){
 
   $(document).on('flatdoc:ready', function() {
-    console.log('RUNNING INIT')
     o.init();
   });
-
 
   var o;
   o = {
     sync:false,
     state:{},
     account:false,
+    pollingLogin:false, 
     init:function(){
+
       var z = this;
+      this.pollLoginState();
+      this.uiLoginButton();
 
-
-      api.rest({url:'/v1/account'},function(err,data){
-
-        if(err || !data) {
-          // 
-          return console.log('not logged in');
-        }
-        console.log('logged in?',data);
-        z.account = data;
-
-        z.ui.load('nav');
-        z.onLogin();
-      })
     },
     onLogin:function(){
+      var data = this.account;
+      // hide login show logged in.
+      $(".login-loggedout").hide();
+      var a = $("<a>").attr('href',"#").css({"display":"inline","vertical-align":"top"});
+      a.text("Hi, "+(data.firstname.length?data.firstname:data.email.split('@').shift()))
+
+      $(".login-loggedin").append("<img src='"+data.gravatar+"' width='20' height='20' alt=''/>");
+      $(".login-loggedin").append(a).show()
+
+      /*
       var sync = api.sync();
       sync.on('data',function(data){
         console.log('data',data); 
       });
       this.sync = sync;
+      */
 
-      for(var i=0;i < o.ui.elements.length;++i){
-        o.ui.elements[i].sync(this.sync);
-        o.ui.elements[i]._sync(this.sync);
-      }
+      this.updateExamples();
 
     },
     pollLoginState:function(){
-      // because sync stream requires login  a login in another tab would not be picked up here. 
+      var z = this;
+      if(z.pollingLogin) return;
+      if(z.account) return (z.pollingLogin = false);
+
+      z.pollingLogin = true;
+      (function fn(){
+
+        // because sync stream requires login  a login in another tab would not be picked up here. 
+        api.rest({url:'/v1/account'},function(err,data){
+
+          if(err || !data) {
+            console.log('not logged in ',err);
+            return setTimeout(function(){
+              fn();
+              //return console.log('not logged in');
+            },30000);
+          }
+
+          z.pollingLogin = false;
+
+          z.account = data;
+          z.onLogin();
+        })
+      }());
     },
-    ui:{
-      elements:[],
-      load:function(key,args){
-        args = args||[];
-        var z = this;
-        var el = z[key].apply(z,args);
-        el.root = true;
-        z.elements.push(el);
-        el.sync(o.sync);
-        el._sync(o.sync);
-      },
-      nav:function(){
+    handleLogin:function(data,cb){
+      var z = this;
+      api.login(data.email,data.password,function(err,data){
+        cb(err,data);
+        if(data){
+          z.account = data;
+          z.onLogin();
+        }
+      });
+    },
+    updateExamples:function(){
+      var replacements = {
+        '7fc11b7554f0cd303bad94eb0eb36e2d':api.token
+      };
+      $("code").each(function(){
+        var html = $(this).html();
+        var changed = false;
+        var code = this;
+        $.each(replacements,function(k,v){
+          
+          $(code).find('.string').each(function(){
+            var text = $(this).text()||'';
+            if(text.trim().indexOf(k) > -1) {
+              text = text.replace(k,v);
+              $(this).text(text);
+            }
+          })
+        });
+      });
+    },
+    uiLoginButton:function(){
+      var opened = false;
+      var z = this;
+      $(".login-button").click(function(){
+        if(opened) {
+          opened.remove();
+          opened = false;
+          return false;
+        }
+ 
+        // clone
+        var dims = _dims(this);
+        dims.top += dims.height+3;
 
-        var el = this._element();
-        var syncStream;
-        el.sync = function(sync){
-          syncStream = sync;
-          console.log('NAV SYNC')
+        var form = $("#api-templates .login-form-template").clone();
+        form.addClass('rendered');
 
-          render();
+        form.css({position:'absolute',top:dims.top+'px',right:dims.right-dims.outerWidth+'px'}) 
+        form.appendTo('body');
 
-          if(!syncStream) return;
+        opened = form;
 
-          var z = this;
-          z.syncStream = syncStream;
-          z.onData = function(data){
-            // sync data.
+        // form submitting
+        var locked = false;
+
+        form.on('submit',function(){
+          var o = $(form).find('form').serializeObject();
+
+          console.log('form data',o);
+
+          var valid = true;
+
+          if(!o.email || !o.email.length){
+             valid = false;
+             $(form).find('input[name=email]').flashClass('error'); 
           }
-          syncStream.on('data',z.onData);           
-        }
 
-        el.remove = function(){
-          if(syncStream) syncStream.removeListener('data',this.onData);
-          $(".pinoccio-nav").remove();
-        }
-
-        function render() {
-
-          $(".pinoccio-nav").remove();
-          var navList = $(".header ul");
-
-          var navItem;
-
-          if(o.account) {
-            var account = o.account;
-            var name = account.firstname;
-            if(!name || !name.length) name = account.email.split('@').shift();
-            navItem = $("<li>").addClass("pinoccio-nav").html("<a href='#'><img height='14px' src='"+account.gravatar+"' alt=''/> "+name+"</a>");
-
-          } else {
-            var loginLink = $("<a href='#' class='pinoccio-login'>login to api</a>") 
-            navItem = $("<li>").addClass("pinoccio-nav").append(loginLink);
+          if(!o.password || !o.password.length){
+             valid = false;
+             $(form).find('input[name=password]').flashClass('error'); 
           }
 
-          navList.append(navItem);
-        }
-        return el;
-      },
-      troopList:function(){
-        // make troop list element
+          if(!valid) return false;
+
+          locked = true;
+          form.addClass('submitting');
+          form.find('.error').hide();
+          z.handleLogin(o,function(err){
+            locked = false;
+            form.removeClass('submitting');
+            if(!opened) return;
+
+            if(err) {
+              form.find('.error-bar').show();
+              return;
+            }
+
+            opened.remove();
+            opened = false;
+
+          });
         
-        var el = this._element();
-        var syncStream;
-        el.sync = function(){
+          return false;
+        })
 
+        return false;
+      });
+
+      // esc button
+      $("body").keyup(function(ev){
+        if(opened && ev.which === 27) {
+          opened.remove();
+          opened = false;
         }
-
-        //
-        
-
-      },
-      exampleRewrite:function(){
-        // update example html 
-      },
-      _element:function(){
-        // an element is a thing that has an event listener for sync
-        // it has a remove function
-        // it may have a parent
-        // it may have children
-        return {
-          _sync:function(data){
-            if(!this.children) return;
-            for(var i=0;i<this.children.length;++i) {
-              this.children[i].sync(data);
-            }
-          },
-          _remove:function(){
-            // clean myself up
-            if(this.parent) {
-              var id = find(this.parent.children,this);
-              if(id > -1) this.parent.children.splice(i,1);
-              if(this.parent.removed) this.parent.removed(this);
-              this,parent = false;// detach it
-            }
-
-            if(this.children) {
-              for(var i=0;i<this.children.length;++i) {
-                this.children[i].parent = false;
-                this.children[i].remove()
-              }
-            }
-            // remove from root elements list
-            if(this.root) {
-              var i = find(o.ui.elements,this);
-              if(i > -1) o.ui.elements.splice(i,1);
-            }
-          },
-          _load:function(el){
-            if(!this.children) this.children = [];
-            el.parent = this;
-            this.children.push(el);
-          },
-          parent:false,
-          children:false
+      }).on('click',function(ev){
+        if(opened) {
+          if($(ev.target).parents(".login-form-template").length === 0){
+            opened.remove();
+            opened = false;
+          }
         }
-      }
+      });
     }
   }
 
@@ -178,6 +194,70 @@ function find(arr,obj){
   return i==arr.length?-1:i;
 }
 
+//
+// return dimensions for easy access
+//
+function _dims(el){
+  var dims = _coords(el);
+  dims.width = $(el).width();
+  dims.outerWidth = $(el).outerWidth();
+  dims.outerHeight = $(el).outerHeight();
+  dims.height = $(el).height();
+  dims.bottom = dims.top+dims.height;
+  dims.right = 0;
+  if(el !== document) dims.right = document.documentElement.clientWidth-dims.left;
+  return dims;
+}
+
+//
+// return absolute document position of element.
+//
+function _coords(el){
+  var left=0,top=0,right=0; 
+  if(el === window){
+	  return _wcoords();
+  }
+  
+
+  do{
+    left += el.offsetLeft||0;
+    top  += el.offsetTop||0;
+    el = el.offsetParent;
+  }while(el)
+
+  return {top:top,left:left}
+}
+
+function _wcoords(){
+	return {
+	  left:(window.pageXOffset !== undefined) ? window.pageXOffset : (document.documentElement || document.body.parentNode || document.body).scrollLeft,
+	  top:(window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop
+	}
+}
+
+$.fn.serializeObject = function(){
+  var a = $(this).serializeArray();
+
+  var o = {};
+  $.each(a,function(k,v){
+    o[v.name] = v.value;
+  })
+  return o;
+}
+
+$.fn.flashClass = function(cls,dur){
+  var z = this;
+  $(z).addClass(cls);
+  setTimeout(function(){
+    z.removeClass(cls);
+  },dur||2000);
+}
+
+
+
+
 }());
+
+
 
 
