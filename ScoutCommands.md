@@ -979,30 +979,17 @@ A JSON representation of the current state of the digital pins.
 - *state* - An array of pin values for "a0" to "a7". -1 is *DISABLED*, ranges 0-1023 are possible for analog inputs.
 
 
-
-# backpack
-
-## backpack.report
-Print JSON of the current backpacks attached to the Scout.
-```
-{
- "_":"bps",
- "a":[1,0,1,16,0,0,74,192]
-}
-```
-
-## backpack.list
-Lists all backpacks attached:
-```
- 01000116000074192
-```
-
 # scout
-
 ## scout.report
-Print JSON of the Scout information, including information like family, hardware version, serial number, and build.
-```
- {
+#### Description
+`scout.report()`
+
+Get a report of the Scout's information, including family, hardware version, serial number, and build.
+
+```js
+> scout.report
+> 
+{
  "type":"scout",
  "lead":false,
  "version":1,
@@ -1012,59 +999,205 @@ Print JSON of the Scout information, including information like family, hardware
  "build":20140130
 }
 ```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current state of the digital pins.
+
+- *type* - The type of report returned.  In this case it will be the string *scout*
+- *lead* - Will be *true* if this Scout is a Lead Scout, *false* otherwise.
+- *version* - The version of this report. Later report versions may have more or different fields.
+- *hardware* - The hardware version of this Scout. 
+- *family* - The family that this hardware belongs to. 1000 is the only valid value at this time.
+- *serial* - A unique serial number of this Scout. 
+- *build* - The build number of the firmware on this Scout. Useful for auto-updating.
+
 ## scout.isleadscout
-Returns true if the Scout is a Lead Scout, and has a Wi-Fi backpack attached.
+#### Description
+`scout.isleadscout()`
 
-## scout.sethqtoken(token)
-Write the HQ token for this Scout given by *token*.
+Determines if this is a Lead Scout or not. 
 
-## scout.gethqtoken()
-Print the HQ token currently assigned to this Scout.
+```js
+> scout.isleadscout
+> 0
+```
 
-## scout.delay(ms)
-Delay the Scout for *ms* milliseconds.  Radio, shell, and other systems will continue to run, so it’s non-blocking.
+#### Parameters
+None
 
-## scout.daisy()
-This will wipe a Scout and make it factory-fresh.  Running it once will ask you to run it again to confirm.  When run a second time, it will reset all settings in a Wi-Fi backpack, if attached, and will reset the mesh radio settings, HQ token, and mesh key.
+#### Return Values
+Returns **0** if this is not a Lead Scout, and **1** if it is a Lead Scout and has a Wi-Fi backpack attached.
+
+
+## scout.delay
+#### Description
+`scout.delay(ms)`
+
+Delay the Scout for the given milliseconds. Radio, shell, Wi-Fi, and other systems will continue to run, so it’s non-blocking.  The interactive shell will return a prompt again once the delay has expired.
+
+```js
+> scout.delay(1000)
+> 
+```
+
+#### Parameters
+- *ms* - The number of milliseconds to delay.
+
+#### Return Values
+None.
+
+
+## scout.daisy
+#### Description
+`scout.daisy()`
+
+Wipe a Scout clean and make it factory-fresh.  Running this once will ask you to run it again to confirm the factory reset.  When run a second time, it will reset all settings in a Wi-Fi backpack, if attached, and will reset the mesh radio settings, HQ token, and mesh security key.  It will not reset the hardware, family, and serial IDs of the Scout.
+
+```js
+> scout.daisy
+> Factory reset requested. Send command again to confirm.
+> scout.daisy
+> Ok, terminating. Goodbye Dave.
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
 
 ## scout.boot
-Restart the Scout.
+#### Description
+`scout.boot()`
+
+Restarts the Scout using the watchdog timer, so all pins are reset and initial state is restored.
+
+```js
+> scout.boot
+
+Hello from Pinoccio!
+ (Shell based on Bitlash v2.0 (c) 2014 Bill Roy)
+ 17774 bytes free
+ Build 2014032001
+ Field Scout ready
+>
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
 
 # HQ
+## hq.settoken
+#### Description
+`hq.settoken(token)`
 
-## hq.settoken(<token>)
-Set the HQ token for this Scout.
+Saves the unique user HQ token for this Scout given by the argument.
 
-## hq.gettoken()
-Print the HQ token for this Scout.
+```js
+> scout.sethqtoken("8abc0800a80a08w0asd0f80asd")
+> 
+```
+
+#### Parameters
+- *token* - The unique HQ token to associate this troop to the user account on HQ.
+
+#### Return Values
+None
+
+
+## hq.gettoken
+#### Description
+`hq.gettoken()`
+
+Prints the unique user HQ token for this Scout.
+
+```js
+> scout.gethqtoken()
+> 8abc0800a80a08w0asd0f80asd
+```
+
+#### Parameters
+None
+
+#### Return Values
+- *token* - The unique HQ token associated with this Scout.
 
 # events
 
-## events.start()
+## events.start
+#### Description
+`events.start()`
+
 Start the event handler to trigger reports, callbacks, and eventing internals.
 
-## events.stop()
-Stop all event handlers on a Scout.
+```js
+> events.start
+> 
+```
 
-## events.setfreqs(digitalMs=50, analogMs=60000, peripheralMs=60000)
-Set the frequency of the various event handlers. *digitalMs* will set how often the digital pin event handlers are called, and default to twenty times per second.  *analogMs* will set how often the analog pin event handlers are called, and default to once every 60 seconds.  *peripheralMs* will set how often the peripheral event handlers are called, and default to once every 60 seconds.  The peripherals include the battery percentage, voltage, charging flag, battery alarm, and temperature.
+#### Parameters
+None
 
-# key/value
-TODO
-## key
+#### Return Values
+None
 
-## key.print
 
-## key.number
 
-## key.save
+## events.stop
+#### Description
+`events.stop()`
+
+Stop the event handler that triggers reports, callbacks, and eventing internals.  If events are turned off, no reports will be triggered, and HQ will not reflect the state of the Scout any further until events are turned on again.
+
+```js
+> events.stop
+> 
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+## events.setcycle
+#### Description
+`events.setcycle(digitalMs, analogMs, peripheralMs)`
+
+Set the frequency of the various event handlers. These values will slow down or speed up the responsiveness of various events, split into digital, analog, and the peripheral sets.
+
+```js
+> events.setcycle(100, 1000, 60000)
+> 
+```
+
+#### Parameters
+- *digitalMs* - How often the digital pin event handlers are called. Defaults to 50ms, or twenty times per second.  
+- *analogMs* - How often the analog pin event handlers are called. Defaults to 60000ms, or once a minute.  
+- *peripheralMs* - How often the peripheral event handlers are called.  Defaults to 60000ms, or once a minute.  The peripherals include the battery percentage, voltage, charging flag, battery alarm, and temperature.
+
+#### Return Values
+None
 
 # lead scout
 
-## wifi.report()
-Print the current report of the Wi-Fi connection:
+## wifi.report
+#### Description
+`wifi.report()`
 
-```
+Print the current report of the Wi-Fi connection.  Note, this command only works on a Lead Scout.
+
+```js
+> wifi.report()
+> 
 {
  "type":"wifi",
  "version":0,
@@ -1073,11 +1206,26 @@ Print the current report of the Wi-Fi connection:
 }
 ```
 
-## wifi.status()
-Print human-readable information about the Wi-Fi module:
+#### Parameters
+None
 
-```
-Wi-Fi Versions: S2W APP VERSION=2.5.1
+#### Return Values
+A JSON representation of the current state of the Wi-Fi connection.
+
+- *type* - The type of report returned.  In this case it will be the string *wifi*
+- *connected* - Will be *true* if this Lead Scout is connected to a Wi-Fi access point, *false* otherwise.
+- *hq* - Will be *true* if this Lead Scout is connected to HQ over a TCP SSL connection, *false* otherwise.
+
+## wifi.status
+#### Description
+`wifi.status()`
+
+Print detailed, human-readable information about the Wi-Fi module.  Note, this command only works on a Lead Scout.
+
+```js
+> wifi.status()
+> 
+S2W APP VERSION=2.5.1
 S2W GEPS VERSION=2.5.1
 S2W WLAN VERSION=2.5.1
 MAC=20:f8:5e:a1:4a:57
@@ -1091,41 +1239,154 @@ CID  TYPE  MODE  LOCAL PORT  REMOTE PORT  REMOTE IP
 1  TCP-SSL CLIENT  48838    22757    173.255.220.185
 ```
 
-## wifi.list()
-Print out a list of Wi-Fi access points (APs) nearby
+#### Parameters
+None
 
-```
+#### Return Values
+None
+
+
+## wifi.list
+#### Description
+`wifi.list()`
+
+Print out a list of Wi-Fi access points (APs) nearby.  Note, this command only works on a Lead Scout.
+
+```js
+> wifi.status()
+> 
        BSSID        SSID   Channel Type   RSSI  Security
  44:94:fc:62:b2:72, Louise  , 01, INFRA , -85 , WPA2-PERSONAL
  00:1b:63:2c:18:b3, Pinoccio, 02, INFRA , -52 , WPA2-PERSONAL
 No.Of AP Found:2
 ```
 
+#### Parameters
+None
 
-## wifi.config(wifiAPName, wifiAPPassword)
-Set the Wi-Fi access point name and password in order to connect.
+#### Return Values
+None
 
-## wifi.dhcp(hostname=NULL)
-Enable DHCP for the Wi-Fi backpack.  An optional *hostname* can be passed if desired, but not required.
 
-## wifi.static(ip, netmask, gateway, dns)
-Set static IP settings for the Wi-Fi backpack.  *ip* is the static IP you wish to assign to the backpack.  *netmask* is the netmask.  *gateway* is usually the IP address of your router, and *dns* is the DNS server you’d like to use.
+## wifi.config
+#### Description
+`wifi.config(wifiAPName, wifiAPPassword)`
 
-## wifi.reassociate()
-Calling this makes the Wi-Fi backpack reassociate with its AP as well as attempt to auto-connect to HQ.
+Associate this Lead Scout with a new access point (AP.)  Note, this command only works on a Lead Scout.  
 
-## wifi.command(command)
+Once you call this command, you have to run `wifi.reassociate` to actually connect to the new AP.  This command just saves the AP credentials to use on the next association.
+
+```js
+> wifi.config("My Access Point", "password")
+> 
+```
+
+#### Parameters
+- *wifiAPName* - The name of the access point. Be sure to enclose in double quotes, i.e. *"name"*.
+- *wifiAPPassword* - The password of the access point.  Be sure to enclose in double quotes, i.e. *"name"*.
+
+#### Return Values
+None. Run `wifi.reassociate` to actually connect to the new access point.
+
+
+## wifi.dhcp
+#### Description
+`wifi.dhcp("hostname")`
+
+Enable DHCP on the Wi-Fi backpack.  An optional *hostname* can be passed if desired, but not required.  This must be run before `wifi.reassociate` in order to take effect.  If you wish to manually enter your IP information, use `wifi.static` below.
+
+```js
+> wifi.dhcp()
+> 
+```
+
+#### Parameters
+- *hostname* - Optional. If you want to assign a hostname to this device during the DHCP process. If no hostname is given, it will default to "Pinoccio".
+
+#### Return Values
+None
+
+
+## wifi.static
+#### Description
+`wifi.static("ip", "netmask", "gateway", "dns")`
+
+Set static IP settings for the Wi-Fi backpack.  
+
+```js
+> wifi.static("192.168.1.100", "255,255,255.0", "192.168.1.1", "8.8.8.8")
+> 
+```
+
+#### Parameters
+- *ip* - The static IP you wish to assign to the backpack.
+- *netmask* - The netmask to assign to the backpack.
+- *gateway* - The gateway to assign to the backpack. This is usually the IP address of your router.
+- *dns* - The DNS server you'd like to use. Only one DNS server is available at this time.
+
+#### Return Values
+None
+
+
+## wifi.reassociate
+#### Description
+`wifi.reassociate()`
+
+Cause the Wi-Fi backpack to re-associate with the access point given in the most recent call to `wifi.config`.  The backpack will first attempt to connect to the access point.  Once that's successful, it will attempt to make a TCP connection to HQ. After that, it will establish an SSL handshake for encryption.  Once it's complete, `wifi.report` will confirm if everything has connected successfully.
+
+The backpack will always attempt to keep a connection to HQ, as well as keep associated with the access point.  If the access point is reset, or the connection to HQ is interrupted, it will attempt to reconnect on its own.
+
+Note, during the connection phase, specifically during the SSL handshake, the Scout may become somewhat unresponsive for a few seconds.  This is normal, and the shell prompt should return shortly afterwards.
+
+```js
+> wifi.reassociate()
+> 
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+
+## wifi.command
+#### Description
+`wifi.command("command")`
+
 Send a raw command to the Wi-Fi module.  Please see the Gainspan GS1011MIPS datasheet for the raw commands.
 
-## wifi.ping(hostname)
-TODO: Ping a remote server.  Hostname can be a fully-qualified domain name, or can be an IP address.
+Note, this is an advanced command, and you can put the Wi-Fi backpack into an unknown state with this command, so please be careful!
 
-## wifi.dnslookup(hostname)
-TODO: Look up the IP address of the given *hostname*.
-
-## wifi.gettime()
-Return the current time, as fetched from the Wi-Fi backpack via network time protocol (NTP.)  The time returned is in UTC.
-
+```js
+> wifi.command("AT+VER=?")
+> 
+S2W APP VERSION=2.5.1 
+S2W GEPS VERSION=2.5.1 
+S2W WLAN VERSION=2.5.1
 ```
-9/2/2014,21:48:43,1391982523746
+
+#### Parameters
+- *command* - The AT command to send to the Wi-Fi module. Must be surrounded by double-quotes.
+
+#### Return Values
+The response of the raw command.
+
+
+## wifi.gettime
+#### Description
+`wifi.gettime()`
+
+Print the current time, fetched from the Wi-Fi backpack via network time protocol (NTP.)  The time returned is in UTC.
+
+```js
+> wifi.gettime()
+> 
+22/3/2014,18:18:48,1395512328039
 ```
+
+#### Parameters
+None
+
+#### Return Values
+The current time, in the format DD/MM/YYYY,HH:MM:SS,<number of milliseconds since 1/1/1970>
