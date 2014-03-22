@@ -11,7 +11,7 @@ the api endpoint is https://api.pinocc.io
 make api calls from your terminal for much win!
 
 ```
- curl https://api.pinoccio/v1/hi
+ curl https://api.pinocc.io/v1/hi
 
 ```
 
