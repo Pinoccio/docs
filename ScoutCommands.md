@@ -7,16 +7,19 @@
 
 Determines if the Scout is charging its battery via USB. This will also mirror the orange charging LED next to the USB port, which also shines when charging, and turns off when either fully-charged, or the Scout is not plugged in.
 
-```js
+```bash
 > print power.ischarging
-> 1
 ```
 
 #### Parameters
 None
 
 #### Return Values
-Returns `0` if the Scout is not charging, and `1` if it is charging.
+Returns **0** if the Scout is not charging, and **1** if it is charging.
+
+```bash
+> 1
+```
 
 #### Warning
 The results of this command are undefined if you don't have a battery plugged into the Scout, and only powering it via USB.  This is due to the Lipo battery charger constantly trying to charge the non-existent battery.
@@ -29,9 +32,8 @@ The results of this command are undefined if you don't have a battery plugged in
 
 All Scouts have an on-board fuel gauge that tells you the status of the battery. This returns the percentage of battery life left on the Scout.
 
-```js
+```bash
 > print power.percent
-> 85
 ```
 
 #### Parameters
@@ -39,6 +41,10 @@ None
 
 #### Return Values
 Returns a value of 0 to 100 based on the percentage of charge the battery contains.
+
+```bash
+> 85
+```
 
 #### Warning
 The results of this command are undefined if you don't have a battery plugged into the Scout, and only powering it via USB.  This is due to the fuel gauge being unable to determine how much battery charge is available when there is no battery present.
@@ -51,9 +57,8 @@ The results of this command are undefined if you don't have a battery plugged in
 
 All Scouts have an on-board fuel gauge that tells you the status of the battery. This returns the current voltage of the battery, multiplied by 100.  Divide the result by 100 to get the actual battery voltage: e.g. `414` is really 4.14 volts.
 
-```js
+```bash
 > print power.voltage
-> 414
 ```
 
 #### Parameters
@@ -61,6 +66,10 @@ None
 
 #### Return Values
 Returns a value of ~3.4 volts to ~4.2 volts, based on the current voltage of the battery.
+
+```bash
+> 414
+```
 
 #### Warning
 The results of this command are undefined if you don't have a battery plugged into the Scout, and only powering it via USB.  This is due to the fuel gauge being unable to determine how much battery voltage is available when there is no battery present.
@@ -71,18 +80,17 @@ The results of this command are undefined if you don't have a battery plugged in
 #### Description
 `void power.enablevcc()`
 
-This provides 3.3 volts to the **3V3** header pin.  Turn this on if you want to power any external devices connected to the **3V3** header pin.
+This provides 3.3 volts to the 3V3 header pin.  Turn this on if you want to power any external devices connected to the 3V3 header pin.
 
-```js
+```bash
 > power.enablevcc
->
 ```
 
 #### Parameters
 None
 
 #### Return Values
-None, but after running this command, the **3V3** header will be at 3.3 volts.
+None, but after running this command, the 3V3 header pin will be at 3.3 volts.
 
 
 ## power.disablevcc
@@ -90,18 +98,17 @@ None, but after running this command, the **3V3** header will be at 3.3 volts.
 #### Description
 `void power.disablevcc()`
 
-This turns off power to the **3V3** header pin.  You would turn this off if you want to remove power from any external devices connected to the **3V3** pin, perhaps to save battery life.
+This turns off power to the 3V3 header pin.  You would turn this off if you want to remove power from any external devices connected to the 3V3 header pin, perhaps to save battery life.
 
-```js
+```bash
 > power.disablevcc
->
 ```
 
 #### Parameters
 None
 
 #### Return Values
-None, but after running this command, the **3V3** header will be at 0 volts.
+None, but after running this command, the 3V3 header pin will be at 0 volts.
 
 
 ## power.sleep
@@ -110,9 +117,8 @@ None, but after running this command, the **3V3** header will be at 0 volts.
 
 Puts the Scout to sleep for *ms* milliseconds.  Upon waking up, it will continue to run the commands it was running prior to sleeping.  When a Scout is asleep, it cannot communicate with any other boards or the web.  The good news is that it'll be in an extremely low power state, so your battery will last much longer!
 
-```js
+```bash
 > power.sleep(1000)
->
 ```
 
 The Scout can be woken up by an external pin change event on pin D4, D5, D7, or when the fuel gauge's battery alarm is triggered.  If any of these pins change state from an external source, like a button, it will wake up the Scout.
@@ -130,11 +136,20 @@ None, but after running this command, the Scout will be asleep.
 #### Description
 `power.report`
 
-Print a JSON response of the power status of the Scout. Included is the battery percent charge available, the voltage of the battery, if the battery is currently charging, and if power is available on the **3V3** header pin.
+Print a JSON response of the power status of the Scout. Included is the battery percent charge available, the voltage of the battery, if the battery is currently charging, and if power is available on the 3V3 header pin.
 
-```js
+```bash
 > power.report
->
+```
+
+#### Parameters
+None
+
+#### Return Values
+
+A JSON representation of the current state of power for the Scout.
+
+```
 {
  "type":"power",
  "battery":100,
@@ -144,18 +159,11 @@ Print a JSON response of the power status of the Scout. Included is the battery 
 }
 ```
 
-
-#### Parameters
-None
-
-#### Return Values
-A JSON representation of the current state of power for the Scout.
-
-- *type* - The type of report returned.  In this case it will be the string *power*
+- *type* - The type of report returned.  In this case it will be the string **power**
 - *battery* - The amount of battery percentage available in the battery. Range is 0 to 100.
-- *voltage* - The voltage of the battery, x100--so *417* is 4.17 volts.  Range is between 3.4 volts and 4.2 volts.
+- *voltage* - The voltage of the battery, x100--so **417** is 4.17 volts.  Range is between 3.4 volts and 4.2 volts.
 - *charging* - A true/false value showing if the battery is currently charing.
-- *vcc* - A true/false value showing if power is enabled to the **3V3** header pin that powers backpacks.
+- *vcc* - A true/false value showing if power is enabled to the 3V3 header pin that powers backpacks.
 
 # mesh networking
 
@@ -165,15 +173,14 @@ A JSON representation of the current state of power for the Scout.
 
 Set the mesh radio settings for this scout. You can set the unique ID of the scout, the troop that this scout is associated with, as well as what channel the scout should use to communicate with other scouts on the network.
 
-```js
+```bash
 > mesh.config(1, 2, 20)
->
 ```
 
 #### Parameters
 - *scoutId* - The unique ID of this scout on the mesh network. Valid range is 0 to 65535.
 - *troopId* - The ID of the troop this scout is associated with, also known as a PAN ID. Valid range is 0 to 65535.
-- *channel* - The 802.15.4 channel for this troop.  Valid range is 11 to 26. All scouts in a troop must be on the same channel. Default is *20*.
+- *channel* - The 802.15.4 channel for this troop.  Valid range is 11 to 26. All scouts in a troop must be on the same channel. Default is **20**.
 
 #### Return Values
 None
@@ -185,9 +192,8 @@ None
 Set the mesh radio power settings for this scout.  The higher the power, generally there is longer range and less drop-outs, but requires more battery power.
 
 
-```js
+```bash
 > mesh.setpower(1)
->
 ```
 
 #### Parameters
@@ -221,9 +227,8 @@ None
 Set the mesh radio data rate, from 250kbit/sec up to 2Mbit/sec for this scout.  The higher the speed chosen, the less signal sensitivity the radio has--which usually translates to less radio range in the real world.
 
 
-```js
+```bash
 > mesh.setpower(0)
->
 ```
 
 #### Parameters
@@ -244,9 +249,8 @@ None
 
 Set the mesh radio security key, enabling the AES128 hardware encryption.  All Scouts in a troop should use the same key in order to communicate.
 
-```js
+```bash
 > mesh.key("TestSecurityKey1")
->
 ```
 
 #### Parameters
@@ -263,9 +267,8 @@ None
 
 Resets the mesh radio security key.
 
-```js
-> mesh.resetkey()
->
+```bash
+> mesh.resetkey
 ```
 
 #### Parameters
@@ -282,9 +285,8 @@ None
 
 Add this Scout to a mesh group. All scouts in a group will receive messages sent to that group.  All Scouts are assigned to groups 1-9 by default.
 
-```js
+```bash
 > mesh.joingroup(8)
->
 ```
 
 #### Parameters
@@ -301,9 +303,8 @@ None
 
 Remove this Scout from a mesh group.  All Scouts are assigned to groups 1-9 by default.
 
-```js
+```bash
 > mesh.leavegroup(8)
->
 ```
 
 #### Parameters
@@ -320,9 +321,8 @@ None
 
 Determine if this Scout is in the given group.
 
-```js
+```bash
 > mesh.ingroup(6)
->
 ```
 
 #### Parameters
@@ -338,9 +338,8 @@ None
 
 Send a message from this Scout to another Scout.
 
-```js
+```bash
 > mesh.send(3, "hello")
->
 ```
 
 #### Parameters
@@ -357,9 +356,17 @@ None
 
 Prints a JSON response of the mesh radio status of the Scout.
 
-```js
-> mesh.report()
->
+```bash
+> mesh.report
+```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current state of mesh networking for the Scout.
+
+```
 {
   "type":"mesh",
   "scoutid":6,
@@ -371,17 +378,11 @@ Prints a JSON response of the mesh radio status of the Scout.
 }
 ```
 
-#### Parameters
-None
-
-#### Return Values
-A JSON representation of the current state of mesh networking for the Scout.
-
-- *type* - The type of report returned.  In this case it will be the string *mesh*
-- *scoutid* - The unique ID of this particular Scout. Range is between 0 and 65535
-- *troopid* - The ID specific to this particular Troop. Range is between 0 and 65535. Also known as a PAN ID.
+- *type* - The type of report returned.  In this case it will be the string **mesh**
+- *scoutid* - The unique ID of this particular Scout. Range is between **0** and **65535**.
+- *troopid* - The ID specific to this particular Troop. Range is between **0** and **65535**. Also known as a PAN ID.
 - *routes* - The number of Scouts this Scout is routing packets for.
-- *channel* - The 802.15.4 channel this Scout is listening on. Valid range is 11 to 26.
+- *channel* - The 802.15.4 channel this Scout is listening on. Valid range is **11** to **26**.
 - *rate* - The data rate the radio on this Scout is currently set to.
 - *power* - The radio power setting this Scout is currently set to.
 
@@ -392,14 +393,8 @@ A JSON representation of the current state of mesh networking for the Scout.
 
 Prints an output of the current mesh routing table for this Scout, in a human-readable format.
 
-```js
-> mesh.routing()
->
+```bash
 > mesh.routing
-|    Fixed    |  Multicast  |    Score    |    DstAdd   | NextHopAddr |    Rank     |     LQI     |
-|      0      |      0      |      3      |      2      |      2      |     130     |     254     |
-|      0      |      0      |      3      |      3      |      3      |     130     |     254     |
-|      0      |      0      |      3      |      4      |      4      |     129     |     254     |
 ```
 
 #### Parameters
@@ -408,6 +403,13 @@ None
 #### Return Values
 A human-readable representation of the current routing table.
 
+```
+|    Fixed    |  Multicast  |    Score    |    DstAdd   | NextHopAddr |    Rank     |     LQI     |
+|      0      |      0      |      3      |      2      |      2      |     130     |     254     |
+|      0      |      0      |      3      |      3      |      3      |     130     |     254     |
+|      0      |      0      |      3      |      4      |      4      |     129     |     254     |
+```
+
 
 ## mesh.announce
 #### Description
@@ -415,13 +417,12 @@ A human-readable representation of the current routing table.
 
 Send a message to an entire group of Scouts at once.
 
-```js
+```bash
 > mesh.announce(2, "hi")
->
 ```
 
 #### Parameters
-- *groupId* - The group to send the message to.  Valid group IDs are 1-65535.
+- *groupId* - The group to send the message to.  Valid group IDs are **1** to **65535**.
 - *message* - The message to send to the Scout. This is a text string, surrounded in quotes, and should be no longer than 100 characters.
 
 #### Return Values
@@ -433,9 +434,8 @@ None
 
 Return the last received message’s signal strength (RSSI.)  Typical values returned will be somewhere between -30 and -95, with lower numbers being a lower signal.  Since they’re negative values, -95 is a weaker signal than -30.
 
-```js
-> print mesh.signal()
-> -39
+```bash
+> print mesh.signal
 ```
 
 #### Parameters
@@ -443,6 +443,10 @@ None
 
 #### Return Values
 The RSSI value of the last received message.
+
+```bash
+> -39
+```
 
 # miscellaneous
 
@@ -453,9 +457,8 @@ The RSSI value of the last received message.
 
 Print the value of the on-chip temperature sensor, in Celsius.
 
-```js
+```bash
 > temperature
-> 21
 ```
 
 #### Parameters
@@ -464,15 +467,19 @@ None
 #### Return Values
 The value of the on-chip temperature in Celsius.
 
+```js
+> 21
+```
+
+
 ## randomnumber
 #### Description
 `randomnumber()`
 
 Print a random number, seeded from random noise on the RF antenna. True hardware random number generator!
 
-```js
+```bash
 > randomnumber
-> 21543
 ```
 
 #### Parameters
@@ -481,15 +488,18 @@ None
 #### Return Values
 The value of a random number.  The range is -32768 to 32767.
 
+```bash
+> 21543
+```
+
 ## uptime
 #### Description
 `uptime()`
 
 Print the number of milliseconds the Scout has been running since the last reset. One second is equal to 1000 milliseconds.
 
-```js
+```bash
 > uptime
-> 203403
 ```
 
 #### Parameters
@@ -498,6 +508,10 @@ None
 #### Return Values
 The number of milliseconds since the last reset.
 
+```bash
+> 203403
+```
+
 # led
 ## led.blink
 #### Description
@@ -505,16 +519,15 @@ The number of milliseconds since the last reset.
 
 Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds.
 
-```js
+```bash
 > led.blink(0, 255, 255)
->
 ```
 
 #### Parameters
-- *red* - The value of the red color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
-- *green* - The value of the green color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
-- *blue* - The value of the blue color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
-- *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to 500 milliseconds.
+- *red* - The value of the red color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *green* - The value of the green color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *blue* - The value of the blue color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to **500** milliseconds.
 
 #### Return Values
 None
@@ -525,9 +538,8 @@ None
 
 Turn off the LED.  This turns off the LED if it's currently on, as well as disables any ongoing blinking that was set by a previous command.
 
-```js
-> led.off()
->
+```bash
+> led.off
 ```
 
 #### Parameters
@@ -542,9 +554,8 @@ None
 
 Turn the LED red.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.red()
->
+```bash
+> led.red
 ```
 
 #### Parameters
@@ -560,9 +571,8 @@ None
 
 Turn the LED green.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.green()
->
+```bash
+> led.green
 ```
 
 #### Parameters
@@ -578,9 +588,8 @@ None
 
 Turn the LED blue.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.blue()
->
+```bash
+> led.blue
 ```
 
 #### Parameters
@@ -597,9 +606,8 @@ None
 
 Turn the LED cyan.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.cyan()
->
+```bash
+> led.cyan
 ```
 
 #### Parameters
@@ -615,9 +623,8 @@ None
 
 Turn the LED purple.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.purple()
->
+```bash
+> led.purple
 ```
 
 #### Parameters
@@ -633,9 +640,8 @@ None
 
 Turn the LED magenta.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.magenta()
->
+```bash
+> led.magenta
 ```
 
 #### Parameters
@@ -651,9 +657,8 @@ None
 
 Turn the LED yellow.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.yellow()
->
+```bash
+> led.yellow
 ```
 
 #### Parameters
@@ -669,9 +674,8 @@ None
 
 Turn the LED orange.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.orange()
->
+```bash
+> led.orange
 ```
 
 #### Parameters
@@ -688,9 +692,8 @@ None
 
 Turn the LED white.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.white()
->
+```bash
+> led.white
 ```
 
 #### Parameters
@@ -706,9 +709,8 @@ None
 
 Turn the LED the Scout's torch color.  If the optional first argument is passed in, the LED will blink that many milliseconds and turn off again.  If the optional second argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
-```js
-> led.torch()
->
+```bash
+> led.torch
 ```
 
 #### Parameters
@@ -724,9 +726,8 @@ None
 
 Set the LED to the *hexValue* given. Similar to HTML, “RRGGBB”, but no hash at the beginning.
 
-```js
+```bash
 > led.hexvalue("FF0000")
->
 ```
 
 #### Parameters
@@ -742,15 +743,14 @@ None
 
 Set the LED to the red, green, and blue values given.
 
-```js
+```bash
 > led.setrgb(255, 0, 0)
->
 ```
 
 #### Parameters
-- *red* - The value of the red color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
-- *green* - The value of the green color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
-- *blue* - The value of the blue color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *red* - The value of the red color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *green* - The value of the green color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *blue* - The value of the blue color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
 
 #### Return Values
 None
@@ -761,15 +761,14 @@ None
 
 Save the torch color to values given by red, green, and blue.
 
-```js
+```bash
 > led.savetorch(255, 0, 0)
->
 ```
 
 #### Parameters
-- *red* - The value of the red color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
-- *green* - The value of the green color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
-- *blue* - The value of the blue color for the LED.  Valid values are 0 to 255 with 0 being off and 255 being fully on.
+- *red* - The value of the red color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *green* - The value of the green color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *blue* - The value of the blue color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
 
 #### Return Values
 None
@@ -779,14 +778,8 @@ None
 #### Description
 `led.report()`
 
-```js
-> led.report()
->
-{
-  "type":"led",
-  "led":[0,0,0],
-  "torch":[255,0,0]
-}
+```bash
+> led.report
 ```
 
 #### Parameters
@@ -794,6 +787,14 @@ None
 
 #### Return Values
 A JSON representation of the current state of the LED.
+
+```
+{
+  "type":"led",
+  "led":[0,0,0],
+  "torch":[255,0,0]
+}
+```
 
 - *type* - The type of report returned.  In this case it will be the string **led**
 - *led* - The current state of the LED with the values of red, green, and blue.
@@ -806,9 +807,8 @@ A JSON representation of the current state of the LED.
 
 Make the given pin an input.
 
-```js
+```bash
 > pin.makeinput("d2")
->
 ```
 
 #### Parameters
@@ -823,9 +823,8 @@ None
 
 Make the given pin an input with the internal pull-up resistor enabled.
 
-```js
+```bash
 > pin.makeinputup("d2")
->
 ```
 
 #### Parameters
@@ -841,9 +840,8 @@ None
 
 Make the given pin an output.  Once a pin is an output, you can set it high or low.
 
-```js
+```bash
 > pin.makeoutput("d2")
->
 ```
 
 #### Parameters
@@ -858,9 +856,8 @@ None
 
 Disable the given pin.  A disabled pin will not send any events to other Scouts or to HQ.
 
-```js
+```bash
 > pin.disable("d2")
->
 ```
 
 #### Parameters
@@ -876,9 +873,8 @@ None
 
 Set the pin mode for a given pin.
 
-```js
+```bash
 > pin.setmode("d2", INPUT_PULLUP)
->
 ```
 
 #### Parameters
@@ -895,9 +891,8 @@ None
 
 Get the value for the given pin.
 
-```js
+```bash
 > pin.read("d2")
->
 ```
 
 #### Parameters
@@ -913,9 +908,8 @@ The current value of the pin.  For digital pins the value will be **0** or **1**
 
 Set the value for the given pin.
 
-```js
+```bash
 > pin.write("d2", HIGH)
->
 ```
 
 #### Parameters
@@ -932,9 +926,17 @@ None
 
 Get a report of the pin values and pin modes of the digital pins, d2 through d8.
 
-```js
+```bash
 > pin.report.digital
-> 
+```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current state of the digital pins.
+
+```
 {
   "type":"digital",
   "mode":[-1,-1,-1,-1,-1,-1,-1],
@@ -942,15 +944,9 @@ Get a report of the pin values and pin modes of the digital pins, d2 through d8.
 }
 ```
 
-#### Parameters
-None
-
-#### Return Values
-A JSON representation of the current state of the digital pins.
-
-- *type* - The type of report returned.  In this case it will be the string *digital*
-- *mode* - An array of pin modes for "d2" to "d8". -1 is *DISABLED*, 0, is *INPUT*, 1 is *OUTPUT*, and 2 is *INPUT_PULLUP*
-- *state* - An array of pin values for "d2" to "d8". -1 is *DISABLED*, 0, is *LOW*, and 1 is *HIGH*.
+- *type* - The type of report returned.  In this case it will be the string **digital**
+- *mode* - An array of pin modes for "d2" to "d8". **-1** is *DISABLED*, **0**, is *INPUT*, **1** is *OUTPUT*, and **2** is *INPUT_PULLUP*
+- *state* - An array of pin values for "d2" to "d8". **-1** is *DISABLED*, **0**, is *LOW*, and **1** is *HIGH*.
 
 ## pin.report.analog
 #### Description
@@ -958,14 +954,8 @@ A JSON representation of the current state of the digital pins.
 
 Get a report of the pin values and pin modes of the analog pins, a0 through a7.
 
-```js
+```bash
 > pin.report.analog
-> 
-{
-  "type":"analog",
-  "mode":[-1,-1,-1,-1,-1,-1,-1,-1],
-  "state":[-1,-1,-1,-1,-1,-1,-1,-1]
-}
 ```
 
 #### Parameters
@@ -974,9 +964,17 @@ None
 #### Return Values
 A JSON representation of the current state of the digital pins.
 
+```
+{
+  "type":"analog",
+  "mode":[-1,-1,-1,-1,-1,-1,-1,-1],
+  "state":[-1,-1,-1,-1,-1,-1,-1,-1]
+}
+```
+
 - *type* - The type of report returned.  In this case it will be the string *analog*
-- *mode* - An array of pin modes for "a0" to "a7". -1 is *DISABLED*, 0, is *INPUT*, 1 is *OUTPUT*, and 2 is *INPUT_PULLUP*
-- *state* - An array of pin values for "a0" to "a7". -1 is *DISABLED*, ranges 0-1023 are possible for analog inputs.
+- *mode* - An array of pin modes for "d2" to "d8". **-1** is *DISABLED*, **0**, is *INPUT*, **1** is *OUTPUT*, and **2** is *INPUT_PULLUP*
+- *state* - An array of pin values for "a0" to "a7". **-1** is *DISABLED*, ranges **0** to **1023** are possible for analog inputs.
 
 
 # scout
@@ -986,9 +984,17 @@ A JSON representation of the current state of the digital pins.
 
 Get a report of the Scout's information, including family, hardware version, serial number, and build.
 
-```js
+```bash
 > scout.report
-> 
+```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current state of the digital pins.
+
+```
 {
  "type":"scout",
  "lead":false,
@@ -1000,29 +1006,22 @@ Get a report of the Scout's information, including family, hardware version, ser
 }
 ```
 
-#### Parameters
-None
-
-#### Return Values
-A JSON representation of the current state of the digital pins.
-
-- *type* - The type of report returned.  In this case it will be the string *scout*
-- *lead* - Will be *true* if this Scout is a Lead Scout, *false* otherwise.
+- *type* - The type of report returned.  In this case it will be the string **scout**
+- *lead* - Will be **true** if this Scout is a Lead Scout, **false** otherwise.
 - *version* - The version of this report. Later report versions may have more or different fields.
-- *hardware* - The hardware version of this Scout. 
-- *family* - The family that this hardware belongs to. 1000 is the only valid value at this time.
-- *serial* - A unique serial number of this Scout. 
+- *hardware* - The hardware version of this Scout.
+- *family* - The family that this hardware belongs to. **1000** is the only valid value at this time.
+- *serial* - A unique serial number of this Scout.
 - *build* - The build number of the firmware on this Scout. Useful for auto-updating.
 
 ## scout.isleadscout
 #### Description
 `scout.isleadscout()`
 
-Determines if this is a Lead Scout or not. 
+Determines if this is a Lead Scout or not.
 
-```js
+```bash
 > scout.isleadscout
-> 0
 ```
 
 #### Parameters
@@ -1031,6 +1030,10 @@ None
 #### Return Values
 Returns **0** if this is not a Lead Scout, and **1** if it is a Lead Scout and has a Wi-Fi backpack attached.
 
+```bash
+> 0
+```
+
 
 ## scout.delay
 #### Description
@@ -1038,9 +1041,8 @@ Returns **0** if this is not a Lead Scout, and **1** if it is a Lead Scout and h
 
 Delay the Scout for the given milliseconds. Radio, shell, Wi-Fi, and other systems will continue to run, so it’s non-blocking.  The interactive shell will return a prompt again once the delay has expired.
 
-```js
+```bash
 > scout.delay(1000)
-> 
 ```
 
 #### Parameters
@@ -1056,7 +1058,7 @@ None.
 
 Wipe a Scout clean and make it factory-fresh.  Running this once will ask you to run it again to confirm the factory reset.  When run a second time, it will reset all settings in a Wi-Fi backpack, if attached, and will reset the mesh radio settings, HQ token, and mesh security key.  It will not reset the hardware, family, and serial IDs of the Scout.
 
-```js
+```bash
 > scout.daisy
 > Factory reset requested. Send command again to confirm.
 > scout.daisy
@@ -1076,15 +1078,8 @@ None
 
 Restarts the Scout using the watchdog timer, so all pins are reset and initial state is restored.
 
-```js
+```bash
 > scout.boot
-
-Hello from Pinoccio!
- (Shell based on Bitlash v2.0 (c) 2014 Bill Roy)
- 17774 bytes free
- Build 2014032001
- Field Scout ready
->
 ```
 
 #### Parameters
@@ -1092,6 +1087,15 @@ None
 
 #### Return Values
 None
+
+```
+Hello from Pinoccio!
+ (Shell based on Bitlash v2.0 (c) 2014 Bill Roy)
+ 17774 bytes free
+ Build 2014032001
+ Field Scout ready
+>
+```
 
 
 # HQ
@@ -1101,9 +1105,8 @@ None
 
 Saves the unique user HQ token for this Scout given by the argument.
 
-```js
+```bash
 > scout.sethqtoken("8abc0800a80a08w0asd0f80asd")
-> 
 ```
 
 #### Parameters
@@ -1119,9 +1122,8 @@ None
 
 Prints the unique user HQ token for this Scout.
 
-```js
-> scout.gethqtoken()
-> 8abc0800a80a08w0asd0f80asd
+```bash
+> scout.gethqtoken
 ```
 
 #### Parameters
@@ -1129,6 +1131,10 @@ None
 
 #### Return Values
 - *token* - The unique HQ token associated with this Scout.
+
+```bash
+> 8abc0800a80a08w0asd0f80asd
+```
 
 # events
 
@@ -1138,9 +1144,8 @@ None
 
 Start the event handler to trigger reports, callbacks, and eventing internals.
 
-```js
+```bash
 > events.start
-> 
 ```
 
 #### Parameters
@@ -1157,9 +1162,8 @@ None
 
 Stop the event handler that triggers reports, callbacks, and eventing internals.  If events are turned off, no reports will be triggered, and HQ will not reflect the state of the Scout any further until events are turned on again.
 
-```js
+```bash
 > events.stop
-> 
 ```
 
 #### Parameters
@@ -1174,14 +1178,13 @@ None
 
 Set the frequency of the various event handlers. These values will slow down or speed up the responsiveness of various events, split into digital, analog, and the peripheral sets.
 
-```js
+```bash
 > events.setcycle(100, 1000, 60000)
-> 
 ```
 
 #### Parameters
-- *digitalMs* - How often the digital pin event handlers are called. Defaults to 50ms, or twenty times per second.  
-- *analogMs* - How often the analog pin event handlers are called. Defaults to 60000ms, or once a minute.  
+- *digitalMs* - How often the digital pin event handlers are called. Defaults to 50ms, or twenty times per second.
+- *analogMs* - How often the analog pin event handlers are called. Defaults to 60000ms, or once a minute.
 - *peripheralMs* - How often the peripheral event handlers are called.  Defaults to 60000ms, or once a minute.  The peripherals include the battery percentage, voltage, charging flag, battery alarm, and temperature.
 
 #### Return Values
@@ -1195,15 +1198,8 @@ None
 
 Print the current report of the Wi-Fi connection.  Note, this command only works on a Lead Scout.
 
-```js
-> wifi.report()
-> 
-{
- "type":"wifi",
- "version":0,
- "connected":true,
- "hq":true
-}
+```bash
+> wifi.report
 ```
 
 #### Parameters
@@ -1211,6 +1207,15 @@ None
 
 #### Return Values
 A JSON representation of the current state of the Wi-Fi connection.
+
+```
+{
+ "type":"wifi",
+ "version":0,
+ "connected":true,
+ "hq":true
+}
+```
 
 - *type* - The type of report returned.  In this case it will be the string *wifi*
 - *connected* - Will be *true* if this Lead Scout is connected to a Wi-Fi access point, *false* otherwise.
@@ -1222,9 +1227,17 @@ A JSON representation of the current state of the Wi-Fi connection.
 
 Print detailed, human-readable information about the Wi-Fi module.  Note, this command only works on a Lead Scout.
 
-```js
-> wifi.status()
-> 
+```bash
+> wifi.status
+```
+
+#### Parameters
+None
+
+#### Return Values
+The information about the Wi-Fi module.
+
+```
 S2W APP VERSION=2.5.1
 S2W GEPS VERSION=2.5.1
 S2W WLAN VERSION=2.5.1
@@ -1239,46 +1252,39 @@ CID  TYPE  MODE  LOCAL PORT  REMOTE PORT  REMOTE IP
 1  TCP-SSL CLIENT  48838    22757    173.255.220.185
 ```
 
-#### Parameters
-None
-
-#### Return Values
-None
-
-
 ## wifi.list
 #### Description
 `wifi.list()`
 
 Print out a list of Wi-Fi access points (APs) nearby.  Note, this command only works on a Lead Scout.
 
-```js
-> wifi.status()
-> 
-       BSSID        SSID   Channel Type   RSSI  Security
- 44:94:fc:62:b2:72, Louise  , 01, INFRA , -85 , WPA2-PERSONAL
- 00:1b:63:2c:18:b3, Pinoccio, 02, INFRA , -52 , WPA2-PERSONAL
-No.Of AP Found:2
+```bash
 ```
 
 #### Parameters
 None
 
 #### Return Values
-None
+The list of access points found.
+
+```
+       BSSID        SSID   Channel Type   RSSI  Security
+ 44:94:fc:62:b2:72, Louise  , 01, INFRA , -85 , WPA2-PERSONAL
+ 00:1b:63:2c:18:b3, Pinoccio, 02, INFRA , -52 , WPA2-PERSONAL
+No.Of AP Found:2
+```
 
 
 ## wifi.config
 #### Description
 `wifi.config(wifiAPName, wifiAPPassword)`
 
-Associate this Lead Scout with a new access point (AP.)  Note, this command only works on a Lead Scout.  
+Associate this Lead Scout with a new access point (AP.)  Note, this command only works on a Lead Scout.
 
 Once you call this command, you have to run `wifi.reassociate` to actually connect to the new AP.  This command just saves the AP credentials to use on the next association.
 
-```js
+```bash
 > wifi.config("My Access Point", "password")
-> 
 ```
 
 #### Parameters
@@ -1295,9 +1301,8 @@ None. Run `wifi.reassociate` to actually connect to the new access point.
 
 Enable DHCP on the Wi-Fi backpack.  An optional *hostname* can be passed if desired, but not required.  This must be run before `wifi.reassociate` in order to take effect.  If you wish to manually enter your IP information, use `wifi.static` below.
 
-```js
-> wifi.dhcp()
-> 
+```bash
+> wifi.dhcp
 ```
 
 #### Parameters
@@ -1311,11 +1316,10 @@ None
 #### Description
 `wifi.static("ip", "netmask", "gateway", "dns")`
 
-Set static IP settings for the Wi-Fi backpack.  
+Set static IP settings for the Wi-Fi backpack.
 
-```js
+```bash
 > wifi.static("192.168.1.100", "255,255,255.0", "192.168.1.1", "8.8.8.8")
-> 
 ```
 
 #### Parameters
@@ -1338,9 +1342,8 @@ The backpack will always attempt to keep a connection to HQ, as well as keep ass
 
 Note, during the connection phase, specifically during the SSL handshake, the Scout may become somewhat unresponsive for a few seconds.  This is normal, and the shell prompt should return shortly afterwards.
 
-```js
-> wifi.reassociate()
-> 
+```bash
+> wifi.reassociate
 ```
 
 #### Parameters
@@ -1358,12 +1361,8 @@ Send a raw command to the Wi-Fi module.  Please see the Gainspan GS1011MIPS data
 
 Note, this is an advanced command, and you can put the Wi-Fi backpack into an unknown state with this command, so please be careful!
 
-```js
+```bash
 > wifi.command("AT+VER=?")
-> 
-S2W APP VERSION=2.5.1 
-S2W GEPS VERSION=2.5.1 
-S2W WLAN VERSION=2.5.1
 ```
 
 #### Parameters
@@ -1372,6 +1371,12 @@ S2W WLAN VERSION=2.5.1
 #### Return Values
 The response of the raw command.
 
+```
+S2W APP VERSION=2.5.1
+S2W GEPS VERSION=2.5.1
+S2W WLAN VERSION=2.5.1
+```
+
 
 ## wifi.gettime
 #### Description
@@ -1379,10 +1384,8 @@ The response of the raw command.
 
 Print the current time, fetched from the Wi-Fi backpack via network time protocol (NTP.)  The time returned is in UTC.
 
-```js
-> wifi.gettime()
-> 
-22/3/2014,18:18:48,1395512328039
+```bash
+> wifi.gettime
 ```
 
 #### Parameters
@@ -1390,3 +1393,7 @@ None
 
 #### Return Values
 The current time, in the format DD/MM/YYYY,HH:MM:SS,<number of milliseconds since 1/1/1970>
+
+```
+22/3/2014,18:18:48,1395512328039
+```
