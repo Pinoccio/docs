@@ -11,7 +11,7 @@ the api endpoint is https://api.pinocc.io
 make api calls from your terminal for much win!
 
 ```
- curl https://api.pinocc.io/v1/hi
+ curl https://api.pinocc.io/ok
 
 ```
 
@@ -262,7 +262,7 @@ data is an array of troop objects.
 
 ```js
 
-{"data":[{"id":1,"account":19,"token":"af49e76320781a7b9722a137039b7f99","name":"name","online":false}]}
+{"data":[{"id":1,"account":19,"name":"name","online":false}]}
 
 ```
 
@@ -297,7 +297,7 @@ returns a troop object by id. also contains "online" which represents is a lead 
 
 ```js
 
-{"data":{"account":19,"id":1,"token":"af49e76320781a7b9722a137039b7f99","online":false,"name":"name"}}
+{"data":{"account":19,"id":1,"online":false,"name":"name"}}
 ```
  or an error
 
@@ -306,6 +306,32 @@ returns a troop object by id. also contains "online" which represents is a lead 
 ```
 
 note that the name property of the troop object will be undefined if a name was never assigned to the troop.
+
+## Get a troop token
+
+#### GET /v1/{troop id}/token
+
+After the troop has been created you will need to access the troop token to provision more scouts.
+
+```
+curl 'https://api.pinocc.io/v1/{troop id}/token?token=7fc11b7554f0cd303bad94eb0eb36e2d'
+```
+
+#### Parameters
+
+required
+
+- {troop id} 
+
+#### Return Values
+
+returns a json string. the troop token.
+
+```
+"af49e76320781a7b9722a137039b7f99"
+```
+
+
 
 ## Update a troop
 
