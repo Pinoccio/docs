@@ -225,7 +225,7 @@ an object with the troops data.
 
 
 ```js
-{"data":{"id":"1","token":"af49e76320781a7b9722a137039b7f99","account":19}}
+{"data":{"id":1,"token":"af49e76320781a7b9722a137039b7f99","account":19,"name":"optional name"}}
 
 ```
 
@@ -262,7 +262,7 @@ data is an array of troop objects.
 
 ```js
 
-{"data":[{"id":"1","account":19,"token":"af49e76320781a7b9722a137039b7f99","online":false}]}
+{"data":[{"id":1,"account":19,"token":"af49e76320781a7b9722a137039b7f99","name":"name","online":false}]}
 
 ```
 
@@ -297,13 +297,15 @@ returns a troop object by id. also contains "online" which represents is a lead 
 
 ```js
 
-{"data":{"account":19,"id":"1","token":"af49e76320781a7b9722a137039b7f99","online":false}}
+{"data":{"account":19,"id":1,"token":"af49e76320781a7b9722a137039b7f99","online":false,"name":"name"}}
 ```
  or an error
 
 ```js
 {"error":"could not find token for troop 1000"}
 ```
+
+note that the name property of the troop object will be undefined if a name was never assigned to the troop.
 
 ## Update a troop
 
