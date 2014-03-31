@@ -329,7 +329,11 @@ Determine if this Scout is in the given group.
 - *groupId* - The group ID to check to determine if the Scout is a member.  Valid group IDs are 1-65535.
 
 #### Return Values
-None
+Returns **1** if the scout is a member of the given group, **0** otherwise.
+
+```bash
+> 1
+```
 
 
 ## mesh.send
@@ -803,7 +807,7 @@ A JSON representation of the current state of the LED.
 # pins
 ## pin.makeinput
 #### Description
-`pin.makeinput(pinName)`
+`pin.makeinput(pinName, inputType)`
 
 Make the given pin an input.
 
@@ -813,26 +817,10 @@ Make the given pin an input.
 
 #### Parameters
 - *pinName* - A string value of the pin to make an input. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+- *inputType* - Optional. Set to **INPUT** if you want the pull-up resistor to be disabled. Set to **INPUT_PULLUP** if you want the pull-up resistor enabled.  Set to **INPUT_PULLUP** by default.
 
 #### Return Values
 None
-
-## pin.makeinputup
-#### Description
-`pin.makeinputup(pinName)`
-
-Make the given pin an input with the internal pull-up resistor enabled.
-
-```bash
-> pin.makeinputup("d2")
-```
-
-#### Parameters
-- *pinName* - A string value of the pin to make an input. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
-
-#### Return Values
-None
-
 
 ## pin.makeoutput
 #### Description
@@ -1143,6 +1131,61 @@ None
 `events.start()`
 
 Start the event handler to trigger reports, callbacks, and eventing internals.
+
+```bash
+> events.start
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+
+
+## events.stop
+#### Description
+`events.stop()`
+
+Stop the event handler that triggers reports, callbacks, and eventing internals.  If events are turned off, no reports will be triggered, and HQ will not reflect the state of the Scout any further until events are turned on again.
+
+```bash
+> events.stop
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+## events.setcycle
+#### Description
+`events.setcycle(digitalMs, analogMs, peripheralMs)`
+
+Set the frequency of the various event handlers. These values will slow down or speed up the responsiveness of various events, split into digital, analog, and the peripheral sets.
+
+```bash
+> events.setcycle(100, 1000, 60000)
+```
+
+#### Parameters
+- *digitalMs* - How often the digital pin event handlers are called. Defaults to 50ms, or twenty times per second.
+- *analogMs* - How often the analog pin event handlers are called. Defaults to 60000ms, or once a minute.
+- *peripheralMs* - How often the peripheral event handlers are called.  Defaults to 60000ms, or once a minute.  The peripherals include the battery percentage, voltage, charging flag, battery alarm, and temperature.
+
+#### Return Values
+None
+
+
+# event callbacks
+
+## event.message
+#### Description
+`events.message(fromScoutId, key)`
+
+This call back will be executed whenever the Scout receives a message via the mesh network
 
 ```bash
 > events.start
