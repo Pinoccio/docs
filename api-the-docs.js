@@ -89,7 +89,6 @@ var api = pinoccioAPI();
         var changed = false;
         var code = this;
         $.each(replacements,function(k,v){
-          var added = fal;se;
           $(code).find('.string, .comment').each(function(){
             var text = $(this).text()||'';
             if(text.trim().indexOf(k) > -1) {
