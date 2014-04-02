@@ -586,11 +586,15 @@ curl https://api.pinocc.io/v1/sync?token=7fc11b7554f0cd303bad94eb0eb36e2d
 ### Parameters.
 
 optional
+
 - stale
+
   - default false
   - if stale is set to a truthy value (1,true,1337 etc) the last known state of every report will be returned. 
   - Events the have occured before the last ```online``` event will have a stale:1 flag set. This will help you distinguish reports that may not reflect the current state of your troop.
+
 - tail
+
   - default true
   - if you pass a falsy value (0,false etc) the sync stream will end when it has sent the current state. it will not continue streaming forever
 
