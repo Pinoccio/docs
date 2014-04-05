@@ -199,6 +199,53 @@ or an error
 {"error":{"code":403,"message":"Error: not logged in"}}
 ```
 
+## logout
+
+#### POST /v1/logout
+
+logout an auth token
+
+```sh
+
+curl -X POST  https://api.pinocc.io/v1/logout?token=7fc11b7554f0cd303bad94eb0eb36e2d
+
+```
+
+#### Parameters
+
+- token
+
+  - the token you wish to logout
+
+#### Return values
+
+```sh
+
+{"data":true}
+
+```
+
+## Readonly token
+
+#### POST /v1/account/token
+
+```sh
+
+curl -X POST  https://api.pinocc.io/v1/account/token?token=7fc11b7554f0cd303bad94eb0eb36e2d
+
+```
+
+#### Parameters
+
+None. for now.
+
+#### Return values
+
+```js
+{"data":{"perms":{"read":true},"account":19,"token":"7fc11b7554f0cd303bad94eb0eb36e2d"}}
+
+```
+
 # Troops
 
 ## Make a troop
@@ -364,7 +411,7 @@ or an error
 
 After the troop has been created you will need to access the troop token if you want to provision more scouts.
 
-```
+```sh
 curl 'https://api.pinocc.io/v1/{troop id}/token?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 ```
 
