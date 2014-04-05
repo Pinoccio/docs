@@ -242,7 +242,7 @@ None. for now.
 #### Return values
 
 ```js
-{"data":{"perms":{"read":true},"account":19,"token":"7fc11b7554f0cd303bad94eb0eb36e2d"}}
+{"data":{"perms":{"read":true},"firstname":"","lastname":"","account":19,"token":"b27a3af628e595eb6035e6a6c84e3cda","gravatar":"https://www.gravatar.com/avatar/132e4d83bbcc3b9e53b76d241025481b?d=https%3A%2F%2Fpinocc.io%2Fmodules%2Fcontent%2Ftpl%2Fimages%2Fdefault-avatar.png"}}
 
 ```
 
