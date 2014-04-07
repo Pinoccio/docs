@@ -219,6 +219,8 @@ curl -X POST  https://api.pinocc.io/v1/logout?token=7fc11b7554f0cd303bad94eb0eb3
 
 #### Return values
 
+a json oblect with confirmation.
+
 ```sh
 
 {"data":true}
@@ -229,11 +231,14 @@ curl -X POST  https://api.pinocc.io/v1/logout?token=7fc11b7554f0cd303bad94eb0eb3
 
 #### POST /v1/account/token
 
-```sh
+Create a "read only" account token. This means you can pass it out and people can only read your troop data but cannot control them.
 
+```sh
 curl -X POST  https://api.pinocc.io/v1/account/token?token=7fc11b7554f0cd303bad94eb0eb36e2d
 
 ```
+
+More granular permission control comming soon.
 
 #### Parameters
 
@@ -241,8 +246,10 @@ None. for now.
 
 #### Return values
 
+a json object with the read only view of the account's info.
+
 ```js
-{"data":{"perms":{"read":true},"firstname":"","lastname":"","account":19,"token":"b27a3af628e595eb6035e6a6c84e3cda","gravatar":"https://www.gravatar.com/avatar/132e4d83bbcc3b9e53b76d241025481b?d=https%3A%2F%2Fpinocc.io%2Fmodules%2Fcontent%2Ftpl%2Fimages%2Fdefault-avatar.png"}}
+{"data":{"perms":{"read":true},"firstname":"","lastname":"","account":19,"token":"b27a3af628e595eb6035e6a6c84e3cda","gravatar":"https://www..."}}
 
 ```
 
