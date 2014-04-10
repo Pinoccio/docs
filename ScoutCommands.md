@@ -830,7 +830,7 @@ A JSON representation of the current state of the LED.
 # pins
 ## pin.makeinput
 #### Description
-`pin.makeinput("pinName", inputType)`
+`pin.makeinput("pinName", inputType=INPUT_PULLUP)`
 
 Make the given pin an input.
 
