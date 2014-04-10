@@ -111,6 +111,7 @@ None
 None, but after running this command, the 3V3 header pin will be at 0 volts.
 
 
+<!--
 ## power.sleep
 #### Description
 `void power.sleep(ms)`
@@ -129,7 +130,7 @@ The Scout can be woken up by an external pin change event on pin D4, D5, D7, or 
 
 #### Return Values
 None, but after running this command, the Scout will be asleep.
-
+-->
 
 ## power.report
 
