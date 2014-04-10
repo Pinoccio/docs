@@ -246,7 +246,7 @@ None
 
 ## mesh.setkey
 #### Description
-`mesh.setkey(key)`
+`mesh.setkey("key")`
 
 Set the mesh radio security key, enabling the AES128 hardware encryption.  All Scouts in a troop should use the same key in order to communicate.
 
@@ -360,7 +360,7 @@ Returns **1** if the scout is a member of the given group, **0** otherwise.
 
 ## mesh.send
 #### Description
-`mesh.send(scoutId, message)`
+`mesh.send(scoutId, "message")`
 
 Send a message from this Scout to another Scout.
 
@@ -439,7 +439,7 @@ A human-readable representation of the current routing table.
 
 ## mesh.announce
 #### Description
-`mesh.announce(groupId, message)`
+`mesh.announce(groupId, "message")`
 
 Send a message to an entire group of Scouts at once.
 
@@ -749,7 +749,7 @@ None
 
 ## led.sethex
 #### Description
-`led.sethex(hexValue)`
+`led.sethex("hexValue")`
 
 Set the LED to the *hexValue* given. Similar to HTML, “RRGGBB”, but no hash at the beginning.
 
@@ -830,7 +830,7 @@ A JSON representation of the current state of the LED.
 # pins
 ## pin.makeinput
 #### Description
-`pin.makeinput(pinName, inputType)`
+`pin.makeinput("pinName", inputType)`
 
 Make the given pin an input.
 
@@ -847,7 +847,7 @@ None
 
 ## pin.makeoutput
 #### Description
-`pin.makeoutput(pinName)`
+`pin.makeoutput("pinName")`
 
 Make the given pin an output.  Once a pin is an output, you can set it high or low.
 
@@ -863,7 +863,7 @@ None
 
 ## pin.disable
 #### Description
-`pin.disable(pinName)`
+`pin.disable("pinName")`
 
 Disable the given pin.  A disabled pin will not send any events to other Scouts or to HQ.
 
@@ -880,7 +880,7 @@ None
 
 ## pin.setmode
 #### Description
-`pin.setmode(pinName, pinMode)`
+`pin.setmode("pinName", pinMode)`
 
 Set the pin mode for a given pin.
 
@@ -898,7 +898,7 @@ None
 
 ## pin.read
 #### Description
-`pin.read(pinName)`
+`pin.read("pinName")`
 
 Get the value for the given pin.
 
@@ -915,7 +915,7 @@ The current value of the pin.  For digital pins the value will be **0** or **1**
 
 ## pin.write
 #### Description
-`pin.write(pinName, pinValue)`
+`pin.write("pinName", pinValue)`
 
 Set the value for the given pin.
 
@@ -1045,7 +1045,7 @@ Returns **0** if this is not a Lead Scout, and **1** if it is a Lead Scout and h
 > 0
 ```
 
-
+<!--
 ## scout.delay
 #### Description
 `scout.delay(ms)`
@@ -1061,7 +1061,7 @@ Delay the Scout for the given milliseconds. Radio, shell, Wi-Fi, and other syste
 
 #### Return Values
 None.
-
+-->
 
 ## scout.daisy
 #### Description
@@ -1112,7 +1112,7 @@ Hello from Pinoccio!
 # HQ
 ## hq.settoken
 #### Description
-`hq.settoken(token)`
+`hq.settoken("token")`
 
 Saves the unique user HQ token for this Scout given by the argument.
 
@@ -1201,14 +1201,14 @@ Set the frequency of the various event handlers. These values will slow down or 
 #### Return Values
 None
 
-
+<!--
 # event callbacks
 
 ## event.message
 #### Description
-`events.message(fromScoutId, key)`
+`event.message(fromScoutId, key)`
 
-This call back will be executed whenever the Scout receives a message via the mesh network
+This callback will be executed whenever the Scout receives a message via the mesh network
 
 ```bash
 > events.start
@@ -1255,6 +1255,7 @@ Set the frequency of the various event handlers. These values will slow down or 
 
 #### Return Values
 None
+-->
 
 # lead scout
 
@@ -1343,7 +1344,7 @@ No.Of AP Found:2
 
 ## wifi.config
 #### Description
-`wifi.config(wifiAPName, wifiAPPassword)`
+`wifi.config("wifiAPName", "wifiAPPassword")`
 
 Associate this Lead Scout with a new access point (AP.)  Note, this command only works on a Lead Scout.
 
@@ -1443,7 +1444,7 @@ S2W GEPS VERSION=2.5.1
 S2W WLAN VERSION=2.5.1
 ```
 
-
+<!--
 ## wifi.gettime
 #### Description
 `wifi.gettime()`
@@ -1463,3 +1464,4 @@ The current time, in the format DD/MM/YYYY,HH:MM:SS,<number of milliseconds sinc
 ```
 22/3/2014,18:18:48,1395512328039
 ```
+-->
