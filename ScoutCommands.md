@@ -1326,6 +1326,7 @@ CID  TYPE  MODE  LOCAL PORT  REMOTE PORT  REMOTE IP
 Print out a list of Wi-Fi access points (APs) nearby.  Note, this command only works on a Lead Scout.
 
 ```bash
+> wifi.list
 ```
 
 #### Parameters
