@@ -519,9 +519,9 @@ The number of milliseconds since the last reset.
 # led
 ## led.blink
 #### Description
-`led.blink(red, green, blue, ms=500)`
+`led.blink(red, green, blue, ms=500, continuous=0)`
 
-Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds.
+Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds.  If the optional fifth argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
 ```bash
 > led.blink(0, 255, 255)
@@ -532,6 +532,7 @@ Blink the RGB LED with the given colors.  An optional fourth argument chooses ho
 - *green* - The value of the green color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
 - *blue* - The value of the blue color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
 - *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to **500** milliseconds.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
 
 #### Return Values
 None
