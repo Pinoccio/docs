@@ -243,14 +243,14 @@ Set the mesh radio data rate, from 250kbit/sec up to 2Mbit/sec for this scout.  
 None
 
 
-## mesh.key
+## mesh.setkey
 #### Description
-`mesh.key(key)`
+`mesh.setkey(key)`
 
 Set the mesh radio security key, enabling the AES128 hardware encryption.  All Scouts in a troop should use the same key in order to communicate.
 
 ```bash
-> mesh.key("TestSecurityKey1")
+> mesh.setkey("TestSecurityKey1")
 ```
 
 #### Parameters
@@ -258,6 +258,27 @@ Set the mesh radio security key, enabling the AES128 hardware encryption.  All S
 
 #### Return Values
 None
+
+
+## mesh.getkey
+#### Description
+`mesh.getkey()`
+
+Get the mesh radio security key that enables the AES128 hardware encryption.
+
+```bash
+> mesh.getkey()
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+```bash
+> TestSecurityKey1
+```
 
 
 ## mesh.resetkey
