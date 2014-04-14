@@ -111,6 +111,7 @@ None
 None, but after running this command, the 3V3 header pin will be at 0 volts.
 
 
+<!--
 ## power.sleep
 #### Description
 `void power.sleep(ms)`
@@ -129,7 +130,7 @@ The Scout can be woken up by an external pin change event on pin D4, D5, D7, or 
 
 #### Return Values
 None, but after running this command, the Scout will be asleep.
-
+-->
 
 ## power.report
 
@@ -243,14 +244,14 @@ Set the mesh radio data rate, from 250kbit/sec up to 2Mbit/sec for this scout.  
 None
 
 
-## mesh.key
+## mesh.setkey
 #### Description
-`mesh.key(key)`
+`mesh.setkey("key")`
 
 Set the mesh radio security key, enabling the AES128 hardware encryption.  All Scouts in a troop should use the same key in order to communicate.
 
 ```bash
-> mesh.key("TestSecurityKey1")
+> mesh.setkey("TestSecurityKey1")
 ```
 
 #### Parameters
@@ -258,6 +259,27 @@ Set the mesh radio security key, enabling the AES128 hardware encryption.  All S
 
 #### Return Values
 None
+
+
+## mesh.getkey
+#### Description
+`mesh.getkey()`
+
+Get the mesh radio security key that enables the AES128 hardware encryption.
+
+```bash
+> mesh.getkey()
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+```bash
+> TestSecurityKey1
+```
 
 
 ## mesh.resetkey
@@ -338,7 +360,7 @@ Returns **1** if the scout is a member of the given group, **0** otherwise.
 
 ## mesh.send
 #### Description
-`mesh.send(scoutId, message)`
+`mesh.send(scoutId, "message")`
 
 Send a message from this Scout to another Scout.
 
@@ -417,7 +439,7 @@ A human-readable representation of the current routing table.
 
 ## mesh.announce
 #### Description
-`mesh.announce(groupId, message)`
+`mesh.announce(groupId, "message")`
 
 Send a message to an entire group of Scouts at once.
 
@@ -519,9 +541,9 @@ The number of milliseconds since the last reset.
 # led
 ## led.blink
 #### Description
-`led.blink(red, green, blue, ms=500)`
+`led.blink(red, green, blue, ms=500, continuous=0)`
 
-Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds.
+Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds.  If the optional fifth argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
 
 ```bash
 > led.blink(0, 255, 255)
@@ -532,6 +554,7 @@ Blink the RGB LED with the given colors.  An optional fourth argument chooses ho
 - *green* - The value of the green color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
 - *blue* - The value of the blue color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
 - *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to **500** milliseconds.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
 
 #### Return Values
 None
@@ -726,7 +749,7 @@ None
 
 ## led.sethex
 #### Description
-`led.sethex(hexValue)`
+`led.sethex("hexValue")`
 
 Set the LED to the *hexValue* given. Similar to HTML, “RRGGBB”, but no hash at the beginning.
 
@@ -807,7 +830,7 @@ A JSON representation of the current state of the LED.
 # pins
 ## pin.makeinput
 #### Description
-`pin.makeinput(pinName, inputType)`
+`pin.makeinput("pinName", inputType=INPUT_PULLUP)`
 
 Make the given pin an input.
 
@@ -824,7 +847,7 @@ None
 
 ## pin.makeoutput
 #### Description
-`pin.makeoutput(pinName)`
+`pin.makeoutput("pinName")`
 
 Make the given pin an output.  Once a pin is an output, you can set it high or low.
 
@@ -840,7 +863,7 @@ None
 
 ## pin.disable
 #### Description
-`pin.disable(pinName)`
+`pin.disable("pinName")`
 
 Disable the given pin.  A disabled pin will not send any events to other Scouts or to HQ.
 
@@ -857,7 +880,7 @@ None
 
 ## pin.setmode
 #### Description
-`pin.setmode(pinName, pinMode)`
+`pin.setmode("pinName", pinMode)`
 
 Set the pin mode for a given pin.
 
@@ -875,7 +898,7 @@ None
 
 ## pin.read
 #### Description
-`pin.read(pinName)`
+`pin.read("pinName")`
 
 Get the value for the given pin.
 
@@ -892,7 +915,7 @@ The current value of the pin.  For digital pins the value will be **0** or **1**
 
 ## pin.write
 #### Description
-`pin.write(pinName, pinValue)`
+`pin.write("pinName", pinValue)`
 
 Set the value for the given pin.
 
@@ -1022,7 +1045,7 @@ Returns **0** if this is not a Lead Scout, and **1** if it is a Lead Scout and h
 > 0
 ```
 
-
+<!--
 ## scout.delay
 #### Description
 `scout.delay(ms)`
@@ -1038,7 +1061,7 @@ Delay the Scout for the given milliseconds. Radio, shell, Wi-Fi, and other syste
 
 #### Return Values
 None.
-
+-->
 
 ## scout.daisy
 #### Description
@@ -1089,7 +1112,7 @@ Hello from Pinoccio!
 # HQ
 ## hq.settoken
 #### Description
-`hq.settoken(token)`
+`hq.settoken("token")`
 
 Saves the unique user HQ token for this Scout given by the argument.
 
@@ -1178,14 +1201,14 @@ Set the frequency of the various event handlers. These values will slow down or 
 #### Return Values
 None
 
-
+<!--
 # event callbacks
 
 ## event.message
 #### Description
-`events.message(fromScoutId, key)`
+`event.message(fromScoutId, key)`
 
-This call back will be executed whenever the Scout receives a message via the mesh network
+This callback will be executed whenever the Scout receives a message via the mesh network
 
 ```bash
 > events.start
@@ -1232,6 +1255,7 @@ Set the frequency of the various event handlers. These values will slow down or 
 
 #### Return Values
 None
+-->
 
 # lead scout
 
@@ -1302,6 +1326,7 @@ CID  TYPE  MODE  LOCAL PORT  REMOTE PORT  REMOTE IP
 Print out a list of Wi-Fi access points (APs) nearby.  Note, this command only works on a Lead Scout.
 
 ```bash
+> wifi.list
 ```
 
 #### Parameters
@@ -1320,7 +1345,7 @@ No.Of AP Found:2
 
 ## wifi.config
 #### Description
-`wifi.config(wifiAPName, wifiAPPassword)`
+`wifi.config("wifiAPName", "wifiAPPassword")`
 
 Associate this Lead Scout with a new access point (AP.)  Note, this command only works on a Lead Scout.
 
@@ -1420,7 +1445,7 @@ S2W GEPS VERSION=2.5.1
 S2W WLAN VERSION=2.5.1
 ```
 
-
+<!--
 ## wifi.gettime
 #### Description
 `wifi.gettime()`
@@ -1440,3 +1465,4 @@ The current time, in the format DD/MM/YYYY,HH:MM:SS,<number of milliseconds sinc
 ```
 22/3/2014,18:18:48,1395512328039
 ```
+-->
