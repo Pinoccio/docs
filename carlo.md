@@ -585,6 +585,8 @@ curl  'https://api.pinocc.io/v1/1/1/command/led.report?token=7fc11b7554f0cd303ba
 
 ```
 
+<a href="http://jsfiddle.net/soldair/6cuJv/7/">try an example in jsfiddle!</a>
+
 #### Parameters.
 
 - {troup id}
@@ -636,6 +638,8 @@ get the state of all of your troops and scouts and realtime events as the state 
 curl https://api.pinocc.io/v1/sync?token=7fc11b7554f0cd303bad94eb0eb36e2d
 
 ```
+
+<a href="http://jsfiddle.net/soldair/NYPTf/2/">try an example in jsfiddle!</a>
 
 ### Parameters.
 
