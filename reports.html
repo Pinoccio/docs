@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width">
+  <link rel="icon" href="http://pinocc.io/images/favicon.ico">  
+
+  <title>Pinoccio API Commands</title>
+
+  <!-- Flatdoc -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src='flatdoc/v/0.8.0/legacy.js'></script>
+  <script src='flatdoc/v/0.8.0/flatdoc.js'></script>
+
+  <!-- Flatdoc theme -->
+  <link  href='flatdoc/v/0.8.0/theme-white/style.css' rel='stylesheet'>
+  <script src='flatdoc/v/0.8.0/theme-white/script.js'></script>
+
+  <!-- override css -->
+  <link  href='the.css' rel='stylesheet'>
+  
+
+
+  <!-- Meta -->
+  <meta content="Pinoccio API Reference" property="og:title">
+  <meta content="Documentation for the Pinoccio reports format" name="description">
+
+  <!-- Initializer -->
+  <script>
+    Flatdoc.run({
+      fetcher: Flatdoc.github('Pinoccio/docs', 'reports.md')
+      //fetcher: Flatdoc.file('carlo.md')
+    });
+  </script>
+
+  <script src="https://api.pinocc.io/pinoccio.js"></script>
+  <script src="/api-the-docs.js"></script>
+</head>
+<body role='flatdoc'>
+
+  <div class='header'>
+    <div class='left'>
+      <ul id="nav">
+        <li><a href='https://docs.pinocc.io/scoutcommands.html'>ScoutScript Commands</a></li>
+        <li><a href='https://docs.pinocc.io/api.html' class="active">API Documentation</a></li>
+        <li><a href='http://support.pinocc.io'>Pinoccio Support</a></li>
+
+      </ul>
+    </div>
+    <div class='right'>
+      <ul>
+        <li class="login-loggedout"><a href="#login" class="login-button">Login</a></li>
+        <li class="login-loggedin" style="display:none;"></li>
+        <li><a href='https://github.com/Pinoccio/node-pinoccio'>View on GitHub</a></li>
+        <li><a href='https://github.com/Pinoccio/node-pinoccio/issues'>Issues</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class='content-root'>
+    <div class='menubar'>
+      <div class='menu section' role='flatdoc-menu'></div>
+    </div>
+    <div role='flatdoc-content' class='content'></div>
+  </div>
+
+  <div style="display:none;" id="api-templates">
+
+    <div class="login-form-template">
+      <form class="login-form">
+        <div class="error-bar" style="display:none;">Login failed, try again.</div>
+        <div><label for="email">Email or Username</label></div>
+        <input type="text" name="email" value=""/>
+        <div><label for="password">Password</label> <a href="http://pinocc.io/account/forgot">I forgot my password :(</a></div>
+        <input type="password" name="password" value=""/>
+        <div><button>login</button><span class="loading">loading...</span></div>
+      </form>
+    </div>
+
+    <div class="tryit-button-template">
+      <ul class="tryit-button">
+        <li>Try it!</li>
+        <li class="select-troop">selected troop</li>
+        <li class="select-scout">selected scout</li>
+      </ul>
+    </div>
+
+    <div class="troop-selection-template">
+      pick one! 
+    </div>
+
+  </div>
+
+</body>
+</html>
