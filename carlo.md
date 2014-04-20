@@ -690,6 +690,8 @@ curl https://api.pinocc.io/v1/stats?token=7fc11b7554f0cd303bad94eb0eb36e2d&repor
 
 ```
 
+here is a live example. getting all <a href="http://codepen.io/anon/pen/zrLCK/">led reports for a time range</a>
+
 #### Parameters
 required
 
