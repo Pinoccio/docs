@@ -229,7 +229,7 @@ Set the mesh radio data rate, from 250kbit/sec up to 2Mbit/sec for this scout.  
 
 
 ```bash
-> mesh.setpower(0)
+> mesh.setdatarate(0)
 ```
 
 #### Parameters
@@ -786,7 +786,7 @@ None
 #### Description
 `led.savetorch(red, green, blue)`
 
-Save the torch color to values given by red, green, and blue.
+Save the torch color to values given by red, green, and blue.  The default color is green (255, 0, 0).
 
 ```bash
 > led.savetorch(255, 0, 0)
