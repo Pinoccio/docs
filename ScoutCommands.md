@@ -786,7 +786,7 @@ None
 #### Description
 `led.savetorch(red, green, blue)`
 
-Save the torch color to values given by red, green, and blue.  The default color is green (255, 0, 0).
+Save the torch color to values given by red, green, and blue.  The default color is green (0, 255, 0).
 
 ```bash
 > led.savetorch(255, 0, 0)
