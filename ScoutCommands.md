@@ -1389,7 +1389,7 @@ None
 Send any value as a custom report, and its values will be sent to the API, accessible in real-time there.
 
 ```bash
-> hq.report("uptime", )
+> hq.report("uptime", uptime.minutes)
 ```
 
 #### Parameters
