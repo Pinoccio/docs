@@ -155,26 +155,23 @@ Returns 1 if the VCC pin is currently enabled, 0 otherwise
 
 ## power.sleep
 #### Description
-`void power.sleep(ms, "command")`
+`void power.sleep(ms, ["command"])`
 
-Puts the Scout to sleep for *ms* milliseconds.  Upon waking up, it will run the ScoutScript command *command*.  When a Scout is asleep, it cannot communicate with any other boards or the web.  However, it'll be in an extremely low power state, so your battery will last much longer!
+Puts the Scout to sleep for *ms* milliseconds.  Upon waking up, it will run the ScoutScript command *command*.  When a Scout is asleep, it cannot communicate with any other boards or the web, nor will any event handlers run.  However, it'll be in an extremely low power state, so your battery will last much longer!
 
-Pinoccio lab measurements showed an average current draw of 12.5µA when the board is in the sleep state.
+Pinoccio lab measurements showed a current draw of 12.5µA when the board is in the sleep state, though various factors can cause this to be higher.
 
 ```bash
 > power.sleep(1000, "uptime.report")
 ```
 
-The Scout can be woken up by an external pin change event on pin D4, D5, D7, or when the fuel gauge's battery alarm is triggered.  If any of these pins change state from an external source, like a button, it will wake up the Scout.
-
-
 #### Parameters
-- *ms* - The number of milliseconds to sleep.  One second equals 1000 milliseconds.  The minimum safe time a Scout can sleep is ~100ms, and the maximum time is ~50 days.
-- *command* - Any valid ScoutScript command to run upon waking up.  This command can call `power.sleep` again without problem, to have any sleep/wake cycle you want.
+- *ms* - The number of milliseconds to sleep.  One second equals 1000 milliseconds.  The minimum useful time a Scout can sleep is ~100ms, and the maximum time is ~50 days. Actual sleep time might be different from the given value because the timer used uses 31ms increments and the scout finishes up unfinished business before actually going to sleep.
+- *command* - **Optional** Any valid ScoutScript command to run upon waking up.  This command can call `power.sleep` again without problem, to have any sleep/wake cycle you want.
 
 
 #### Return Values
-None, but after running this command, the Scout will be asleep. It will however run the *command* argument once it wakes up again.
+None. This command returns immediately and any subsequent commands are processed *before* going to sleep.
 
 ## power.report
 
