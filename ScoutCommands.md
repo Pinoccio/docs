@@ -1151,6 +1151,7 @@ None.
 #### History
 
 * **NEXT_RELEASE**: `DISABLED` constant was added.
+* **NEXT_RELEASE**: `pinValue` argument was added.
 
 ## pin.report.digital
 #### Description
