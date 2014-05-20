@@ -1092,6 +1092,8 @@ Set the pin mode for a given pin.
 #### Return Values
 None
 
+#### History
+* **NEXT_RELEASE**: `DISABLED` constant was added.
 
 ## pin.read
 #### Description
@@ -1140,12 +1142,15 @@ Sets the pin mode and optionally, pin value for a pin, so that it retains its se
 
 #### Parameters
 - *pinName* - A string value of the pin to write. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
-- *pinMode* - The mode to set the pin to.  Possible values are **INPUT**, **OUTPUT**, or **INPUT_PULLUP**.
+- *pinMode* - The mode to set the pin to.  Possible values are **DISABLED** **INPUT**, **OUTPUT**, or **INPUT_PULLUP**.
 - *pinValue* - Optional. The value to set the pin to.  Possible values are **HIGH** or **LOW**.
 
 #### Return Values
 None.
 
+#### History
+
+* **NEXT_RELEASE**: `DISABLED` constant was added.
 
 ## pin.report.digital
 #### Description
