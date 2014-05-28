@@ -1265,7 +1265,7 @@ Returns **0** if this is not a Lead Scout, and **1** if it is a Lead Scout and h
 #### Description
 `scout.delay(ms, "command")`
 
-Delay the Scout for the given milliseconds, then run the *command*. Radio, shell, Wi-Fi, and other systems will continue to run, so it’s non-blocking.  The interactive shell will return a prompt again once the delay has expired and the *command* has been run.
+Delay the Scout for the given milliseconds, then run the *command*. Radio, shell, Wi-Fi, and other systems will continue to run, so it’s non-blocking.  The interactive shell will return a prompt immediately, but once the delay has expired the *command* will run in the background.
 
 ```bash
 > scout.delay(1000, "led.red")
