@@ -22,6 +22,31 @@ Returns **0** if the Scout is not charging, and **1** if it is charging.
 ```
 
 #### Warning
+The results of this command are undefined if you don't have a battery plugged into the Scout, and only powering it via USB.  This is due to the Lipo battery charger constantly trying to charge the non-existent battery.  Check to see if a battery is attached first using the `power.hasbattery` command.
+
+
+## power.hasbattery
+
+#### Description
+`int power.hasbattery()`
+
+Determines if a battery is currently attached to the Scout.
+
+```bash
+> print power.hasbattery
+```
+
+#### Parameters
+None
+
+#### Return Values
+Returns **0** if the no battery is attached, and **1** if it is attached.
+
+```bash
+> 1
+```
+
+#### Warning
 The results of this command are undefined if you don't have a battery plugged into the Scout, and only powering it via USB.  This is due to the Lipo battery charger constantly trying to charge the non-existent battery.
 
 
@@ -111,26 +136,42 @@ None
 None, but after running this command, the 3V3 header pin will be at 0 volts.
 
 
-<!--
-## power.sleep
-#### Description
-`void power.sleep(ms)`
+## power.isvccenabled
 
-Puts the Scout to sleep for *ms* milliseconds.  Upon waking up, it will continue to run the commands it was running prior to sleeping.  When a Scout is asleep, it cannot communicate with any other boards or the web.  The good news is that it'll be in an extremely low power state, so your battery will last much longer!
+#### Description
+`int power.isvccenabled()`
+
+This returns the current state of the power supplied to the 3V3 header pin.
 
 ```bash
-> power.sleep(1000)
+> print power.isvccenabled
 ```
 
-The Scout can be woken up by an external pin change event on pin D4, D5, D7, or when the fuel gauge's battery alarm is triggered.  If any of these pins change state from an external source, like a button, it will wake up the Scout.
-
-
 #### Parameters
-- *ms* - The number of milliseconds to sleep.  One second equals 1000 milliseconds.  The maximum time a Scout can sleep is ~49 days.
+None
 
 #### Return Values
-None, but after running this command, the Scout will be asleep.
--->
+Returns 1 if the VCC pin is currently enabled, 0 otherwise
+
+## power.sleep
+#### Description
+`void power.sleep(ms, ["command"])`
+
+Puts the Scout to sleep for *ms* milliseconds.  Upon waking up, it will run the ScoutScript command *command*.  When a Scout is asleep, it cannot communicate with any other boards or the web, nor will any event handlers run.  However, it'll be in an extremely low power state, so your battery will last much longer!
+
+Pinoccio lab measurements showed a current draw of 12.5µA when the board is in the sleep state, though various factors can cause this to be higher.
+
+```bash
+> power.sleep(1000, "uptime.report")
+```
+
+#### Parameters
+- *ms* - The number of milliseconds to sleep.  One second equals 1000 milliseconds.  The minimum useful time a Scout can sleep is ~100ms, and the maximum time is ~50 days. Actual sleep time might be different from the given value because the timer used uses 31ms increments and the scout finishes up unfinished business before actually going to sleep.
+- *command* - **Optional** Any valid ScoutScript command to run upon waking up.  This command can call `power.sleep` again without problem, to have any sleep/wake cycle you want.
+
+
+#### Return Values
+None. This command returns immediately and any subsequent commands are processed *before* going to sleep.
 
 ## power.report
 
@@ -150,7 +191,7 @@ None
 
 A JSON representation of the current state of power for the Scout.
 
-```
+```json
 {
  "type":"power",
  "battery":100,
@@ -229,7 +270,7 @@ Set the mesh radio data rate, from 250kbit/sec up to 2Mbit/sec for this scout.  
 
 
 ```bash
-> mesh.setpower(0)
+> mesh.setdatarate(0)
 ```
 
 #### Parameters
@@ -357,25 +398,6 @@ Returns **1** if the scout is a member of the given group, **0** otherwise.
 > 1
 ```
 
-
-## mesh.send
-#### Description
-`mesh.send(scoutId, "message")`
-
-Send a message from this Scout to another Scout.
-
-```bash
-> mesh.send(3, "hello")
-```
-
-#### Parameters
-- *scoutId* - The scout ID to which the message is sent.
-- *message* - The message to send to the Scout. This is a text string, surrounded in quotes, and should be no longer than 100 characters.
-
-#### Return Values
-None
-
-
 ## mesh.report
 #### Description
 `mesh.report()`
@@ -392,7 +414,7 @@ None
 #### Return Values
 A JSON representation of the current state of mesh networking for the Scout.
 
-```
+```json
 {
   "type":"mesh",
   "scoutid":6,
@@ -436,10 +458,26 @@ A human-readable representation of the current routing table.
 |      0      |      0      |      3      |      4      |      4      |     129     |     254     |
 ```
 
-
-## mesh.announce
+## message.scout
 #### Description
-`mesh.announce(groupId, "message")`
+`message.scout(scoutId, "message")`
+
+Send a message from this Scout to another Scout.
+
+```bash
+> message.scout(3, "hello")
+```
+
+#### Parameters
+- *scoutId* - The scout ID to which the message is sent.
+- *message* - The message to send to the Scout. This is a text string, surrounded in quotes, and should be no longer than 100 characters.
+
+#### Return Values
+None
+
+## message.group
+#### Description
+`message.group(groupId, "message")`
 
 Send a message to an entire group of Scouts at once.
 
@@ -454,107 +492,213 @@ Send a message to an entire group of Scouts at once.
 #### Return Values
 None
 
-## mesh.signal
+# uptime
+## uptime.millis.awake
 #### Description
-`mesh.signal()`
+`int uptime.millis.awake()`
 
-Return the last received message’s signal strength (RSSI.)  Typical values returned will be somewhere between -30 and -95, with lower numbers being a lower signal.  Since they’re negative values, -95 is a weaker signal than -30.
+Get the number of millis that have passed since the last reset. Includes only time while awake.
 
 ```bash
-> print mesh.signal
+> print uptime.millis.awake
 ```
 
 #### Parameters
 None
 
 #### Return Values
-The RSSI value of the last received message.
+The number of milliseconds that have passed since the last reset.
 
 ```bash
-> -39
+> 16543
 ```
 
-# miscellaneous
-
-## temperature
-
+## uptime.millis.sleep
 #### Description
-`temperature()`
+`int uptime.millis.sleep()`
 
-Print the value of the on-chip temperature sensor, in Celsius.
+Get the number of millis that have passed since the last reset. Includes only time while asleep.
 
 ```bash
-> temperature
+> print uptime.millis.sleep
 ```
 
 #### Parameters
 None
 
 #### Return Values
-The value of the on-chip temperature in Celsius.
-
-```js
-> 21
-```
-
-
-## randomnumber
-#### Description
-`randomnumber()`
-
-Print a random number, seeded from random noise on the RF antenna. True hardware random number generator!
+The number of milliseconds that have passed since the last reset.
 
 ```bash
-> randomnumber
+> 1000
+```
+
+## uptime.millis
+#### Description
+`int uptime.millis()`
+
+Get the number of millis that have passed since the last reset. Includes both sleep and awake time.
+
+```bash
+> print uptime.millis
 ```
 
 #### Parameters
 None
 
 #### Return Values
-The value of a random number.  The range is -32768 to 32767.
+The number of milliseconds that have passed since the last reset.
 
 ```bash
-> 21543
+> 14456
 ```
 
-## uptime
+## uptime.seconds
 #### Description
-`uptime()`
+`int uptime.seconds()`
 
-Print the number of milliseconds the Scout has been running since the last reset. One second is equal to 1000 milliseconds.
+Get the number of seconds that have passed since the last reset. Includes both sleep and awake time.
 
 ```bash
-> uptime
+> print uptime.seconds
 ```
 
 #### Parameters
 None
 
 #### Return Values
-The number of milliseconds since the last reset.
+The number of milliseconds that have passed since the last reset.
 
 ```bash
-> 203403
+> 34
 ```
+
+## uptime.minutes
+#### Description
+`int uptime.minutes()`
+
+Get the number of minutes that have passed since the last reset. Includes both sleep and awake time.
+
+```bash
+> print uptime.minutes
+```
+
+#### Parameters
+None
+
+#### Return Values
+The number of minutes that have passed since the last reset.
+
+```bash
+> 2
+```
+
+## uptime.hours
+#### Description
+`int uptime.hours()`
+
+Get the number of hours that have passed since the last reset. Includes both sleep and awake time.
+
+```bash
+> print uptime.hours
+```
+
+#### Parameters
+None
+
+#### Return Values
+The number of hours that have passed since the last reset.
+
+```bash
+> 1
+```
+
+## uptime.days
+#### Description
+`int uptime.days()`
+
+Get the number of days that have passed since the last reset. Includes both sleep and awake time.
+
+```bash
+> print uptime.days
+```
+
+#### Parameters
+None
+
+#### Return Values
+The number of days that have passed since the last reset.
+
+```bash
+> 0
+```
+
+## uptime.report
+#### Description
+`uptime.report()`
+
+Prints a report of the uptime, total sleep duration, and last reset cause.
+
+```bash
+> uptime.report
+```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current uptime stats.
+
+```json
+{
+  "type":"uptime",
+  "millis":420381,
+  "sleep":1000,
+  "random":3114,
+  "reset":"External"
+}
+```
+
+- *type* - The type of report returned.  In this case it will be the string **uptime**
+- *millis* - The number of milliseconds that have passed since reset. Does not include time spent while sleeping.
+- *sleep* - The number of milliseconds that have occurred while sleeping. Combine this with *millis* for a full uptime count.
+- *random* - The current random number, seeded from the hardware random number generator.
+- *reset* - The last reset cause. Can be values **Power-on**, **External**, **Brown-out**, **Watchdog**, **JTAG**, or **Unknown Cause Reset**
+
+## uptime.getlastreset
+#### Description
+`int uptime.getlastreset()`
+
+Get the cause of the last reset value.  A key of the string is returned from this command, so be sure to use `key.print` if you want to see the actual result string.
+
+```bash
+> key.print(uptime.getlastreset)
+```
+
+#### Parameters
+None
+
+#### Return Values
+The key of the reset type. Possible values are **Power-on**, **External**, **Brown-out**, **Watchdog**, **JTAG**, or **Unknown Cause Reset**
+
+```bash
+> "External"
+```
+
 
 # led
-## led.blink
+## led.on
 #### Description
-`led.blink(red, green, blue, ms=500, continuous=0)`
+`led.on()`
 
-Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds.  If the optional fifth argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+Turn on the LED.  This turns on the LED to the saved torch color.
 
 ```bash
-> led.blink(0, 255, 255)
+> led.on
 ```
 
 #### Parameters
-- *red* - The value of the red color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
-- *green* - The value of the green color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
-- *blue* - The value of the blue color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
-- *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to **500** milliseconds.
-- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+None
 
 #### Return Values
 None
@@ -747,6 +891,27 @@ Turn the LED the Scout's torch color.  If the optional first argument is passed 
 #### Return Values
 None
 
+## led.blink
+#### Description
+`led.blink(red, green, blue, ms=500, continuous=0)`
+
+Blink the RGB LED with the given colors.  An optional fourth argument chooses how long the LED will be on when it blinks.  The default time is 500 milliseconds.  If the optional fifth argument is passed in, the LED will blink continuously until you call another LED command or `led.off`.
+
+```bash
+> led.blink(0, 255, 255)
+```
+
+#### Parameters
+- *red* - The value of the red color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *green* - The value of the green color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *blue* - The value of the blue color for the LED.  Valid values are **0** to **255** with **0** being off and **255** being fully on.
+- *ms* - **Optional** How long the LED should be on when it blinks.  Defaults to **500** milliseconds.
+- *continuous* - **Optional** If a **1** is passed in here, the LED will blink indefinitely. Defaults to **0**.
+
+#### Return Values
+None
+
+
 ## led.sethex
 #### Description
 `led.sethex("hexValue")`
@@ -754,7 +919,7 @@ None
 Set the LED to the *hexValue* given. Similar to HTML, “RRGGBB”, but no hash at the beginning.
 
 ```bash
-> led.hexvalue("FF0000")
+> led.sethex("FF0000")
 ```
 
 #### Parameters
@@ -762,6 +927,22 @@ Set the LED to the *hexValue* given. Similar to HTML, “RRGGBB”, but no hash 
 
 #### Return Values
 None
+
+## led.gethex
+#### Description
+`led.gethex()`
+
+Get the *hexValue* of the LED. Similar to HTML, “RRGGBB”, but no hash at the beginning.  This will return the key of the string, so be sure to use something like `key.print` to actually print the value.
+
+```bash
+> key.print(led.gethex())
+```
+
+#### Parameters
+None
+
+#### Return Values
+- The key of the hex value. To print the string, be sure to use `key.print`.
 
 
 ## led.setrgb
@@ -786,7 +967,7 @@ None
 #### Description
 `led.savetorch(red, green, blue)`
 
-Save the torch color to values given by red, green, and blue.
+Save the torch color to values given by red, green, and blue.  The default color is green (0, 255, 0).
 
 ```bash
 > led.savetorch(255, 0, 0)
@@ -799,6 +980,22 @@ Save the torch color to values given by red, green, and blue.
 
 #### Return Values
 None
+
+## led.isoff
+#### Description
+`int led.isoff()`
+
+Determines if the LED is currently on or off.
+
+```bash
+> print led.isoff
+```
+
+#### Parameters
+None
+
+#### Return Values
+The current state of the LED. Will return **0** if the LED is off, or **1** if it is on.
 
 
 ## led.report
@@ -815,7 +1012,7 @@ None
 #### Return Values
 A JSON representation of the current state of the LED.
 
-```
+```json
 {
   "type":"led",
   "led":[0,0,0],
@@ -931,6 +1128,25 @@ Set the value for the given pin.
 None
 
 
+## pin.save
+#### Description
+`pin.save("pinName", pinMode, [pinValue])`
+
+Sets the pin mode and optionally, pin value for a pin, so that it retains its settings between restarts. After running, a new ScoutScript command *startup.X* will be created, where X is the pin name. This function will be run upon every startup.  You can see this command by running `ls`.
+
+```bash
+> pin.save("d2", OUTPUT, HIGH)
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to write. Valid values are **"d2"** through **"d8"** and **"a0"** through **"a7"**.
+- *pinMode* - The mode to set the pin to.  Possible values are **INPUT**, **OUTPUT**, or **INPUT_PULLUP**.
+- *pinValue* - Optional. The value to set the pin to.  Possible values are **HIGH** or **LOW**.
+
+#### Return Values
+None.
+
+
 ## pin.report.digital
 #### Description
 `pin.report.digital()`
@@ -947,7 +1163,7 @@ None
 #### Return Values
 A JSON representation of the current state of the digital pins.
 
-```
+```json
 {
   "type":"digital",
   "mode":[-1,-1,-1,-1,-1,-1,-1],
@@ -975,7 +1191,7 @@ None
 #### Return Values
 A JSON representation of the current state of the digital pins.
 
-```
+```json
 {
   "type":"analog",
   "mode":[-1,-1,-1,-1,-1,-1,-1,-1],
@@ -1005,7 +1221,7 @@ None
 #### Return Values
 A JSON representation of the current state of the digital pins.
 
-```
+```json
 {
  "type":"scout",
  "lead":false,
@@ -1045,23 +1261,23 @@ Returns **0** if this is not a Lead Scout, and **1** if it is a Lead Scout and h
 > 0
 ```
 
-<!--
 ## scout.delay
 #### Description
-`scout.delay(ms)`
+`scout.delay(ms, "command")`
 
-Delay the Scout for the given milliseconds. Radio, shell, Wi-Fi, and other systems will continue to run, so it’s non-blocking.  The interactive shell will return a prompt again once the delay has expired.
+Delay the Scout for the given milliseconds, then run the *command*. Radio, shell, Wi-Fi, and other systems will continue to run, so it’s non-blocking.  The interactive shell will return a prompt immediately, but once the delay has expired the *command* will run in the background.
 
 ```bash
-> scout.delay(1000)
+> scout.delay(1000, "led.red")
 ```
 
 #### Parameters
 - *ms* - The number of milliseconds to delay.
+- *command* - The command to run after the delay passes.
 
 #### Return Values
 None.
--->
+
 
 ## scout.daisy
 #### Description
@@ -1117,7 +1333,7 @@ Hello from Pinoccio!
 Saves the unique user HQ token for this Scout given by the argument.
 
 ```bash
-> scout.sethqtoken("8abc0800a80a08w0asd0f80asd")
+> hq.sethqtoken("8abc0800a80a08w0asd0f80asd")
 ```
 
 #### Parameters
@@ -1134,7 +1350,7 @@ None
 Prints the unique user HQ token for this Scout.
 
 ```bash
-> scout.gethqtoken
+> hq.gethqtoken
 ```
 
 #### Parameters
@@ -1147,7 +1363,167 @@ None
 > 8abc0800a80a08w0asd0f80asd
 ```
 
-# events
+## hq.print
+#### Description
+`hq.print("string")`
+
+Print a value directly to the console on HQ. 
+
+```bash
+> hq.print("hi!")
+```
+
+#### Parameters
+- *string* - The string or value to print on the HQ console.
+
+#### Return Values
+None
+
+## hq.report
+#### Description
+`hq.report("reportname", "value")`
+
+Send any value as a custom report, and its values will be sent to the API, accessible in real-time there.
+
+```bash
+> hq.report("uptime", uptime.minutes)
+```
+
+#### Parameters
+- *reportname* - The name of the custom report
+- *value* - The string or value to send within this report
+
+#### Return Values
+None
+
+
+# miscellaneous
+
+## temperature.c
+
+#### Description
+`temperature.c()`
+
+Return the value of the on-chip temperature sensor, in Celsius.
+
+```bash
+> print temperature.c
+```
+
+#### Parameters
+None
+
+#### Return Values
+The value of the on-chip temperature in Celsius.
+
+```js
+> 21
+```
+
+## temperature.f
+
+#### Description
+`temperature.f()`
+
+Return the value of the on-chip temperature sensor, in Fahrenheit.
+
+```bash
+> print temperature.f
+```
+
+#### Parameters
+None
+
+#### Return Values
+The value of the on-chip temperature in Fahrenheit.
+
+```js
+> 70
+```
+
+## temperature.report
+
+#### Description
+`temperature.report()`
+
+Get a report of the temperature values of the Scout.
+
+```bash
+> temperature.report
+```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current temperature.
+
+```json
+{
+  "type":"temp",
+  "c":21,
+  "f":70
+}
+```
+
+- *type* - The type of report returned.  In this case it will be the string **temp**
+- *c* - The current temperature in Celsius
+- *f* - The current temperature in Fahrenheit
+
+
+## randomnumber
+#### Description
+`randomnumber()`
+
+Print a random number, seeded from random noise on the RF antenna. True hardware random number generator!
+
+```bash
+> randomnumber
+```
+
+#### Parameters
+None
+
+#### Return Values
+The value of a random number.  The range is -32768 to 32767.
+
+```bash
+> 21543
+```
+
+## memory.report
+
+#### Description
+`memory.report()`
+
+Get a report of the memory statistics of the Scout.
+
+```bash
+> memory.report
+```
+
+#### Parameters
+None
+
+#### Return Values
+A JSON representation of the current memory details.
+
+```json
+{
+  "type":"memory",
+  "used":559,
+  "free":18314,
+  "large":17719
+}
+```
+
+- *type* - The type of report returned.  In this case it will be the string **memory**
+- *used* - The current amount of memory being used
+- *free* - The total amount of free memory
+- *large* - The largest chunk of non-fragmented free memory
+
+
+# event handling
 
 ## events.start
 #### Description
@@ -1166,7 +1542,6 @@ None
 None
 
 
-
 ## events.stop
 #### Description
 `events.stop()`
@@ -1201,17 +1576,111 @@ Set the frequency of the various event handlers. These values will slow down or 
 #### Return Values
 None
 
-<!--
+
 # event callbacks
 
-## event.message
+## on.message.scout
 #### Description
-`event.message(fromScoutId, key)`
+`on.message.scout(fromId, keys)`
 
-This callback will be executed whenever the Scout receives a message via the mesh network
+This callback will be executed whenever the Scout receives a direct message via the mesh network. The data is saved in the key/value store, so be sure to use the `key` commands to get the original values.
 
 ```bash
-> events.start
+> function on.message.scout { 
+  print "message received from: "; 
+  print arg(1); 
+  print "Message: ";
+  key.print(arg(2));
+};
+```
+
+#### Parameters
+- *fromId* - The ID of the scout that sent this message
+- *keys* - The keys of the values that were sent in this message
+
+#### Return Values
+None
+
+## on.message.group
+#### Description
+`on.message.group(groupId, fromId, keys)`
+
+This callback will be executed whenever the Scout receives a message via the mesh network that was sent to a group. The data is saved in the key/value store, so be sure to use the `key` commands to get the original values.
+
+```bash
+> function on.message.group { 
+  print "message received on group: "; 
+  print arg(1);
+  print "from Scout: "; 
+  print arg(2); 
+  print "Message: ";
+  key.print(arg(3));
+};
+```
+
+#### Parameters
+- *groupId* - The ID of the group that this message was sent to
+- *fromId* - The ID of the scout that sent this message
+- *keys* - The keys of the values that were sent in this message
+
+#### Return Values
+None
+
+## on.message.signal
+#### Description
+`on.message.signal(fromId, rssi)`
+
+This callback will be executed on a scout that sends a message, whenever the message acknowledgement is received back from the recipient.
+
+```bash
+> function on.message.signal { 
+  print "message acknowledged from: "; 
+  print arg(1); 
+  print "RSSI signal strength: ";
+  key.print(arg(2));
+};
+```
+
+#### Parameters
+- *fromId* - The ID of the scout that received the original message
+- *rssi* - The RSSI signal strength that the recipient measured when receiving the original message
+
+#### Return Values
+None
+
+
+## on.d[2-8]
+#### Description
+`on.d[2-8](value, mode)`
+
+This callback will be executed any time a digital pin changes its value or its mode.
+
+```bash
+> function on.d2 { 
+  print "D2 has value: "; 
+  print arg(1); 
+  print "and mode: ";
+  print arg(2);
+};
+```
+
+#### Parameters
+- *value* - The value of the pin after the change
+- *mode* - The mode of the pin after the change
+
+#### Return Values
+None
+
+## on.d[2-8].low
+#### Description
+`on.d[2-8].low()`
+
+This callback will be executed any time a digital pin's value goes low. This works great for buttons connected between a digital pin and ground, when the pin's mode is set to *INPUT_PULLUP*.  
+
+```bash
+> function on.d2.low { 
+  print "D2 went low!"; 
+};
 ```
 
 #### Parameters
@@ -1220,16 +1689,16 @@ None
 #### Return Values
 None
 
-
-
-## events.stop
+## on.d[2-8].high
 #### Description
-`events.stop()`
+`on.d[2-8].high()`
 
-Stop the event handler that triggers reports, callbacks, and eventing internals.  If events are turned off, no reports will be triggered, and HQ will not reflect the state of the Scout any further until events are turned on again.
+This callback will be executed any time a digital pin's value goes high. 
 
 ```bash
-> events.stop
+> function on.d2.high { 
+  print "D2 went high!"; 
+};
 ```
 
 #### Parameters
@@ -1238,24 +1707,91 @@ None
 #### Return Values
 None
 
-## events.setcycle
+## on.a[0-7]
 #### Description
-`events.setcycle(digitalMs, analogMs, peripheralMs)`
+`on.a[0-7](value, mode)`
 
-Set the frequency of the various event handlers. These values will slow down or speed up the responsiveness of various events, split into digital, analog, and the peripheral sets.
+This callback will be executed any time an analog pin changes its value or its mode.
 
 ```bash
-> events.setcycle(100, 1000, 60000)
+> function on.a0 { 
+  print "A0 has value: "; 
+  print arg(1); 
+  print "and mode: ";
+  print arg(2);
+};
 ```
 
 #### Parameters
-- *digitalMs* - How often the digital pin event handlers are called. Defaults to 50ms, or twenty times per second.
-- *analogMs* - How often the analog pin event handlers are called. Defaults to 60000ms, or once a minute.
-- *peripheralMs* - How often the peripheral event handlers are called.  Defaults to 60000ms, or once a minute.  The peripherals include the battery percentage, voltage, charging flag, battery alarm, and temperature.
+- *value* - The value of the pin after the change
+- *mode* - The mode of the pin after the change
 
 #### Return Values
 None
--->
+
+
+## on.battery.level
+#### Description
+`on.battery.level(value)`
+
+This callback will be executed any time the battery charge percentage changes.
+
+```bash
+> function on.battery.level { 
+  print "Battery percentage is: "; 
+  print arg(1);
+};
+```
+
+#### Parameters
+- *value* - The value of the battery charge percentage after the change
+
+#### Return Values
+None
+
+## on.battery.charging
+#### Description
+`on.battery.charging(value)`
+
+This callback will be executed any time the battery begins or ends charging.
+
+```bash
+> function on.battery.charging { 
+  if (arg(1) == 1) {
+    print "Battery is charging"; 
+  } else {
+    print "Battery is not charging"; 
+  }
+};
+```
+
+#### Parameters
+- *value* - The value of the battery charge status after the change
+
+#### Return Values
+None
+
+## on.temperature
+#### Description
+`on.temperature(value)`
+
+This callback will be executed any time the temperature value changes.
+
+```bash
+> function on.temperature { 
+  print "The temperature is now: "; 
+  print arg(1);
+};
+```
+
+#### Parameters
+- *value* - The value of the temperature after the change
+
+#### Return Values
+None
+
+
+
 
 # lead scout
 
@@ -1275,7 +1811,7 @@ None
 #### Return Values
 A JSON representation of the current state of the Wi-Fi connection.
 
-```
+```json
 {
  "type":"wifi",
  "version":0,
@@ -1286,7 +1822,7 @@ A JSON representation of the current state of the Wi-Fi connection.
 
 - *type* - The type of report returned.  In this case it will be the string *wifi*
 - *connected* - Will be *true* if this Lead Scout is connected to a Wi-Fi access point, *false* otherwise.
-- *hq* - Will be *true* if this Lead Scout is connected to HQ over a TCP SSL connection, *false* otherwise.
+- *hq* - Will be *true* if this Lead Scout is connected to HQ over a TCP connection, *false* otherwise.
 
 ## wifi.status
 #### Description
