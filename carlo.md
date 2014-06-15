@@ -1,7 +1,7 @@
 
 # making calls.
 
-Pinoccio provides an http API, a command line tool, a nodejs api client, and a client side library to build web interfaces to interact with your troops.
+Pinoccio provides an http API, a command line tool, a nodejs API client, and a client side library to build web interfaces to interact with your troops.
 
 The api endpoint is https://api.pinocc.io
 
