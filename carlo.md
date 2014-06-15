@@ -3,12 +3,12 @@
 
 Pinoccio provides an http API, a command line tool, a nodejs api client, and a client side library to build web interfaces to interact with your troops.
 
-the api endpoint is https://api.pinocc.io
+The api endpoint is https://api.pinocc.io
 
 
 ## curl
 
-make api calls from your terminal for much win!
+Make api calls from your terminal for much win!
 
 ```
  curl https://api.pinocc.io/ok
@@ -17,9 +17,9 @@ make api calls from your terminal for much win!
 
 ## cli
 
-the command line tool is the node module ```pinoccio```
+The command line tool is the node module ```pinoccio```
 
-#### install
+#### Install
 
 npm install the module globally to get the pinoccio command. you may need to sudo.
 
@@ -27,7 +27,7 @@ npm install the module globally to get the pinoccio command. you may need to sud
 sudo npm install -g pinoccio
 ```
 
-#### use
+#### Use
 
 The pinoccio command should now be avaiable in your terminal. Running ```pinoccio``` in the terminal will print a list of avaiable commands.
 
@@ -38,18 +38,18 @@ pinoccio rest get v1/troops
 
 ```
 
-see the repo on github <a href="https://github.com/pinoccio/client-node-pinoccio">https://github.com/pinoccio/client-node-pinoccio</a> for more info!.
+See the repo on github <a href="https://github.com/pinoccio/client-node-pinoccio">https://github.com/pinoccio/client-node-pinoccio</a> for more info!
 
 ## Browser
 
-you may load the client side api js directly from https://api.pinocc.io/pinoccio.js 
-or you may include it in your projects via browserify by depending on ```pinoccio``` node module
+You may load the client side API js directly from https://api.pinocc.io/pinoccio.js 
+Or you may include it in your projects via browserify by depending on ```pinoccio``` node module
 
-same repo <a href="https://github.com/pinoccio/client-node-pinoccio">https://github.com/pinoccio/client-node-pinoccio</a>.
+Same repo <a href="https://github.com/pinoccio/client-node-pinoccio">https://github.com/pinoccio/client-node-pinoccio</a>.
 
-#### install
+#### Install
 
-install the module and save the version in your package.json!
+Install the module and save the version in your package.json!
 
 ```
 npm install --save pinoccio
@@ -57,14 +57,14 @@ npm install --save pinoccio
 
 #### Use
 
-include the script tag in your page.
+Include the script tag in your page.
 
 ```js
 
 <script src="https://api.pinocc.io/pinoccio.js"></script>
 ```
 
-this exposes a global ```pinoccioAPI``` which you may use like
+This exposes a global ```pinoccioAPI``` which you may use like
 
 ```
 <script> 
@@ -92,7 +92,7 @@ console.log('much win!')
 
 #### POST /v1/login
 
-Creates a new token for making calls against the api.
+Creates a new token for making calls against the API.
 
 ```sh
 
@@ -108,7 +108,7 @@ Creates a new token for making calls against the api.
 - password
 
 #### Return Values
-Returns a JSON object with a token and account key in the data property if successful. You will need this session token for all calls that require authentication with the api.
+Returns a JSON object with a token and account key in the data property if successful. You will need this session token for all calls that require authentication with the API.
 
 ```js
 {"data":{"token":"7fc11b7554f0cd303bad94eb0eb36e2d","account":19}}
@@ -127,7 +127,7 @@ or an error
 
 #### POST /v1/register
 
-register for pinocc.io
+Register for pinocc.io
 
 ```sh
  curl -X POST -v --data 'email=youremail&password=boats' https://api.pinocc.io/v1/register
@@ -135,27 +135,27 @@ register for pinocc.io
 
 #### Parameters
 
-required.
+Required.
 
 - email
 - password
 - hasAgreedToTerms
 
-optional.
+Optional.
 
 - firstname
 - lastname
 
 #### Return values
 
-Returns a JSON object with a token and account key in the data property if successful. You will need this session token for all calls that require authentication with the api.
+Returns a JSON object with a token and account key in the data property if successful. You will need this session token for all calls that require authentication with the API.
 
 ```js
 {"data":{"token":"7fc11b7554f0cd303bad94eb0eb36e2d","account":19}}
 
 ```
 
-or an error 
+Or an error 
 
 ```js
 {"error":{"code":500,"message":"this email is already registered"}}
@@ -165,7 +165,7 @@ or an error
 
 #### GET /v1/account
 
-get your account data
+Get your account data
 
 
 ```sh
@@ -178,7 +178,7 @@ None.
 
 #### Return values.
 
-a JSON object of the accout properties.
+A JSON object of the accout properties.
 
 ```js
 {
@@ -193,7 +193,7 @@ a JSON object of the accout properties.
 }
 ```
 
-or an error 
+Or an error 
 
 ```js
 {"error":{"code":403,"message":"Error: not logged in"}}
@@ -203,7 +203,7 @@ or an error
 
 #### POST /v1/logout
 
-logout an auth token
+Logout an auth token
 
 ```sh
 
@@ -219,7 +219,7 @@ curl -X POST  https://api.pinocc.io/v1/logout?token=7fc11b7554f0cd303bad94eb0eb3
 
 #### Return values
 
-a json oblect with confirmation.
+A json oblect with confirmation.
 
 ```sh
 
@@ -246,7 +246,7 @@ None. for now.
 
 #### Return values
 
-a json object with the read only view of the account's info.
+A json object with the read only view of the account's info.
 
 ```js
 {"data":{"perms":{"read":true},"firstname":"","lastname":"","account":19,"token":"b27a3af628e595eb6035e6a6c84e3cda","gravatar":"https://www..."}}
@@ -269,7 +269,7 @@ curl -X POST 'https://api.pinocc.io/v1/troop?token=7fc11b7554f0cd303bad94eb0eb36
 
 #### Parameters
 
-optional
+Optional
 
 - name
 
@@ -283,7 +283,7 @@ an object with the troops data.
 
 ```
 
-or an error 
+Or an error 
 
 ```js
 {"error":{"code":403,"message":"Error: not logged in"}}
@@ -298,7 +298,7 @@ This troop will NOT appear in GET /v1/troops result until a lead scout with the 
 
 #### GET /v1/troops
 
-get all of your accounts troops.
+Gat all of your accounts troops.
 
 ```sh
 
@@ -312,7 +312,7 @@ None.
 
 #### Return values
 
-data is an array of troop objects.
+Data is an array of troop objects.
 
 ```js
 
@@ -320,7 +320,7 @@ data is an array of troop objects.
 
 ```
 
-or an error 
+Or an error 
 
 ```js
 {"error":{"code":403,"message":"Error: not logged in"}}
@@ -331,7 +331,7 @@ or an error
 
 #### GET /v1/{troop id} 
 
-get the data for your a troop by troop id
+Get the data for your a troop by troop id
 
 ```sh
 
@@ -341,13 +341,13 @@ curl 'https://api.pinocc.io/v1/{troop id}?token=7fc11b7554f0cd303bad94eb0eb36e2d
 
 #### Parameters
 
-required
+Required
 
 - v1/{troop id} 
 
 #### Return Values.
 
-returns a troop object by id. also contains "online" which represents is a lead scout in the troop has an open socket to base
+Returns a troop object by id. also contains "online" which represents is a lead scout in the troop has an open socket to base
 
 ```js
 
@@ -359,13 +359,13 @@ returns a troop object by id. also contains "online" which represents is a lead 
 {"error":"could not find token for troop 1000"}
 ```
 
-note that the name property of the troop object will be undefined if a name was never assigned to the troop.
+Note that the name property of the troop object will be undefined if a name was never assigned to the troop.
 
 ## Update a troop
 
 #### PATCH /v1/{troop id}
 
-update data associated with your troop
+Update data associated with your troop
 
 ```sh
 curl -X PATCH --data '{"name":"old sport"}' 'https://api.pinocc.io/v1/1?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -374,10 +374,10 @@ curl -X PATCH --data '{"name":"old sport"}' 'https://api.pinocc.io/v1/1?token=7f
 
 #### Parameters
 
-right now ```name``` is the only supported key.
+For right now, ```name``` is the only supported key.
 
 #### Return values.
-returns the updated troop object
+Returns the updated troop object
 
 ```js
 {"data":{"account":"19","token":"af49e76320781a7b9722a137039b7f99","name":"old sport","updated":"1395214271078"}}
@@ -388,7 +388,7 @@ returns the updated troop object
 
 #### DELETE /v1/{troop id}
 
-delete a troop by troop id. if you have a lead scout provisioned with this troop it will need to be added to a new troop before oyu can send it commands again.
+Delete a troop by troop id. If you have a lead scout provisioned with this troop it will need to be added to a new troop before you can send it commands again.
 
 ```sh
 curl -X DELETE 'https://api.pinocc.io/v1/{troop id}?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -401,12 +401,12 @@ curl -X DELETE 'https://api.pinocc.io/v1/{troop id}?token=7fc11b7554f0cd303bad94
 
 #### Return values.
 
-returns true
+Returns true
 
 ```js
 {"data":true}
 ```
-or an error
+Or an error
 
 ```js
 {"error":"could not find token for troop 1000"}
@@ -430,7 +430,7 @@ required
 
 #### Return Values
 
-returns a json string. the troop token.
+Returns a json string, the troop token.
 
 ```
 "af49e76320781a7b9722a137039b7f99"
@@ -442,7 +442,7 @@ returns a json string. the troop token.
 
 #### POST /v1/{troop id}/scout
 
-add a new scout to your troop
+Add a new scout to your troop
 
 ```sh
 
@@ -456,7 +456,7 @@ curl -X POST 'https://api.pinocc.io/v1/{troop id}/scout?token=7fc11b7554f0cd303b
 
 #### Return values.
 
-the id in this result is the scout id. 
+The id in this result is the scout id. 
 
 ```js
 
@@ -471,7 +471,7 @@ In provisioning it must be passed to mesh.config({scout id},{troop id})
 
 #### GET /v1/{troop id}/scouts
 
-get all of the scouts in your troop. 
+Get all of the scouts in your troop. 
 
 ```sh
 
@@ -498,7 +498,7 @@ Returns an array of all of the scouts in the troop
 
 #### GET /v1/{troop id}/{scout id}
 
-get the data for a scout by id.
+Get the data for a scout by id.
 
 ```js
 curl  'https://api.pinocc.io/v1/{troop id}/{scout id}?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -523,9 +523,9 @@ curl  'https://api.pinocc.io/v1/{troop id}/{scout id}?token=7fc11b7554f0cd303bad
 
 #### PATCH /v1/{troop id}/{scout id}
 
-update data for a scout
+Update data for a scout
 
-right now ```name``` is the only supported key.
+For right now, ```name``` is the only supported key.
 
 ```sh
 
@@ -551,7 +551,7 @@ curl -X PATCH --data '{"name":"old yeller"}' 'https://api.pinocc.io/v1/{troop id
 
 #### DELETE /v1/{troop id}/{scout id}
 
-delete a scout by scout id.
+Delete a scout by scout id.
 
 ```sh
 curl -X DELETE 'https://api.pinocc.io/v1/{troop id}/{scout id}?token=7fc11b7554f0cd303bad94eb0eb36e2d'
@@ -564,7 +564,7 @@ None.
 
 #### Return value.
 
-When you delete a scout. if connected. api will issue a ```scout.daisy;scout.daisy``` to reset the scout to factory.
+When you delete a scout, if connected. API will issue a ```scout.daisy;scout.daisy``` to reset the scout to factory.
 
 
 ## Run a bitlash command
@@ -598,7 +598,7 @@ curl  'https://api.pinocc.io/v1/1/1/command/led.report?token=7fc11b7554f0cd303ba
 
 #### Return values.
 
-returns the response to the command.
+Returns the response to the command.
 
 
 ```js
@@ -631,7 +631,7 @@ or on error
 
 #### GET /v1/sync
 
-get the state of all of your troops and scouts and realtime events as the state changes. this stream will continue as long as the connection is active. 
+Get the state of all of your troops and scouts and realtime events as the state changes. This stream will continue as long as the connection is active. 
 
 ```sh
  
@@ -654,7 +654,7 @@ optional
 - tail
 
   - default true
-  - if you pass a falsy value (0,false etc) the sync stream will end when it has sent the current state. it will not continue streaming forever
+  - if you pass a falsy value (0,false etc) the sync stream will end when it has sent the current state. It will not continue streaming forever
 
 ### Return values.
 
@@ -679,7 +679,7 @@ data is newline delimited json.
 
 #### GET /v1/stats
 
-get a stream of time series data from start time to end time for any report. 
+Get a stream of time series data from start time to end time for any report. 
 - if no end time is provided or the end time is in the future events will continue as they happen in real time.
 - if no start time is provided you will ony get events starting from now as they happen in real time.
 
@@ -712,7 +712,7 @@ optional
 
 #### Return values.
 
-data is newline delimited json. sorted by time. these are power reports.
+Data is newline delimited json. sorted by time. Below are is example of power reports.
 
 ```sh
 {"data":{"account":"19","troop":"1","scout":"1","type":"power","value":{"type":"power","battery":96,"voltage":415,"charging":false,"vcc":true,"_t":1395176893461.001},"time":1395176893461.001}}
@@ -734,6 +734,6 @@ data is newline delimited json. sorted by time. these are power reports.
 
 ```
 
-with curl or the cli tool it streams to stdout. in the nodejs api client it returns a stream.
+With curl or the cli tool it streams to stdout, in the nodejs API client it returns a stream.
 
 
