@@ -1383,15 +1383,20 @@ None
 #### Description
 `hq.report("reportname", "value")`
 
-Send any value as a custom report, and its values will be sent to the API, accessible in real-time there.
+Send any string as a custom report, and its value will be sent to the API, accessible in real-time there.  Value is either a quoted string, or an index to a key containing the string.  The combined length of the report name and
+the value string must be less than or equal to 80 chars.
 
 ```bash
-> hq.report("uptime", uptime.minutes)
+> a = key(uptime.minutes)
+> hq.report("uptime", a)
+> key.free(a)
+
+> hq.report("MyRtp", "My custom report")
 ```
 
 #### Parameters
 - *reportname* - The name of the custom report
-- *value* - The string or value to send within this report
+- *value* - The string or key index of the string to send within this report
 
 #### Return Values
 None
