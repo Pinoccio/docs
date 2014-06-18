@@ -1410,8 +1410,11 @@ None
 `key(\"string\" | value)`
 
 Create a string in memory and return an index to the key location.  A quoted string 
-is saved as-is and an integer value is converted to a string and saved.  The string 
+is saved as-is and an unsigned integer value is converted to a string and saved.  The string 
 can retrieved by referencing the index.  See key.print.
+
+Note that values other than unsigned integers are accepted but will be treated as unsigned ints,
+leading to odd and unpredictable results.
 
 ```bash
 > print key(temperature.f)
@@ -1420,7 +1423,7 @@ can retrieved by referencing the index.  See key.print.
 
 #### Parameters
 
- - *value* - A string or integer value to be saved as a string.
+ - *value* - A string or unsigned integer value to be saved as a string.
 
 #### Return Values
 The index of the created key entry
