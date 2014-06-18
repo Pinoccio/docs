@@ -1402,6 +1402,160 @@ the value string must be less than or equal to 80 chars.
 None
 
 
+# Keys
+
+## key
+
+#### Description
+`key(\"string\" | value)`
+
+Create a string in memory and return an index to the key location.  A quoted string 
+is saved as-is and an unsigned integer value is converted to a string and saved.  The string 
+can retrieved by referencing the index.  See key.print.
+
+Note that values other than unsigned integers are accepted but will be treated as unsigned ints,
+leading to odd and unpredictable results.
+
+```bash
+> print key(temperature.f)
+> print key("My key")
+```
+
+#### Parameters
+
+ - *value* - A string or unsigned integer value to be saved as a string.
+
+#### Return Values
+The index of the created key entry
+
+```js
+> 54
+> 55
+```
+## key.free
+
+#### Description
+`key.free(index)`
+
+Remove the string referenced by the index from memory.
+
+```bash
+> key.free(54)
+```
+
+#### Parameters
+
+ - *index* - The index of the key to remove.  The key index is returned when the key is created
+with the key() command.
+
+#### Return Values
+
+None
+
+## key.print
+
+#### Description
+`key.print(index)`
+
+Print the string referenced by the index.
+
+```bash
+> k = key("My Key")
+> print k                  # Prints the created key index - 55 in this example
+> key.print(55)            # Prints the contents of key index 55
+> key.print(k)             # Same thing
+```
+
+#### Parameters
+
+ - *index* - The index of the key to print.  The key index is returned when the key is created
+with the key() command.
+
+#### Return Values
+
+None
+
+```js
+> 55
+> My Key
+> My Key
+```
+
+## key.number
+
+#### Description
+`key.number(index)`
+
+Converts the string referenced by the index to an integer value and returns it.
+
+```bash
+> a = key(temperature.f)  # Create a key with the current scout temp (in F)
+> if(key.number(a) > 60) {print "Ahhhh";} else {print "Brrr!";} # Numeric comparison
+> print key.number(a)
+```
+
+#### Parameters
+
+ - *index* - The index of the key to return as an integer.  The key index is returned when the key is created
+with the key() command.
+
+#### Return Values
+
+The value of the string as an integer value
+```js
+> Ahhhh
+> 72
+```
+## key.save
+
+#### Description
+`key.save("n", index)`
+
+Creates a Bitlash function in EEPROM called boot.n that can be used to retreive
+the string currently at index after the scout has rebooted.  After rebooting
+running the function boot.n will create a new key with the same string and set the 
+variable named in the first argument to the value of the key index.  Note that
+the first variable should only be one char long since Bitlash only supports using
+a-z as variable names.
+
+```bash
+> a = key("Saved string")  # Create a key with the string "Saved string"
+> key.save("s", a)         # Save the string at index "a" as "s"
+> ls                       # Display the EEPROM function list
+```
+```js
+function boot.s {s=key("Saved string");};
+```
+...reboot scout...
+```bash
+> print s                   # not set yet
+```
+```js
+0
+```
+```bash
+boot.s                      # running the function sets "s" to the index,
+print s                     # 52 in this case, and sets the contents of 
+key.print(s)                # the index to the original string
+```
+```js
+52
+Saved String
+```
+
+#### Parameters
+
+- *n* - A one character name for the variable to hold the new index created when the function is run.
+- *index* - The current index of the string to save
+
+#### Return Values
+
+None
+
+#### Side Effects
+
+A new function named boot.**n** is created in EEPROM
+
 # miscellaneous
 
 ## temperature.c
