@@ -482,7 +482,7 @@ None
 Send a message to an entire group of Scouts at once.
 
 ```bash
-> mesh.announce(2, "hi")
+> mesh.group(2, "hi")
 ```
 
 #### Parameters
