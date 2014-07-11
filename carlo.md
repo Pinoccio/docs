@@ -70,7 +70,7 @@ This exposes a global ```pinoccioAPI``` which you may use like
 <script> 
 var api = pinoccioAPI()
 api.rest({url:"/v1/account"},function(err,data){
-  console.log('muchg win? ',error,data)
+  console.log('much win? ',error,data)
 })
 </script>
 
