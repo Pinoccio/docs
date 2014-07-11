@@ -635,7 +635,7 @@ Get the state of all of your troops and scouts and realtime events as the state 
 
 ```sh
  
-curl https://api.pinocc.io/v1/sync?token=7fc11b7554f0cd303bad94eb0eb36e2d
+curl 'https://api.pinocc.io/v1/sync?token=7fc11b7554f0cd303bad94eb0eb36e2d'
 
 ```
 
@@ -657,7 +657,7 @@ optional
   - if you pass a falsy value (0,false etc) the sync stream will end when it has sent the current state. It will not continue streaming forever
 
 ### Return values.
-
+  
 data is newline delimited json.
 
 ```sh
@@ -686,7 +686,7 @@ Get a stream of time series data from start time to end time for any report.
 
 ```sh
  
-curl https://api.pinocc.io/v1/stats?token=7fc11b7554f0cd303bad94eb0eb36e2d&report={report}&scout={scout id}&troop={troop id}
+curl 'https://api.pinocc.io/v1/stats?token=7fc11b7554f0cd303bad94eb0eb36e2d&report={report}&scout={scout id}&troop={troop id}'
 
 ```
 
