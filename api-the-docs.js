@@ -28,6 +28,8 @@ var api = pinoccioAPI();
       // hide login show logged in.
       $(".login-loggedout").hide();
       var a = $("<a>").attr('href',"#").css({"display":"inline","vertical-align":"top"});
+
+      data.firstname = data.firstname||'';
       a.text("Hi, "+(data.firstname.length?data.firstname:data.email.split('@').shift()))
 
       $(".login-loggedin").append("<img src='"+data.gravatar+"' width='20' height='20' alt=''/>");
