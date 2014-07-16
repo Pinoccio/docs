@@ -28,8 +28,20 @@
 
   <!-- Initializer -->
   <script>
+    if(location.search){
+      var search = location.search.substr(1);
+      var qs = {};
+      search.split("&").forEach(function(v){
+        var kv = v.split('=')
+        qs[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
+      });
+    }
+
+    var ref = 'production';
+    if(qs.ref) ref = qs.ref;
+
     Flatdoc.run({
-      fetcher: Flatdoc.github('Pinoccio/docs', 'carlo.md?ref=production')
+      fetcher: Flatdoc.github('Pinoccio/docs', 'carlo.md?ref='+ref)
       //fetcher: Flatdoc.file('carlo.md')
     });
   </script>
