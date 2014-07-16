@@ -26,9 +26,10 @@
 
   <!-- Initializer -->
   <script>
+
+    var qs = {};
     if(location.search){
       var search = location.search.substr(1);
-      var qs = {};
       search.split("&").forEach(function(v){
         var kv = v.split('=')
         qs[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]);
