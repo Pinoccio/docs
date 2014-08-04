@@ -155,14 +155,20 @@ Returns 1 if the VCC pin is currently enabled, 0 otherwise
 
 ## power.sleep
 #### Description
-`void power.sleep(ms, ["command"])`
+`void power.sleep(ms, ["callback"])`
 
-Puts the Scout to sleep for *ms* milliseconds.  Upon waking up, it will run the ScoutScript command *command*.  When a Scout is asleep, it cannot communicate with any other boards or the web, nor will any event handlers run.  However, it'll be in an extremely low power state, so your battery will last much longer!
+Puts the Scout to sleep for *ms* milliseconds.  Upon waking up, it will run the ScoutScript function *callback*.  When a Scout is asleep, it cannot communicate with any other boards or the web, nor will any event handlers run.  However, it'll be in an extremely low power state, so your battery will last much longer!
+
+*callback* will receive two arguments when it's called: the total sleep duration (e.g. the first argument to power.sleep as-is) as well as the number of milliseconds left to sleep.  Normally, the second argument will be 0. However, when the sleep was interrupted, it can be non-zero.
+
+When sleep is interrupted, the callback function can return a non-zero value to continue sleeping until the full sleep duration has passed. When the callback returns 0, no further sleeping happens (though the callback can of course call `power.sleep` again to schedule another sleep interval.)
+
+It is advisable to always let the `power.sleep` callback function return a value. If no value is explicitly returned, the return value of the last statement in the callback function is used, which might not be what you want.
 
 Pinoccio lab measurements showed a current draw of 12.5µA when the board is in the sleep state, though various factors can cause this to be higher.
 
 ```bash
-> power.sleep(1000, "uptime.report")
+> power.sleep(1000, "wakeupfunction")
 ```
 
 #### Parameters
@@ -197,7 +203,8 @@ A JSON representation of the current state of power for the Scout.
  "battery":100,
  "voltage":417,
  "charging":false,
- "vcc":true
+ "vcc":true,
+ "at":1006918
 }
 ```
 
@@ -206,6 +213,7 @@ A JSON representation of the current state of power for the Scout.
 - *voltage* - The voltage of the battery, x100--so **417** is 4.17 volts.  Range is between 3.4 volts and 4.2 volts.
 - *charging* - A true/false value showing if the battery is currently charing.
 - *vcc* - A true/false value showing if power is enabled to the 3V3 header pin that powers backpacks.
+- *at* - The milliseconds since restart at which this report was run
 
 # mesh networking
 
@@ -422,7 +430,8 @@ A JSON representation of the current state of mesh networking for the Scout.
   "routes":1,
   "channel":20,
   "rate":"250 kb/s",
-  "power":"3.5 dBm"
+  "power":"3.5 dBm",
+  "at":1006981
 }
 ```
 
@@ -433,6 +442,7 @@ A JSON representation of the current state of mesh networking for the Scout.
 - *channel* - The 802.15.4 channel this Scout is listening on. Valid range is **11** to **26**.
 - *rate* - The data rate the radio on this Scout is currently set to.
 - *power* - The radio power setting this Scout is currently set to.
+- *at* - The milliseconds since restart at which this report was run
 
 ## mesh.routing
 
@@ -493,64 +503,104 @@ Send a message to an entire group of Scouts at once.
 None
 
 # uptime
-## uptime.millis.awake
+## uptime.awake.micros
 #### Description
-`int uptime.millis.awake()`
+`int uptime.awake.micros()`
 
-Get the number of millis that have passed since the last reset. Includes only time while awake.
+Get the number of micros that have passed in the last second, so it will roll over to 0 every 1,000,000 microseconds.  Includes only time while awake.
 
 ```bash
-> print uptime.millis.awake
+> print uptime.awake.micros
 ```
 
 #### Parameters
 None
 
 #### Return Values
-The number of milliseconds that have passed since the last reset.
+The number of microseconds that have passed in the last second.
 
 ```bash
 > 16543
 ```
 
-## uptime.millis.sleep
+## uptime.awake.seconds
 #### Description
-`int uptime.millis.sleep()`
+`int uptime.awake.seconds()`
 
-Get the number of millis that have passed since the last reset. Includes only time while asleep.
+Get the number of seconds that have passed since last reboot.  Includes only time while awake.
 
 ```bash
-> print uptime.millis.sleep
+> print uptime.awake.seconds
 ```
 
 #### Parameters
 None
 
 #### Return Values
-The number of milliseconds that have passed since the last reset.
+The number of seconds that have passed since last reboot.
 
 ```bash
-> 1000
+> 3
 ```
 
-## uptime.millis
+## uptime.sleeping.micros
 #### Description
-`int uptime.millis()`
+`int uptime.sleeping.micros()`
 
-Get the number of millis that have passed since the last reset. Includes both sleep and awake time.
+Get the number of micros that have passed in the last second, so it will roll over to 0 every 1,000,000 microseconds.  Includes only time while sleeping.
 
 ```bash
-> print uptime.millis
+> print uptime.sleeping.micros
 ```
 
 #### Parameters
 None
 
 #### Return Values
-The number of milliseconds that have passed since the last reset.
+The number of microseconds that have passed in the last second while sleeping.
 
 ```bash
-> 14456
+> 3052
+```
+
+## uptime.sleeping.seconds
+#### Description
+`int uptime.sleeping.seconds()`
+
+Get the number of seconds that have passed since last reboot.  Includes only time while sleeping.
+
+```bash
+> print uptime.sleeping.seconds
+```
+
+#### Parameters
+None
+
+#### Return Values
+The number of seconds that have passed since last reboot.
+
+```bash
+> 1
+```
+
+## uptime.micros
+#### Description
+`int uptime.micros()`
+
+Get the number of micros that have passed in the last second, so it will roll over to 0 every 1,000,000 microseconds. Includes both sleep and awake time.
+
+```bash
+> print uptime.micros
+```
+
+#### Parameters
+None
+
+#### Return Values
+The number of microseconds that have passed in the last second.
+
+```bash
+> 563992
 ```
 
 ## uptime.seconds
@@ -571,66 +621,6 @@ The number of milliseconds that have passed since the last reset.
 
 ```bash
 > 34
-```
-
-## uptime.minutes
-#### Description
-`int uptime.minutes()`
-
-Get the number of minutes that have passed since the last reset. Includes both sleep and awake time.
-
-```bash
-> print uptime.minutes
-```
-
-#### Parameters
-None
-
-#### Return Values
-The number of minutes that have passed since the last reset.
-
-```bash
-> 2
-```
-
-## uptime.hours
-#### Description
-`int uptime.hours()`
-
-Get the number of hours that have passed since the last reset. Includes both sleep and awake time.
-
-```bash
-> print uptime.hours
-```
-
-#### Parameters
-None
-
-#### Return Values
-The number of hours that have passed since the last reset.
-
-```bash
-> 1
-```
-
-## uptime.days
-#### Description
-`int uptime.days()`
-
-Get the number of days that have passed since the last reset. Includes both sleep and awake time.
-
-```bash
-> print uptime.days
-```
-
-#### Parameters
-None
-
-#### Return Values
-The number of days that have passed since the last reset.
-
-```bash
-> 0
 ```
 
 ## uptime.report
@@ -655,7 +645,8 @@ A JSON representation of the current uptime stats.
   "millis":420381,
   "sleep":1000,
   "random":3114,
-  "reset":"External"
+  "reset":"External",
+  "at":1008191
 }
 ```
 
@@ -664,6 +655,7 @@ A JSON representation of the current uptime stats.
 - *sleep* - The number of milliseconds that have occurred while sleeping. Combine this with *millis* for a full uptime count.
 - *random* - The current random number, seeded from the hardware random number generator.
 - *reset* - The last reset cause. Can be values **Power-on**, **External**, **Brown-out**, **Watchdog**, **JTAG**, or **Unknown Cause Reset**
+- *at* - The milliseconds since restart at which this report was run
 
 ## uptime.getlastreset
 #### Description
@@ -683,6 +675,28 @@ The key of the reset type. Possible values are **Power-on**, **External**, **Bro
 
 ```bash
 > "External"
+```
+
+## uptime.status
+#### Description
+`int uptime.status()`
+
+Get a human-readable output of uptime, including asleep and awake amounts.
+
+```bash
+> uptime.status
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+```bash
+> Total: 2 days, 20 hours, 2 minutes, 50.501264 seconds 
+Awake: 2 days, 20 hours, 2 minutes, 50.505600 seconds 
+Asleep: 0 days, 0 hours, 0 minutes, 0.000000 seconds
 ```
 
 
@@ -1016,13 +1030,15 @@ A JSON representation of the current state of the LED.
 {
   "type":"led",
   "led":[0,0,0],
-  "torch":[255,0,0]
+  "torch":[255,0,0],
+  "at":1009282
 }
 ```
 
 - *type* - The type of report returned.  In this case it will be the string **led**
 - *led* - The current state of the LED with the values of red, green, and blue.
 - *torch* - The torch color saved to this Scout with the values of red, green, and blue.
+- *at* - The milliseconds since restart at which this report was run
 
 # pins
 ## pin.makeinput
@@ -1147,6 +1163,61 @@ Sets the pin mode and optionally, pin value for a pin, so that it retains its se
 None.
 
 
+## pin.status
+#### Description
+`pin.status()`
+
+Output a human-readable status of all pins of the Scout.  Note, this will only work on the serial port, not via HQ--meaning only on a Scout connected to a USB port and being monitored via a serial console such as the Arduino IDE has.
+
+```bash
+> pin.status()
+```
+
+#### Parameters
+None.
+
+#### Return Values
+None.
+
+```
+Note: pin.status currently only works on Serial
+#   name    mode            value
+---------------------------------
+0   rx0     reserved        -       
+1   tx0     reserved        -       
+2   d2      unset           -       supports PWM, supports wakeup
+3   d3      unset           -       supports PWM
+4   d4      unset           -       supports PWM, supports wakeup
+5   d5      unset           -       supports PWM, supports wakeup
+6   d6      unset           -       
+7   d7      unset           -       supports wakeup
+8   d8      unset           -       
+9   ss      unset           -       supports wakeup
+10  mosi    unset           -       supports wakeup
+11  miso    unset           -       supports wakeup
+12  sck     unset           -       supports wakeup
+13  rx1     unset           -       supports wakeup
+14  tx1     unset           -       supports wakeup
+15  scl     reserved        -       supports wakeup
+16  sda     reserved        -       supports wakeup
+17  vcc     reserved        -       
+18  batt    reserved        -       supports wakeup
+19  bkpk    reserved        -       
+20  chg     reserved        -       
+21  ledb    reserved        -       supports PWM
+22  ledr    reserved        -       supports PWM
+23  ledg    reserved        -       supports PWM
+24  a0      unset           -       
+25  a1      unset           -       
+26  a2      unset           -       
+27  a3      unset           -       
+28  a4      unset           -       
+29  a5      unset           -       
+30  a6      unset           -       
+31  a7      unset           -
+```
+
+
 ## pin.report.digital
 #### Description
 `pin.report.digital()`
@@ -1167,13 +1238,15 @@ A JSON representation of the current state of the digital pins.
 {
   "type":"digital",
   "mode":[-1,-1,-1,-1,-1,-1,-1],
-  "state":[-1,-1,-1,-1,-1,-1,-1]
+  "state":[-1,-1,-1,-1,-1,-1,-1],
+  "at":1008829
 }
 ```
 
 - *type* - The type of report returned.  In this case it will be the string **digital**
 - *mode* - An array of pin modes for "d2" to "d8". **-1** is *DISABLED*, **0**, is *INPUT*, **1** is *OUTPUT*, and **2** is *INPUT_PULLUP*
 - *state* - An array of pin values for "d2" to "d8". **-1** is *DISABLED*, **0**, is *LOW*, and **1** is *HIGH*.
+- *at* - The milliseconds since restart at which this report was run
 
 ## pin.report.analog
 #### Description
@@ -1195,14 +1268,15 @@ A JSON representation of the current state of the digital pins.
 {
   "type":"analog",
   "mode":[-1,-1,-1,-1,-1,-1,-1,-1],
-  "state":[-1,-1,-1,-1,-1,-1,-1,-1]
+  "state":[-1,-1,-1,-1,-1,-1,-1,-1],
+  "at":1002298
 }
 ```
 
 - *type* - The type of report returned.  In this case it will be the string *analog*
 - *mode* - An array of pin modes for "d2" to "d8". **-1** is *DISABLED*, **0**, is *INPUT*, **1** is *OUTPUT*, and **2** is *INPUT_PULLUP*
 - *state* - An array of pin values for "a0" to "a7". **-1** is *DISABLED*, ranges **0** to **1023** are possible for analog inputs.
-
+- *at* - The milliseconds since restart at which this report was run
 
 # scout
 ## scout.report
@@ -1229,7 +1303,8 @@ A JSON representation of the current state of the digital pins.
  "hardware":1,
  "family":1000,
  "serial":2000052,
- "build":20140130
+ "build":20140130,
+ "at":1009822
 }
 ```
 
@@ -1240,6 +1315,7 @@ A JSON representation of the current state of the digital pins.
 - *family* - The family that this hardware belongs to. **1000** is the only valid value at this time.
 - *serial* - A unique serial number of this Scout.
 - *build* - The build number of the firmware on this Scout. Useful for auto-updating.
+- *at* - The milliseconds since restart at which this report was run
 
 ## scout.isleadscout
 #### Description
@@ -1621,13 +1697,50 @@ A JSON representation of the current temperature.
 {
   "type":"temp",
   "c":21,
-  "f":70
+  "f":70,
+  "at":1008298
 }
 ```
 
 - *type* - The type of report returned.  In this case it will be the string **temp**
 - *c* - The current temperature in Celsius
 - *f* - The current temperature in Fahrenheit
+- *at* - The milliseconds since restart at which this report was run
+
+
+## temperature.setoffset
+
+#### Description
+`temperature.setoffset(offset)`
+
+Save a calibration offset for the temperature sensor, in Celsius.  Whatever value is passed in here as an offset will be added to the current sensor reading, before being returned.  If you pass in a negative number, the temperature reading returned will be lower than the actual read temperature.
+
+```bash
+> print temperature.setoffset(-2)
+```
+
+#### Parameters
+- *offset* - A positive or negative integer that will offset subsequent temperature sensor readings.
+
+#### Return Values
+None.
+
+## temperature.calibrate
+
+#### Description
+`temperature.calibrate(currentTemp)`
+
+If you know what the current temperature the Scout should be reading, this command will do the math offset for you. The temperature passed in should be in Celsius.
+
+```bash
+> print temperature.calibrate(26)
+```
+
+#### Parameters
+- *currentTemp* - The current temperature, in Celsius, that the sensor should be offset to.
+
+#### Return Values
+None.
 
 
 ## randomnumber
@@ -1672,7 +1785,8 @@ A JSON representation of the current memory details.
   "type":"memory",
   "used":559,
   "free":18314,
-  "large":17719
+  "large":17719,
+  "at":1006488
 }
 ```
 
@@ -1680,6 +1794,7 @@ A JSON representation of the current memory details.
 - *used* - The current amount of memory being used
 - *free* - The total amount of free memory
 - *large* - The largest chunk of non-fragmented free memory
+- *at* - The milliseconds since restart at which this report was run
 
 
 # event handling
@@ -1975,13 +2090,15 @@ A JSON representation of the current state of the Wi-Fi connection.
  "type":"wifi",
  "version":0,
  "connected":true,
- "hq":true
+ "hq":true,
+ "at":100649
 }
 ```
 
 - *type* - The type of report returned.  In this case it will be the string *wifi*
 - *connected* - Will be *true* if this Lead Scout is connected to a Wi-Fi access point, *false* otherwise.
 - *hq* - Will be *true* if this Lead Scout is connected to HQ over a TCP connection, *false* otherwise.
+- *at* - The milliseconds since restart at which this report was run
 
 ## wifi.status
 #### Description
@@ -2040,7 +2157,7 @@ No.Of AP Found:2
 
 ## wifi.config
 #### Description
-`wifi.config("wifiAPName", "wifiAPPassword")`
+`wifi.config("wifiAPName" [, "wifiAPPassword"])`
 
 Associate this Lead Scout with a new access point (AP.)  Note, this command only works on a Lead Scout.
 
@@ -2052,7 +2169,7 @@ Once you call this command, you have to run `wifi.reassociate` to actually conne
 
 #### Parameters
 - *wifiAPName* - The name of the access point. Be sure to enclose in double quotes, i.e. *"name"*.
-- *wifiAPPassword* - The password of the access point.  Be sure to enclose in double quotes, i.e. *"name"*.
+- *wifiAPPassword* - Optional. The password of the access point.  Be sure to enclose in double quotes, i.e. *"name"*. 
 
 #### Return Values
 None. Run `wifi.reassociate` to actually connect to the new access point.
