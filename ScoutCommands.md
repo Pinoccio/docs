@@ -468,7 +468,7 @@ A human-readable representation of the current routing table.
 |      0      |      0      |      3      |      4      |      4      |     129     |     254     |
 ```
 
-## message.scout
+## message.scout (deprecated)
 #### Description
 `message.scout(scoutId, "message")`
 
@@ -485,7 +485,7 @@ Send a message from this Scout to another Scout.
 #### Return Values
 None
 
-## message.group
+## message.group (deprecated)
 #### Description
 `message.group(groupId, "message")`
 
@@ -501,6 +501,87 @@ Send a message to an entire group of Scouts at once.
 
 #### Return Values
 None
+
+
+# mesh remote commands
+
+## command.scout
+#### Description
+``command.scout(scoutId, "command"[, arg1, "arg2", "`arg3`", ...])``
+
+Run a command on another Scout.  The command can take a variable number of arguments, and those arguments are also passed to the command to build the full command string, before being sent to the other Scout.
+
+```bash
+> command.scout(1, "led.sethex", "`led.gethex`")
+```
+
+#### Parameters
+- *scoutId* - The unique ID of the scout on which you want to run the command.
+- *command* - The string of the command you want to run
+- *arg1*, *arg2* - One or more arguments to pass to the *command* before remote evaluation. If the argument is not quoted, it will be added as an integer argument to the command.  If it is quoted, it will be added as a string argument to the command.  If it is quoted and backticked, it will be evaluated locally, and the result of that evaluation will be added as a string argument to the command.
+
+
+#### Return Values
+1 if the command is successfully sent, 0 otherwise
+
+## command.scout.ack
+#### Description
+``command.scout.ack("callback", scoutId, "command"[, arg1, "arg2", "`arg3`", ...])``
+
+This is the same as `command.scout`, except that once the command is run on the other scout, a local callback ScoutScript command, `callback` is evaluated if it is defined.  The callback command will be passed two arguments, *err* and *rssi*.  *err* will be non-zero if an error occurred when running the remote command.  *rssi* will contain the signal strength of the mesh radio between the two Scouts.
+
+```bash
+> command.scout.ack("callback", 1, "led.red")
+```
+
+#### Parameters
+- *callback* - The callback ScoutScript command that is evaluated once the other Scout completes running its command and sends back an acknowledgement with the return value.
+- *scoutId* - The unique ID of the scout on which you want to run the command.
+- *command* - The string of the command you want to run
+- *arg1*, *arg2* - One or more arguments to pass to the *command* before remote evaluation. If the argument is not quoted, it will be added as an integer argument to the command.  If it is quoted, it will be added as a string argument to the command.  If it is quoted and backticked, it will be evaluated locally, and the result of that evaluation will be added as a string argument to the command.
+
+
+#### Return Values
+1 if the command is successfully sent, 0 otherwise
+
+## command.all
+#### Description
+``command.all("command"[, arg1, "arg2", "`arg3`", ...])``
+
+This will send a command to all Scouts in the troop, including the Scout this command is evaluated on.
+
+
+```bash
+> command.all("led.blue(1000)")
+```
+
+#### Parameters
+- *command* - The string of the command you want to run
+- *arg1*, *arg2* - One or more arguments to pass to the *command* before remote evaluation. If the argument is not quoted, it will be added as an integer argument to the command.  If it is quoted, it will be added as a string argument to the command.  If it is quoted and backticked, it will be evaluated locally, and the result of that evaluation will be added as a string argument to the command.
+
+
+#### Return Values
+1 if the command is successfully sent, 0 otherwise
+
+
+## command.others
+#### Description
+``command.others("command"[, arg1, "arg2", "`arg3`", ...])``
+
+This will send a command to all Scouts in the troop, not including the Scout this command is evaluated on.
+
+```bash
+> command.others("led.red(500)")
+```
+
+#### Parameters
+- *command* - The string of the command you want to run
+- *arg1*, *arg2* - One or more arguments to pass to the *command* before remote evaluation. If the argument is not quoted, it will be added as an integer argument to the command.  If it is quoted, it will be added as a string argument to the command.  If it is quoted and backticked, it will be evaluated locally, and the result of that evaluation will be added as a string argument to the command.
+
+
+#### Return Values
+1 if the command is successfully sent, 0 otherwise
+
 
 # uptime
 ## uptime.awake.micros
@@ -1074,6 +1155,22 @@ Make the given pin an output.  Once a pin is an output, you can set it high or l
 #### Return Values
 None
 
+## pin.makepwm
+#### Description
+`pin.makepwm("pinName")`
+
+Make the given pin a PWM output.  The only pins that can be made PWM output are d2, d3, d4, and d5.
+
+```bash
+> pin.makepwm("d2")
+```
+
+#### Parameters
+- *pinName* - A string value of the pin to make a PWM output. Valid values are **"d2"** through **"d5"**.
+
+#### Return Values
+None
+
 ## pin.disable
 #### Description
 `pin.disable("pinName")`
@@ -1455,6 +1552,24 @@ Print a value directly to the console on HQ.
 #### Return Values
 None
 
+## hq.setaddress
+#### Description
+`hq.setaddress("host"[, port])`
+
+Changing the HQ address through ScoutScript always disables TLS (and can only be re-enabled through a reboot). 
+
+```bash
+> hq.setaddress("myserver.com", 12345)
+```
+
+#### Parameters
+- *host* - The host or IP address to connect to instead of the default Pinoccio HQ address.
+- *port* - Optional. The host/IP port of the socket you want to use. Set to **22756** by default.
+
+#### Return Values
+None
+
+
 ## hq.report
 #### Description
 `hq.report("reportname", "value")`
@@ -1476,161 +1591,6 @@ the value string must be less than or equal to 80 chars.
 
 #### Return Values
 None
-
-
-# Keys
-
-## key
-
-#### Description
-`key(\"string\" | value)`
-
-Create a string in memory and return an index to the key location.  A quoted string 
-is saved as-is and an unsigned integer value is converted to a string and saved.  The string 
-can retrieved by referencing the index.  See key.print.
-
-Note that values other than unsigned integers are accepted but will be treated as unsigned ints,
-leading to odd and unpredictable results.
-
-```bash
-> print key(temperature.f)
-> print key("My key")
-```
-
-#### Parameters
-
- - *value* - A string or unsigned integer value to be saved as a string.
-
-#### Return Values
-The index of the created key entry
-
-```js
-> 54
-> 55
-```
-## key.free
-
-#### Description
-`key.free(index)`
-
-Remove the string referenced by the index from memory.
-
-```bash
-> key.free(54)
-```
-
-#### Parameters
-
- - *index* - The index of the key to remove.  The key index is returned when the key is created
-with the key() command.
-
-#### Return Values
-
-None
-
-## key.print
-
-#### Description
-`key.print(index)`
-
-Print the string referenced by the index.
-
-```bash
-> k = key("My Key")
-> print k                  # Prints the created key index - 55 in this example
-> key.print(55)            # Prints the contents of key index 55
-> key.print(k)             # Same thing
-```
-
-#### Parameters
-
- - *index* - The index of the key to print.  The key index is returned when the key is created
-with the key() command.
-
-#### Return Values
-
-None
-
-```js
-> 55
-> My Key
-> My Key
-```
-
-## key.number
-
-#### Description
-`key.number(index)`
-
-Converts the string referenced by the index to an integer value and returns it.
-
-```bash
-> a = key(temperature.f)  # Create a key with the current scout temp (in F)
-> if(key.number(a) > 60) {print "Ahhhh";} else {print "Brrr!";} # Numeric comparison
-> print key.number(a)
-```
-
-#### Parameters
-
- - *index* - The index of the key to return as an integer.  The key index is returned when the key is created
-with the key() command.
-
-#### Return Values
-
-The value of the string as an integer value
-```js
-> Ahhhh
-> 72
-```
-## key.save
-
-#### Description
-`key.save("n", index)`
-
-Creates a Bitlash function in EEPROM called boot.n that can be used to retreive
-the string currently at index after the scout has rebooted.  After rebooting
-running the function boot.n will create a new key with the same string and set the 
-variable named in the first argument to the value of the key index.  Note that
-the first variable should only be one char long since Bitlash only supports using
-a-z as variable names.
-
-```bash
-> a = key("Saved string")  # Create a key with the string "Saved string"
-> key.save("s", a)         # Save the string at index "a" as "s"
-> ls                       # Display the EEPROM function list
-```
-```js
-function boot.s {s=key("Saved string");};
-```
-...reboot scout...
-```bash
-> print s                   # not set yet
-```
-```js
-0
-```
-```bash
-boot.s                      # running the function sets "s" to the index,
-print s                     # 52 in this case, and sets the contents of 
-key.print(s)                # the index to the original string
-```
-```js
-52
-Saved String
-```
-
-#### Parameters
-
-- *n* - A one character name for the variable to hold the new index created when the function is run.
-- *index* - The current index of the string to save
-
-#### Return Values
-
-None
-
-#### Side Effects
-
-A new function named boot.**n** is created in EEPROM
 
 # miscellaneous
 
@@ -2278,3 +2238,157 @@ The current time, in the format DD/MM/YYYY,HH:MM:SS,<number of milliseconds sinc
 22/3/2014,18:18:48,1395512328039
 ```
 -->
+
+# Keys (deprecated)
+
+## key (deprecated)
+
+#### Description 
+`key(\"string\" | value)`
+
+Create a string in memory and return an index to the key location.  A quoted string 
+is saved as-is and an unsigned integer value is converted to a string and saved.  The string 
+can retrieved by referencing the index.  See key.print.
+
+Note that values other than unsigned integers are accepted but will be treated as unsigned ints,
+leading to odd and unpredictable results.
+
+```bash
+> print key(temperature.f)
+> print key("My key")
+```
+
+#### Parameters
+
+ - *value* - A string or unsigned integer value to be saved as a string.
+
+#### Return Values
+The index of the created key entry
+
+```js
+> 54
+> 55
+```
+## key.free (deprecated)
+
+#### Description
+`key.free(index)`
+
+Remove the string referenced by the index from memory.
+
+```bash
+> key.free(54)
+```
+
+#### Parameters
+
+ - *index* - The index of the key to remove.  The key index is returned when the key is created
+with the key() command.
+
+#### Return Values
+
+None
+
+## key.print (deprecated)
+
+#### Description
+`key.print(index)`
+
+Print the string referenced by the index.
+
+```bash
+> k = key("My Key")
+> print k                  # Prints the created key index - 55 in this example
+> key.print(55)            # Prints the contents of key index 55
+> key.print(k)             # Same thing
+```
+
+#### Parameters
+
+ - *index* - The index of the key to print.  The key index is returned when the key is created
+with the key() command.
+
+#### Return Values
+
+None
+
+```js
+> 55
+> My Key
+> My Key
+```
+
+## key.number (deprecated)
+
+#### Description
+`key.number(index)`
+
+Converts the string referenced by the index to an integer value and returns it.
+
+```bash
+> a = key(temperature.f)  # Create a key with the current scout temp (in F)
+> if(key.number(a) > 60) {print "Ahhhh";} else {print "Brrr!";} # Numeric comparison
+> print key.number(a)
+```
+
+#### Parameters
+
+ - *index* - The index of the key to return as an integer.  The key index is returned when the key is created
+with the key() command.
+
+#### Return Values
+
+The value of the string as an integer value
+```js
+> Ahhhh
+> 72
+```
+## key.save (deprecated)
+
+#### Description
+`key.save("n", index)`
+
+Creates a Bitlash function in EEPROM called boot.n that can be used to retreive
+the string currently at index after the scout has rebooted.  After rebooting
+running the function boot.n will create a new key with the same string and set the 
+variable named in the first argument to the value of the key index.  Note that
+the first variable should only be one char long since Bitlash only supports using
+a-z as variable names.
+
+```bash
+> a = key("Saved string")  # Create a key with the string "Saved string"
+> key.save("s", a)         # Save the string at index "a" as "s"
+> ls                       # Display the EEPROM function list
+```
+```js
+function boot.s {s=key("Saved string");};
+```
+...reboot scout...
+```bash
+> print s                   # not set yet
+```
+```js
+0
+```
+```bash
+boot.s                      # running the function sets "s" to the index,
+print s                     # 52 in this case, and sets the contents of 
+key.print(s)                # the index to the original string
+```
+```js
+52
+Saved String
+```
+
+#### Parameters
+
+- *n* - A one character name for the variable to hold the new index created when the function is run.
+- *index* - The current index of the string to save
+
+#### Return Values
+
+None
+
+#### Side Effects
+
+A new function named boot.**n** is created in EEPROM
