@@ -2238,6 +2238,28 @@ CID  TYPE  MODE  LOCAL PORT  REMOTE PORT  REMOTE IP
 1  TCP-SSL CLIENT  48838    22757    173.255.220.185
 ```
 
+## wifi.stats
+#### Description
+`wifi.stats`
+
+Print stats about the number of reconnections to WiFi and/or HQ.
+
+```bash
+> wifi.stats
+```
+
+#### Parameters
+None
+
+#### Return Values
+Stats about reconnections.
+
+```
+Number of connections to AP since boot: 2
+Number of connections to HQ since boot: 1
+Seconds currently connected to HQ: 42
+```
+
 ## wifi.list
 #### Description
 `wifi.list()`
