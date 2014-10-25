@@ -493,10 +493,10 @@ Runs `command(id,lqi,via)` for every other Scout currently visible on the mesh (
 ```
 
 #### Parameters
-None
+- *command* - the command that will be called with the `id`, `lqi`, and `via` of each Scout in the routing table.
 
 #### Return Values
-- *fromId* - id of the Scout that last commanded this Scout.
+None
 
 ```bash
 // runs for.each.do.this(id,lqi,via) for each Scout in the routing table
