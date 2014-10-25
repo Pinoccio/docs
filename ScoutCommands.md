@@ -462,6 +462,62 @@ A JSON representation of the current state of mesh networking for the Scout.
 - *power* - The radio power setting this Scout is currently set to.
 - *at* - The milliseconds since restart at which this report was run
 
+## mesh.from
+#### Description
+`mesh.from`
+
+Returns the scout id that last commanded this scout (useful to auto-generate replies).
+
+```bash
+> mesh.from
+```
+
+#### Parameters
+None
+
+#### Return Values
+- *fromId* - id of the Scout that last commanded this Scout.
+
+```bash
+> 42
+```
+
+## mesh.each
+#### Description
+`mesh.each("command")`
+
+Runs `command(id,lqi,via)` for every other Scout currently visible on the mesh (as seen with `mesh.routing`).
+
+```bash
+> mesh.each("for.each.do.this")
+```
+
+#### Parameters
+None
+
+#### Return Values
+- *fromId* - id of the Scout that last commanded this Scout.
+
+```bash
+// runs for.each.do.this(id,lqi,via) for each Scout in the routing table
+```
+
+## mesh.fieldtest
+#### Description
+`mesh.fieldtest(seconds)`
+
+Turns on a fieldtest mode that runs a constant mesh ping for this many seconds, the scout running the fieldtest will turn red for no mesh, yellow for weak mesh, and blink green for good mesh, and every other scout it is meshed with will blink blue
+
+```bash
+> mesh.fieldtest(30)
+```
+
+#### Parameters
+- *seconds* - The number of seconds to stay in test mode.
+
+#### Return Values
+None
+
 ## mesh.routing
 
 #### Description
