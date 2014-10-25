@@ -1685,6 +1685,27 @@ the value string must be less than or equal to 80 chars.
 #### Return Values
 None
 
+## hq.online
+#### Description
+`hq.online`
+
+Returns 1 or 0 if HQ has been seen recently on the mesh.
+
+```bash
+> hq.online
+```
+
+#### Parameters
+None
+
+#### Return Values
+
+```bash
+1
+```
+
+- *value* - 1 if HQ has been seen, 0 if it hasn't.
+
 # miscellaneous
 
 ## temperature.c
@@ -2117,8 +2138,41 @@ This callback will be executed any time the temperature value changes.
 #### Return Values
 None
 
+## on.hq.online
+#### Description
+`on.hq.online`
 
+This callback will be executed on every Scout in the Troop whenever the Lead Scout connects to HQ.
 
+```bash
+> function on.hq.online { 
+  led.red(500);
+};
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+## on.wifi.associate
+#### Description
+`on.wifi.associate`
+
+This callback will be executed when a WiFi backpack associates with a network.
+
+```bash
+> function on.wifi.associate {
+  led.cyan(500);
+};
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
 
 # lead scout
 
