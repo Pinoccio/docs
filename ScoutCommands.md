@@ -235,6 +235,24 @@ Set the mesh radio settings for this scout. You can set the unique ID of the sco
 #### Return Values
 None
 
+## mesh.setchannel
+#### Description
+`mesh.setchannel(channelId)`
+
+Set the mesh radio channel for this Scout.
+
+**Important:** You'll want all the Scouts in your Troop to change to this new channel as well, so the practical usage should be `command.all("mesh.setchannel",26)`.
+
+```bash
+> mesh.channel(26)
+```
+
+#### Parameters
+- *channel* - The 802.15.4 channel for this troop.  Valid range is 11 to 26. All scouts in a troop must be on the same channel. Default is **20**.
+
+#### Return Values
+None
+
 ## mesh.setpower
 #### Description
 `mesh.setpower(powerLevel)`
