@@ -449,7 +449,7 @@ A JSON representation of the current state of mesh networking for the Scout.
 #### Description
 `mesh.routing()`
 
-Prints an output of the current mesh routing table for this Scout, in a human-readable format.
+Prints an output of the current mesh routing table for this Scout, in a human-readable format.  For detailed information regarding these values see Table 4-1 of [AVR2130: Lightweight Mesh Developer Guide](http://www.atmel.com/Images/Atmel-42028-Lightweight-Mesh-Developer-Guide_Application-Note_AVR2130.pdf), page 14.
 
 ```bash
 > mesh.routing
