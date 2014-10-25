@@ -544,6 +544,25 @@ This is the same as `command.scout`, except that once the command is run on the 
 #### Return Values
 1 if the command is successfully sent, 0 otherwise
 
+## command.group
+#### Description
+``command.group(groupId, "command"[, arg1, "arg2", "`arg3`", ...])``
+
+Run a command on Scouts in group `groupId`.  The command can take a variable number of arguments, and those arguments are also passed to the command to build the full command string, before being sent to the other Scouts.
+
+```bash
+> command.group(42, "led.sethex", "`led.gethex`")
+```
+
+#### Parameters
+- *groupId* - The ID of the group of Scouts on which you want to run the command.
+- *command* - The string of the command you want to run
+- *arg1*, *arg2* - One or more arguments to pass to the *command* before remote evaluation. If the argument is not quoted, it will be added as an integer argument to the command.  If it is quoted, it will be added as a string argument to the command.  If it is quoted and backticked, it will be evaluated locally, and the result of that evaluation will be added as a string argument to the command.
+
+
+#### Return Values
+1 if the command is successfully sent, 0 otherwise
+
 ## command.all
 #### Description
 ``command.all("command"[, arg1, "arg2", "`arg3`", ...])``
