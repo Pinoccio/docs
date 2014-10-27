@@ -235,6 +235,24 @@ Set the mesh radio settings for this scout. You can set the unique ID of the sco
 #### Return Values
 None
 
+## mesh.setchannel
+#### Description
+`mesh.setchannel(channelId)`
+
+Set the mesh radio channel for this Scout.
+
+**Important:** You'll want all the Scouts in your Troop to change to this new channel as well, so the practical usage should be `command.all("mesh.setchannel",26)`.
+
+```bash
+> mesh.channel(26)
+```
+
+#### Parameters
+- *channel* - The 802.15.4 channel for this troop.  Valid range is 11 to 26. All scouts in a troop must be on the same channel. Default is **20**.
+
+#### Return Values
+None
+
 ## mesh.setpower
 #### Description
 `mesh.setpower(powerLevel)`
@@ -444,12 +462,68 @@ A JSON representation of the current state of mesh networking for the Scout.
 - *power* - The radio power setting this Scout is currently set to.
 - *at* - The milliseconds since restart at which this report was run
 
+## mesh.from
+#### Description
+`mesh.from`
+
+Returns the scout id that last commanded this scout (useful to auto-generate replies).
+
+```bash
+> mesh.from
+```
+
+#### Parameters
+None
+
+#### Return Values
+- *fromId* - id of the Scout that last commanded this Scout.
+
+```bash
+> 42
+```
+
+## mesh.each
+#### Description
+`mesh.each("command")`
+
+Runs `command(id,lqi,via)` for every other Scout currently visible on the mesh (as seen with `mesh.routing`).
+
+```bash
+> mesh.each("for.each.do.this")
+```
+
+#### Parameters
+- *command* - the command that will be called with the `id`, `lqi`, and `via` of each Scout in the routing table.
+
+#### Return Values
+None
+
+```bash
+// runs for.each.do.this(id,lqi,via) for each Scout in the routing table
+```
+
+## mesh.fieldtest
+#### Description
+`mesh.fieldtest(seconds)`
+
+Turns on a fieldtest mode that runs a constant mesh ping for this many seconds, the scout running the fieldtest will turn red for no mesh, yellow for weak mesh, and blink green for good mesh, and every other scout it is meshed with will blink blue
+
+```bash
+> mesh.fieldtest(30)
+```
+
+#### Parameters
+- *seconds* - The number of seconds to stay in test mode.
+
+#### Return Values
+None
+
 ## mesh.routing
 
 #### Description
 `mesh.routing()`
 
-Prints an output of the current mesh routing table for this Scout, in a human-readable format.
+Prints an output of the current mesh routing table for this Scout, in a human-readable format.  For detailed information regarding these values see Table 4-1 of [AVR2130: Lightweight Mesh Developer Guide](http://www.atmel.com/Images/Atmel-42028-Lightweight-Mesh-Developer-Guide_Application-Note_AVR2130.pdf), page 14.
 
 ```bash
 > mesh.routing
@@ -537,6 +611,25 @@ This is the same as `command.scout`, except that once the command is run on the 
 #### Parameters
 - *callback* - The callback ScoutScript command that is evaluated once the other Scout completes running its command and sends back an acknowledgement with the return value.
 - *scoutId* - The unique ID of the scout on which you want to run the command.
+- *command* - The string of the command you want to run
+- *arg1*, *arg2* - One or more arguments to pass to the *command* before remote evaluation. If the argument is not quoted, it will be added as an integer argument to the command.  If it is quoted, it will be added as a string argument to the command.  If it is quoted and backticked, it will be evaluated locally, and the result of that evaluation will be added as a string argument to the command.
+
+
+#### Return Values
+1 if the command is successfully sent, 0 otherwise
+
+## command.group
+#### Description
+``command.group(groupId, "command"[, arg1, "arg2", "`arg3`", ...])``
+
+Run a command on Scouts in group `groupId`.  The command can take a variable number of arguments, and those arguments are also passed to the command to build the full command string, before being sent to the other Scouts.
+
+```bash
+> command.group(42, "led.sethex", "`led.gethex`")
+```
+
+#### Parameters
+- *groupId* - The ID of the group of Scouts on which you want to run the command.
 - *command* - The string of the command you want to run
 - *arg1*, *arg2* - One or more arguments to pass to the *command* before remote evaluation. If the argument is not quoted, it will be added as an integer argument to the command.  If it is quoted, it will be added as a string argument to the command.  If it is quoted and backticked, it will be evaluated locally, and the result of that evaluation will be added as a string argument to the command.
 
@@ -1592,6 +1685,27 @@ the value string must be less than or equal to 80 chars.
 #### Return Values
 None
 
+## hq.online
+#### Description
+`hq.online`
+
+Returns 1 or 0 if HQ has been seen recently on the mesh.
+
+```bash
+> hq.online
+```
+
+#### Parameters
+None
+
+#### Return Values
+
+```bash
+1
+```
+
+- *value* - 1 if HQ has been seen, 0 if it hasn't.
+
 # miscellaneous
 
 ## temperature.c
@@ -2024,8 +2138,41 @@ This callback will be executed any time the temperature value changes.
 #### Return Values
 None
 
+## on.hq.online
+#### Description
+`on.hq.online`
 
+This callback will be executed on every Scout in the Troop whenever the Lead Scout connects to HQ.
 
+```bash
+> function on.hq.online { 
+  led.red(500);
+};
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+## on.wifi.associate
+#### Description
+`on.wifi.associate`
+
+This callback will be executed when a WiFi backpack associates with a network.
+
+```bash
+> function on.wifi.associate {
+  led.cyan(500);
+};
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
 
 # lead scout
 
@@ -2089,6 +2236,28 @@ DNS1=10.0.1.1       DNS2=0.0.0.0
 Rx Count=94     Tx Count=10232
 CID  TYPE  MODE  LOCAL PORT  REMOTE PORT  REMOTE IP
 1  TCP-SSL CLIENT  48838    22757    173.255.220.185
+```
+
+## wifi.stats
+#### Description
+`wifi.stats`
+
+Print stats about the number of reconnections to WiFi and/or HQ.
+
+```bash
+> wifi.stats
+```
+
+#### Parameters
+None
+
+#### Return Values
+Stats about reconnections.
+
+```
+Number of connections to AP since boot: 2
+Number of connections to HQ since boot: 1
+Seconds currently connected to HQ: 42
 ```
 
 ## wifi.list
@@ -2216,6 +2385,24 @@ S2W APP VERSION=2.5.1
 S2W GEPS VERSION=2.5.1
 S2W WLAN VERSION=2.5.1
 ```
+
+## wifi.setverbose
+#### Description
+`wifi.setverbose(value)`
+
+By default, only errors are logged. By running `wifi.verbose(1)`, all data sent to and received from the wifi module is logged.
+
+Logging only happens to Serial, since it is a bad idea to log data to HQ (which goes through wifi, causing more log output, causing more traffic, etc.).
+
+```bash
+> wifi.setverbose(1)
+```
+
+#### Parameters
+- *value* - 1 to enable, 0 to disable
+
+#### Return Values
+None
 
 <!--
 ## wifi.gettime
