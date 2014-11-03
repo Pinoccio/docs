@@ -1871,6 +1871,26 @@ A JSON representation of the current memory details.
 - *at* - The milliseconds since restart at which this report was run
 
 
+## serial.mute
+
+#### Description
+`serial.mute(1)`
+
+Ensure that nothing is printed to Serial when any background commands are run.
+
+Use just `serial.mute` or `serial.mute(1)` to put it in silent mode (it still prints to Serial when it receives commands from serial), and `serial.mute(0)` to disable.
+
+```bash
+> serial.mute(1)
+```
+
+#### Parameters
+None
+
+#### Return Values
+None
+
+
 # event handling
 
 ## events.start
