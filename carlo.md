@@ -696,13 +696,14 @@ here is a live example. getting all <a href="http://codepen.io/anon/pen/zrLCK/">
 required
 
 - troop
-- scout
 - report
   - the name of the report you would like to pull. 
   - led, power, temp, uptime, mesh, digital, backpacks, analog, announce
  
 optional
 
+- scout
+  - the scout id to get reports for instead of all the scouts in a troop. This is now optional!
 - start
   - the unix timestamp to in ms start streaming data from.
 - end
