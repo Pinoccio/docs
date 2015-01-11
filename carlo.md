@@ -289,7 +289,7 @@ Or an error
 {"error":{"code":403,"message":"Error: not logged in"}}
 ```
 
-The token here is a unique troop identifier used in provisioning. scout.sethqtoken({troop token})
+The token here is a unique troop identifier used in provisioning. hq.settoken({troop token})
 
 This troop will NOT appear in GET /v1/troops result until a lead scout with the matching {troop token} connects to base. when this happens it will also create the first scout object for your troop.
 
