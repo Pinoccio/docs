@@ -1599,7 +1599,7 @@ Hello from Pinoccio!
 Saves the unique user HQ token for this Scout given by the argument.
 
 ```bash
-> hq.sethqtoken("8abc0800a80a08w0asd0f80asd")
+> hq.settoken("af49e76320781a7b9722a137039b7f99")
 ```
 
 #### Parameters
@@ -1616,7 +1616,7 @@ None
 Prints the unique user HQ token for this Scout.
 
 ```bash
-> hq.gethqtoken
+> hq.gettoken
 ```
 
 #### Parameters
@@ -1626,7 +1626,7 @@ None
 - *token* - The unique HQ token associated with this Scout.
 
 ```bash
-> 8abc0800a80a08w0asd0f80asd
+> af49e76320781a7b9722a137039b7f99
 ```
 
 ## hq.print
