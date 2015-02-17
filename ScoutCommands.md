@@ -2406,16 +2406,16 @@ S2W GEPS VERSION=2.5.1
 S2W WLAN VERSION=2.5.1
 ```
 
-## wifi.setverbose
+## wifi.verbose
 #### Description
-`wifi.setverbose(value)`
+`wifi.verbose(value)`
 
 By default, only errors are logged. By running `wifi.verbose(1)`, all data sent to and received from the wifi module is logged.
 
 Logging only happens to Serial, since it is a bad idea to log data to HQ (which goes through wifi, causing more log output, causing more traffic, etc.).
 
 ```bash
-> wifi.setverbose(1)
+> wifi.verbose(1)
 ```
 
 #### Parameters
