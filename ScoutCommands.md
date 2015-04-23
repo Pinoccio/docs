@@ -645,7 +645,7 @@ This will send a command to all Scouts in the troop, including the Scout this co
 
 
 ```bash
-> command.all("led.blue(1000)")
+> command.all("led.blue",1000);
 ```
 
 #### Parameters
